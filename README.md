@@ -27,7 +27,7 @@ AI agents are fast. That speed is also a risk: they'll implement the wrong thing
 | | Without Forge | With Forge |
 |---|---|---|
 | **Spec quality** | Improvised specs; assumptions never verified against the actual code → wrong things built thoroughly | Versioned spec + adversarial grill ×3 (Architect · Operator · Domain Engineer) catches false assumptions with `file:line` evidence before a line of code is written |
-| **Cost** | One expensive model (Opus) for everything, including trivial tasks | Model-per-task: Haiku for mechanical work, Sonnet for executing closed plans, Opus only for architecture, grill, and critical review |
+| **Cost** | One expensive model for everything, including trivial tasks | Model-per-task: fast tier for mechanical work, execution tier for closed plans, deep-reasoning tier only for architecture, grill, and critical review |
 | **Regression detection** | Verify at the end of the full feature → regressions discovered in the PR of phase N+10, expensive to fix | Cheap parallel verify after each phase commit (typecheck + diff tests + domain reviewers) → regression caught at phase N |
 | **Parallel agents** | Agents overwrite each other's files; no ownership rules; false "all green" from partial test runs | File-ownership graph + 1 worktree = 1 worker = 1 branch: collisions computed and prevented in the plan before execution starts |
 | **Session resilience** | Work lost when a rate-limit or crash hits mid-feature | Sub-phase WIP commits + per-workstream `state.md` resume capsule: work survives any session boundary |
@@ -44,17 +44,17 @@ AI agents are fast. That speed is also a risk: they'll implement the wrong thing
 flowchart TD
     A([Start: Substantial work identified]) --> B[1. Brainstorm\nvalue question first\none focused round with owner]
     B --> C[2. Versioned Spec\ncommitted to repo]
-    C --> D{3. Adversarial Grill ×3\nOpus}
+    C --> D{3. Adversarial Grill ×3\ndeep-reasoning model}
     D --> D1[Architect lens\nrules · bounded contexts\nfile:line verification]
     D --> D2[Operator/User lens\nday-to-day cases\nwhat breaks in practice]
     D --> D3[Domain Engineer lens\nconcurrency · edge cases\nwhat fails in prod]
     D1 & D2 & D3 --> E{Findings resolved?}
     E -- No --> F[4. Respond & Refine\nRe-spec → Re-grill\non new seams only]
     F --> E
-    E -- Yes --> G[5. writing-plans\nGlobal master plan\nALL phases · no gaps]
-    G --> H{Grill the plan\nOpus}
+    E -- Yes --> G[5. Global master plan\nALL phases · no gaps\nbefore execution begins]
+    G --> H{Grill the plan\ndeep-reasoning model}
     H -- Issues --> G
-    H -- Plan locked --> I[6. Parallel Execution\nWorkflows · isolated worktrees\nmodel-per-task · disjoint file ownership\nWIP commits per phase]
+    H -- Plan locked --> I[6. Parallel Execution\nWorkflows · isolated worktrees\nmodel-tier-per-task · disjoint file ownership\nWIP commits per phase]
     I --> J{Per-phase verify\ntypecheck · diff tests\ndomain reviewers}
     J -- Regression --> I
     J -- Phase green --> K{More phases?}
@@ -79,8 +79,8 @@ Forge designs well. These rules optimize **cost and reliability** for parallel m
 | 1 | **Quota + tier scheduling** | Build an account ledger before executing. Heaviest work → highest tier. Checkpoint preventively at ~80% window, never reactively. Keep one account in reserve. |
 | 2 | **File-ownership graph** | Each phase declares files it writes + depends on. Compute the parallelizable schedule; detect cross-cutting files upfront and assign one integrator. |
 | 3 | **Continuous per-phase verify** | Each phase commit triggers cheap parallel verify (typecheck + diff tests + domain reviewers). Catch regressions at phase N, not phase N+10. |
-| 4 | **Adaptive tiered grill** | Grill depth ∝ novelty × blast radius. First pass Sonnet; escalate to Opus only for disputed/architectural findings. |
-| 5 | **Cheap orchestrator** | Routine coordination = scripted/Haiku/monitor. Opus only for rebalancing, arbitration, grill, critical review. |
+| 4 | **Adaptive tiered grill** | Grill depth ∝ novelty × blast radius. First pass in execution tier; escalate to deep-reasoning tier only for disputed/architectural findings. |
+| 5 | **Cheap orchestrator** | Routine coordination = scripted/fast tier/monitor. Deep-reasoning tier only for rebalancing, arbitration, grill, critical review. |
 | 6 | **Resume capsule + WIP commits** | Each workstream keeps a committed `state.md`. Sub-phase WIP commits prevent losing work when a session limit hits. |
 | 7 | **Batched visual gate + stories** | All UI components get stories. Accumulate all surface screenshots into one gate queue; review many at once instead of stalling per PR. |
 | 8 | **Phase granularity** | Each phase ≤ 1 reviewable commit / ~1-2h. Mark parallelizable vs serial in the plan (derived from the file-ownership graph). |
@@ -99,13 +99,22 @@ Forge designs well. These rules optimize **cost and reliability** for parallel m
 
 ### ⭐ Model Per Task (most important cost control)
 
-| Model | Use for |
-|-------|---------|
-| **Haiku** | Trivial / mechanical: one-liners, formatting, stubs |
-| **Sonnet** | Executing closed plans, refactors, migrations, volume |
-| **Opus** | Architecture, adversarial grill, arbitration, critical review |
+| Tier | Use for |
+|------|---------|
+| **Fast tier** | Trivial / mechanical: one-liners, formatting, stubs |
+| **Execution tier** | Executing closed plans, refactors, migrations, volume |
+| **Deep-reasoning tier** | Architecture, adversarial grill, arbitration, critical review |
 
-No Opus where Sonnet performs equally well. Applies to every agent, including the orchestrator.
+Route always to the model that **reasons best** for the deep-reasoning tier, regardless of vendor. When a stronger reasoning model becomes available, use it there.
+
+#### Example mapping
+
+| Provider | Deep-reasoning | Execution | Fast |
+|----------|---------------|-----------|------|
+| Anthropic Claude | Opus | Sonnet | Haiku |
+| Map to your provider's equivalent (OpenAI, Google, etc.) | — | — | — |
+
+No deep-reasoning tier where the execution tier performs equally well. Applies to every agent, including the orchestrator.
 
 ### ⭐ Scripts Before Tokens
 

@@ -1,6 +1,6 @@
 ---
 name: forge-methodology
-description: Disciplined pipeline for substantial software work with AI agents — spec → adversarial grill (×3 lenses) → global plan → parallel execution (model-per-task, isolated worktrees) → green verify → visual gate. Apply to any new feature, architectural change, large refactor, or migration. Skip for trivial one-liners.
+description: Disciplined pipeline for substantial software work with AI agents — spec → adversarial grill (×3 lenses) → global plan → parallel execution (model-tier-per-task, isolated worktrees) → green verify → visual gate. Vendor-neutral: tier names map to any provider. Apply to any new feature, architectural change, large refactor, or migration. Skip for trivial one-liners.
 ---
 
 # Forge — Methodology for Substantial Software Work with AI Agents
@@ -18,12 +18,15 @@ description: Disciplined pipeline for substantial software work with AI agents �
 ## The Pipeline
 
 ### 1. Brainstorm
-Use the `brainstorming` skill. Lead with the **value question first**. Gather all high-impact decisions from the user in **one focused round** — not an infinite questionnaire. Hard gate: nothing gets implemented until the design is approved.
+
+Lead with the **value question first** — what problem does this actually solve and for whom? Gather all high-impact decisions (scope, constraints, trade-offs, non-goals) from the user in **one focused round** — not an infinite questionnaire. Explore intent, requirements, and design before writing any spec. Hard gate: **nothing gets implemented until the design is approved.**
 
 ### 2. Versioned Spec
+
 Write the spec as a committed file in the repo (e.g., `docs/specs/<feature>.md`). This is the source of truth going forward.
 
-### 3. Adversarial Grill ×3 (Opus)
+### 3. Adversarial Grill ×3 (deep-reasoning model)
+
 Run three independent lenses on the spec — **always all three**:
 
 - **Platform Architect** — rules, bounded contexts, **precedents verified against actual code (file:line)**. An unverified assumption is a finding. Explores the code instead of asking what it can check.
@@ -31,20 +34,28 @@ Run three independent lenses on the spec — **always all three**:
 - **Domain Engineer** — concurrency, edge cases, what fails in production.
 
 ### 4. Respond / Refine → Re-spec → Re-grill
-Address findings with Opus → produce **re-spec** → run a new grill targeted at the **seams the fixes create**. Repeat until green.
 
-### 5. Global Master Plan (writing-plans)
-Use `writing-plans` (superpowers skill) to produce the **global master plan covering ALL phases** (v1, v1.1, v2…) with specs and plans per phase, no gaps, **before any execution begins**. Grill the plan (Opus). Once the global plan is locked, execution becomes mechanical.
+Address findings with your deep-reasoning model → produce **re-spec** → run a new grill targeted at the **seams the fixes create**. Repeat until green.
+
+### 5. Global Master Plan
+
+Produce the **global master plan covering ALL phases** (v1, v1.1, v2…) with specs and plans per phase, no gaps, **before any execution begins**. The plan must cover:
+
+- Every phase with declared inputs, outputs, and file ownership
+- Dependencies between phases (parallelizable vs serial, derived from the file-ownership graph)
+- Acceptance criteria per phase
+
+Grill the plan (deep-reasoning model) before locking it. Once the global plan is locked, execution becomes mechanical.
 
 ### 6. Parallel Execution in Workflows
 
 Run agents in parallel with these constraints:
 
 - **Unified memory**: Phase 1 produces a context pack with **file:line** references; results are chained between phases. **DISJOINT areas between agents** — one file, one owner.
-- **Model per task**: Opus leads/decides/grills/reviews the critical; Sonnet executes closed plans/refactors/migrations; Haiku handles trivials.
+- **Model per task**: Deep-reasoning tier leads/decides/grills/reviews the critical; execution tier executes closed plans/refactors/migrations; fast tier handles trivials.
 - **Terse communication** between agents (code/commits/security always in correct full prose).
 - **Isolated worktrees**: 1 session = 1 worktree = 1 branch, plus **per-phase commits** so work survives the session.
-- **If doubts arise during execution** → return to writing-plans/grill with Opus to resolve and re-spec. Do not improvise architecture.
+- **If doubts arise during execution** → return to the plan/grill step with your deep-reasoning model to resolve and re-spec. Do not improvise architecture.
 
 ### 7. Green Verify — Before Declaring Done
 
@@ -87,11 +98,11 @@ Each phase commit triggers a **cheap parallel verify** (typecheck + diff tests +
 
 ### 4. Adaptive Tiered Grill
 
-Grill depth ∝ **novelty × blast radius**. First pass in Sonnet; escalate to Opus only for disputed/architectural findings. Skip re-grill on already-verified artifacts (= "adapt the pipeline" principle). Cuts the biggest Opus spend without losing rigor on the seams.
+Grill depth ∝ **novelty × blast radius**. First pass in the execution tier; escalate to the deep-reasoning tier only for disputed/architectural findings. Skip re-grill on already-verified artifacts (= "adapt the pipeline" principle). Cuts the biggest deep-reasoning spend without losing rigor on the seams.
 
 ### 5. Cheap Orchestrator
 
-Routine coordination (commit tracking, handoff docs, status updates) = **scripted / Haiku / monitor**, not Opus. Opus decides: rebalancing, arbitration, grill, critical review. The "model per task" rule applies to the orchestrator too.
+Routine coordination (commit tracking, handoff docs, status updates) = **scripted / fast tier / monitor**, not deep-reasoning. The deep-reasoning tier decides: rebalancing, arbitration, grill, critical review. The "model per task" rule applies to the orchestrator too.
 
 ### 6. Resume Capsule + WIP Commits
 
@@ -134,15 +145,24 @@ Plan these as phases, not afterthoughts.
 
 ### ⭐ Model Per Task (CRITICAL)
 
-**Always match the model to the work:**
+**Always match the model tier to the work:**
 
-| Model | Use for |
-|-------|---------|
-| **Haiku** | Trivial / mechanical: one-liners, formatting, stubs, minor tweaks |
-| **Sonnet** | Executing closed plans, refactors, migrations, high-volume work |
-| **Opus** | Only what determines the outcome: architecture, grill, arbitration, critical review, ambiguity |
+| Tier | Use for |
+|------|---------|
+| **Fast tier** | Trivial / mechanical: one-liners, formatting, stubs, minor tweaks |
+| **Execution tier** | Executing closed plans, refactors, migrations, high-volume work |
+| **Deep-reasoning tier** | Only what determines the outcome: architecture, grill, arbitration, critical review, ambiguity |
 
-Don't use a sledgehammer for a nail: no Opus where Sonnet or Haiku performs equally well. Applies to every agent in a workflow, including the orchestrator. This is **cost ↔ quality priority #1.**
+Route always to the model that **reasons best** for the deep-reasoning tier, regardless of vendor. When a stronger reasoning model becomes available, use it for the deep-reasoning tier.
+
+#### Example mapping
+
+| Provider | Deep-reasoning | Execution | Fast |
+|----------|---------------|-----------|------|
+| Anthropic Claude | Opus | Sonnet | Haiku |
+| Map to your provider's equivalent (OpenAI, Google, etc.) | — | — | — |
+
+Don't use the deep-reasoning tier where the execution tier performs equally well. Applies to every agent in a workflow, including the orchestrator. This is **cost ↔ quality priority #1.**
 
 ### ⭐ Automate Repetitive Work with Scripts Before Spending Tokens
 
@@ -170,3 +190,15 @@ Don't re-read entire files, don't re-run full test suites, don't repeat audits a
 ### Disagree With Data
 
 Disagreeing with the plan — with evidence and reasoning — is part of the role. Commercial naming and brand decisions belong to the owner; bounded contexts and code stay in English.
+
+---
+
+## Optional Accelerators
+
+Forge is self-contained and works with any AI coding assistant. In **Claude Code**, several skills automate parts of the pipeline:
+
+- `brainstorming` (superpowers) — structured facilitation for Step 1
+- `writing-plans` (superpowers) — guided planning for Step 5
+- `grill-me` — adversarial review harness for Steps 3–4
+
+These are accelerators, not requirements. The methodology stands on its own without them.
