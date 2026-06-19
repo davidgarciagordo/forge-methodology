@@ -1,3 +1,5 @@
+**English** | [Español](README.es.md)
+
 # Forge Methodology
 
 > A disciplined pipeline for substantial software work with AI agents.
@@ -17,6 +19,22 @@ AI agents are fast. That speed is also a risk: they'll implement the wrong thing
 - **Model-per-task** keeps cost proportional to difficulty
 - **Continuous per-phase verify** catches regressions at phase N, not the PR of phase N+10
 - **Hard multi-worker rules** prevent racing conditions between parallel agents
+
+---
+
+## Why Forge — with vs. without
+
+| | Without Forge | With Forge |
+|---|---|---|
+| **Spec quality** | Improvised specs; assumptions never verified against the actual code → wrong things built thoroughly | Versioned spec + adversarial grill ×3 (Architect · Operator · Domain Engineer) catches false assumptions with `file:line` evidence before a line of code is written |
+| **Cost** | One expensive model (Opus) for everything, including trivial tasks | Model-per-task: Haiku for mechanical work, Sonnet for executing closed plans, Opus only for architecture, grill, and critical review |
+| **Regression detection** | Verify at the end of the full feature → regressions discovered in the PR of phase N+10, expensive to fix | Cheap parallel verify after each phase commit (typecheck + diff tests + domain reviewers) → regression caught at phase N |
+| **Parallel agents** | Agents overwrite each other's files; no ownership rules; false "all green" from partial test runs | File-ownership graph + 1 worktree = 1 worker = 1 branch: collisions computed and prevented in the plan before execution starts |
+| **Session resilience** | Work lost when a rate-limit or crash hits mid-feature | Sub-phase WIP commits + per-workstream `state.md` resume capsule: work survives any session boundary |
+| **Repetitive work** | Burning tokens iterating on mechanical tasks (sweeps, renames, counts) that a script would do in milliseconds | Scripts-before-tokens rule: bash/python/`grep`/`jq` for deterministic work; tokens reserved for design, grill, and decisions |
+| **Visual review** | Screenshot per PR → serial bottleneck; reviewer blocks every merge | Batched visual gate: accumulate all surface screenshots (light/dark/mobile) into one async queue; review many at once |
+
+**The measurable difference:** fewer tokens wasted on mechanical work, fewer production bugs from unverified assumptions, real parallelism without collisions, and work that is always recoverable.
 
 ---
 
