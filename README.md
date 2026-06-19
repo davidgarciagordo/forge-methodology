@@ -86,6 +86,14 @@ For domains not yet covered: derive three lenses using the system view · human 
 
 ---
 
+## Examples
+
+Real copy-paste prompts across 8 domains, with what Forge produces for each:
+
+→ [examples/](examples/README.md)
+
+---
+
 ## References
 
 | Reference | Contents |

@@ -86,6 +86,14 @@ Para dominios sin pack: deriva tres lentes usando el patrón visión de sistema 
 
 ---
 
+## Ejemplos
+
+Prompts reales listos para copiar en 8 dominios, con lo que Forge produce en cada caso:
+
+→ [examples/](examples/README.es.md)
+
+---
+
 ## Referencias
 
 | Referencia | Contenido |
