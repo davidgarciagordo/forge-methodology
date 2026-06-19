@@ -2,23 +2,24 @@
 
 # Metodología Forge
 
-> Un pipeline disciplinado para trabajo de software sustancial con agentes de IA.
+> Una metodología disciplinada para trabajo sustancial con IA — cualquier dominio, cualquier tipo de tarea.
 
-**Forge** es un flujo de trabajo con nombre propio para la ingeniería de software asistida por IA. Estructura el trabajo demasiado importante para improvisar: nuevas funcionalidades, cambios arquitectónicos, refactorizaciones grandes y migraciones. La versión corta: **spec → grill adversarial → plan global → ejecución en paralelo → verify en verde → gate visual**.
+**Forge** es un flujo de trabajo con nombre propio para la colaboración persona↔IA. Estructura cualquier trabajo demasiado importante para improvisar: nuevas funcionalidades, decisiones arquitectónicas, análisis de seguridad, campañas de marketing, modelos financieros, proyectos de investigación. La versión corta: **alinear intención → spec → grill adversarial → plan global → ejecución optimizada → verificado → aprobación del responsable**.
 
-Forge no es un proceso para todo. Las líneas sueltas y el formateo van directo. Forge es para el trabajo donde equivocarse en el diseño resulta caro.
+Forge no es un proceso para todo. Las líneas sueltas y el formateo van directo. Forge es para el trabajo donde equivocarse en el diseño resulta caro — porque los agentes de IA son rápidos, y ejecutar lo incorrecto a toda velocidad es una forma eficiente de desperdiciar mucho esfuerzo.
 
 ---
 
 ## ¿Por qué Forge?
 
-Los agentes de IA son rápidos. Esa velocidad también es un riesgo: implementarán lo incorrecto a fondo. Forge adelanta el pensamiento difícil para que la ejecución sea mecánica:
+Los agentes de IA son rápidos. Esa velocidad también es un riesgo: ejecutarán lo incorrecto a fondo. Forge adelanta el pensamiento difícil para que la ejecución sea mecánica:
 
-- El **grill adversarial** detecta suposiciones erróneas antes de escribir código
-- El **plan maestro global** elimina la improvisación durante la ejecución
+- La **intención alineada** detecta desajustes entre lo que se pidió y lo que realmente se necesita — antes de comenzar cualquier trabajo
+- El **spec versionado** crea un contrato escrito en el que persona e IA están de acuerdo
+- El **grill adversarial** detecta suposiciones erróneas antes de que queden integradas en los entregables
+- El **plan global** elimina la improvisación durante la ejecución y las condiciones de carrera entre workers paralelos
 - El **modelo-por-tarea** mantiene el coste proporcional a la dificultad
-- El **verify continuo por fase** detecta regresiones en la fase N, no en el PR de la fase N+10
-- Las **reglas duras de multi-worker** previenen condiciones de carrera entre agentes paralelos
+- El **verify continuo por unidad** detecta defectos en la fase N, no en la revisión de la fase N+10
 
 ---
 
@@ -26,103 +27,75 @@ Los agentes de IA son rápidos. Esa velocidad también es un riesgo: implementar
 
 | | Sin Forge | Con Forge |
 |---|---|---|
-| **Calidad del spec** | Specs improvisados; suposiciones nunca verificadas contra el código real → se construye lo incorrecto a fondo | Spec versionado + grill adversarial ×3 (Arquitecto · Operador · Ingeniero de dominio) detecta suposiciones falsas con evidencia `fichero:línea` antes de escribir una línea de código |
-| **Coste** | Un modelo caro para todo, incluidas las tareas triviales | Modelo-por-tarea: tier rápido para trabajo mecánico, tier de ejecución para planes cerrados, tier de razonamiento profundo solo para arquitectura, grill y revisión crítica |
-| **Detección de regresiones** | Verify al final de la funcionalidad completa → regresiones descubiertas en el PR de la fase N+10, costosas de corregir | Verify barato en paralelo tras cada commit de fase (typecheck + tests del diff + revisores de dominio) → regresión detectada en la fase N |
-| **Agentes en paralelo** | Los agentes se sobreescriben ficheros entre sí; sin reglas de propiedad; falsos "todo verde" de ejecuciones parciales de tests | Grafo de propiedad de ficheros + 1 worktree = 1 worker = 1 rama: las colisiones se calculan y previenen en el plan antes de ejecutar |
-| **Resiliencia de sesión** | Trabajo perdido cuando un límite de cuota o un fallo ocurre a mitad de una funcionalidad | Commits WIP por subfase + cápsula de resume `state.md` por workstream: el trabajo sobrevive cualquier límite de sesión |
-| **Trabajo repetitivo** | Quemando tokens iterando en tareas mecánicas (sweeps, renombrados, conteos) que un script haría en milisegundos | Regla scripts-antes-que-tokens: bash/python/`grep`/`jq` para trabajo determinista; tokens reservados para diseño, grill y decisiones |
-| **Revisión visual** | Captura por PR → cuello de botella serial; el revisor bloquea cada merge | Gate visual por lotes: acumula todas las capturas de superficies (claro/oscuro/móvil) en una cola asíncrona; revisar muchas a la vez |
+| **Calidad del spec** | Improvisado; suposiciones nunca validadas → se ejecuta lo incorrecto a fondo | Spec versionado + grill adversarial ×3 (visión de sistema · realidad humana · profundidad técnica) detecta suposiciones falsas con evidencia real antes de comenzar cualquier trabajo |
+| **Coste y esfuerzo** | Capacidad cara para todo, incluidas las tareas triviales | Capacidad adecuada por unidad: tier rápido para lo mecánico, tier de ejecución para planes cerrados, razonamiento profundo solo para arquitectura, grill y decisiones críticas |
+| **Detección de defectos** | Verify solo al final → defectos descubiertos tarde, caros de corregir | Verify por unidad contra una definición de done preestablecida → defectos detectados temprano, baratos de corregir |
+| **Trabajo en paralelo** | Workers paralelos se sobreescriben entre sí; sin reglas de propiedad; falsos "todo listo" de verificaciones parciales | Grafo de propiedad + asignación de unidades de trabajo disjuntas calculadas en el plan → colisiones prevenidas antes de ejecutar |
+| **Resiliencia de sesión** | Trabajo perdido cuando un límite de cuota, un corte de sesión o una interrupción ocurren a mitad de la tarea | Checkpoints por fase + cápsula de resume por workstream: el trabajo sobrevive cualquier interrupción |
+| **Trabajo repetitivo** | Quemando capacidad cara de IA en tareas mecánicas (sweeps, renombrados, búsquedas, conteos) | Herramientas y scripts para trabajo determinista; IA reservada para diseño, grill y decisiones |
+| **Cuello de botella en revisión** | Revisar cada entregable en serie → cuello de botella; el revisor bloquea cada siguiente paso | Revisión asíncrona por lotes: acumula entregables de varias unidades, revisa muchos de una vez |
 
-**La diferencia medible:** menos tokens desperdiciados en trabajo mecánico, menos bugs en producción por suposiciones no verificadas, paralelismo real sin colisiones y trabajo siempre recuperable.
+**La diferencia medible:** menos recursos desperdiciados en trabajo mecánico, menos defectos por suposiciones no verificadas, paralelismo real sin colisiones, trabajo siempre recuperable.
 
 ---
 
-## El pipeline de un vistazo
+## El bucle de un vistazo
 
 ```mermaid
 flowchart TD
-    A([Inicio: Trabajo sustancial identificado]) --> B[1. Brainstorming\nprimero la pregunta de valor\nuna ronda enfocada con el responsable]
-    B --> C[2. Spec versionado\ncommiteado en el repo]
-    C --> D{3. Grill adversarial ×3\nmodelo de razonamiento profundo}
-    D --> D1[Lente Arquitecto\nreglas · bounded contexts\nverificación fichero:línea]
-    D --> D2[Lente Operador/Usuario\ncasos del día a día\nlo que rompe en la práctica]
-    D --> D3[Lente Ingeniero de dominio\nconcurrencia · edge cases\nlo que falla en prod]
+    A([Trabajo sustancial identificado]) --> B[1. Alinear intención\nprimero la pregunta de valor\nuna ronda enfocada con el responsable]
+    B --> C[2. Spec versionado\nartefacto escrito\npersona e IA de acuerdo]
+    C --> D{3. Grill adversarial\n3 lentes hostiles\ntier de razonamiento profundo}
+    D --> D1[Lente 1: Visión de sistema\nreglas · restricciones\nprecedentes verificados contra la realidad]
+    D --> D2[Lente 2: Realidad humana\ncasos del día a día\nlo que rompe en la práctica]
+    D --> D3[Lente 3: Profundidad técnica\nedge cases · concurrencia\nlo que falla bajo presión]
     D1 & D2 & D3 --> E{¿Hallazgos resueltos?}
-    E -- No --> F[4. Responder y refinar\nRe-spec → Re-grill\nsolo en las costuras nuevas]
+    E -- No --> F[Responder y refinar\nRe-spec → Re-grill en costuras nuevas]
     F --> E
-    E -- Sí --> G[5. Plan maestro global\nTODAS las fases · sin huecos\nantes de ejecutar]
-    G --> H{Grill del plan\nmodelo de razonamiento profundo}
+    E -- Sí --> G[4. Plan global\ntodas las unidades · sin huecos\ndependencias + propiedad mapeadas]
+    G --> H{Grill del plan\ntier de razonamiento profundo}
     H -- Problemas --> G
-    H -- Plan cerrado --> I[6. Ejecución en paralelo\nWorkflows · worktrees aislados\ntier-por-tarea · propiedad disjunta de ficheros\nCommits WIP por fase]
-    I --> J{Verify por fase\ntypecheck · tests del diff\nrevisores de dominio}
-    J -- Regresión --> I
-    J -- Fase en verde --> K{¿Más fases?}
-    K -- Sí --> I
-    K -- No --> L[7. Verify completo en verde\ntypecheck · suite completa · paridad\nnavegador en vivo · claro/oscuro/móvil]
-    L --> M{¿Todo en verde?}
-    M -- No --> I
-    M -- Sí --> N[8. Gate visual\ncapturas por lotes\nclaro · oscuro · móvil]
-    N --> O{¿Gate superado?}
-    O -- No --> I
-    O -- Sí --> P([Merge · limpiar rama/worktree])
+    H -- Cerrado --> I[5. Ejecutar de forma óptima\nparalelizar unidades disjuntas\nautomatizar tareas repetitivas\ncapacidad adecuada por unidad · checkpoints]
+    I --> J{Verify por unidad\nvs. definición de done}
+    J -- No listo --> I
+    J -- Todo listo --> K[6. Verify completo\ncontra definición de done preestablecida\nevidencia · verificación independiente]
+    K --> L{¿Verificado?}
+    L -- No --> I
+    L -- Sí --> M[7. Aprobación del responsable\ngate humano]
+    M --> N([Hecho · limpieza])
 ```
 
 ---
 
-## Capa de ejecución y orquestación (8 reglas)
+## Cómo se adapta a tu dominio
 
-Forge diseña bien. Estas reglas optimizan el **coste y la fiabilidad** en la ejecución multi-agente paralela.
+El bucle central (los 7 pasos anteriores) es agnóstico de dominio. Los **packs de dominio** lo instancian con lentes de grill, definiciones de done y pasos de verificación específicos del dominio:
 
-| # | Regla | Punto clave |
-|---|-------|-------------|
-| 1 | **Scheduling por cuota + tier** | Construye un ledger de cuentas antes de ejecutar. Trabajo más pesado → tier más alto. Checkpoint preventivo al ~80% de la ventana, nunca reactivo. Mantén una cuenta en reserva. |
-| 2 | **Grafo de propiedad de ficheros** | Cada fase declara los ficheros que escribe y de los que depende. Calcula el schedule paralelizable; detecta ficheros cross-cutting de antemano y asigna un único integrador. |
-| 3 | **Verify continuo por fase** | Cada commit de fase dispara un verify barato en paralelo (typecheck + tests del diff + revisores de dominio). Captura regresiones en la fase N, no en la fase N+10. |
-| 4 | **Grill adaptativo por tier** | Profundidad de grill ∝ novedad × radio de impacto. Primera pasada en tier de ejecución; escala a tier de razonamiento profundo solo para hallazgos disputados o arquitectónicos. |
-| 5 | **Orquestador barato** | Coordinación rutinaria = scripteado/tier rápido/monitor. Tier de razonamiento profundo solo para rebalanceo, arbitraje, grill y revisión crítica. |
-| 6 | **Cápsula de resume + commits WIP** | Cada workstream mantiene un `state.md` commiteado. Commits WIP por subfase evitan perder trabajo cuando se alcanza un límite de sesión. |
-| 7 | **Gate visual por lotes + stories** | Todos los componentes UI tienen stories. Acumula todas las capturas de superficies en una cola de gate; revisa muchas a la vez en lugar de bloquear por PR. |
-| 8 | **Granularidad de fase** | Cada fase ≤ 1 commit revisable / ~1-2h. Marca en el plan qué fases son paralelizables vs. seriales (derivado del grafo de propiedad de ficheros). |
+| Dominio | Pack |
+|---------|------|
+| Software — backend, APIs, datos | [references/domain-packs/software-backend.md](references/domain-packs/software-backend.md) |
+| Software — frontend, UI, sistema de diseño | [references/domain-packs/software-frontend.md](references/domain-packs/software-frontend.md) |
+| Software — orquestación multi-agente | [references/domain-packs/software-agents.md](references/domain-packs/software-agents.md) |
+| Seguridad, modelado de amenazas | [references/domain-packs/security.md](references/domain-packs/security.md) |
+| Diseño de producto, UX/UI | [references/domain-packs/design.md](references/domain-packs/design.md) |
+| Brainstorming, estrategia | [references/domain-packs/brainstorming.md](references/domain-packs/brainstorming.md) |
+| Marketing, campañas, go-to-market | [references/domain-packs/marketing.md](references/domain-packs/marketing.md) |
+| Modelado financiero y análisis | [references/domain-packs/finance.md](references/domain-packs/finance.md) |
 
-### Reglas duras de multi-worker
-
-- **1 worktree = 1 worker = 1 rama** — sin excepciones.
-- Verifica que un worker está muerto por **PID y prompt real**, no con un `grep | wc` ingenuo.
-- Mata todo el árbol de procesos (shell padre + proceso del agente + cualquier subproceso de build).
-- Lanza en modo headless con `--permission-mode acceptEdits` + allowlist explícita de herramientas. **Nunca `--dangerously-skip-permissions`.**
-- **Cero recursos de infra facturables** sin aprobación explícita.
+Para dominios sin pack: deriva tres lentes usando el patrón visión de sistema · realidad humana · profundidad técnica de [references/grill.md](references/grill.md), y define la definición de done del dominio antes de comenzar.
 
 ---
 
-## Principios transversales
+## Referencias
 
-### ⭐ Modelo por tarea (el control de coste más importante)
-
-| Tier | Usar para |
-|------|-----------|
-| **Tier rápido** | Trivial / mecánico: líneas sueltas, formateo, stubs |
-| **Tier de ejecución** | Ejecutar planes cerrados, refactors, migraciones, volumen |
-| **Tier de razonamiento profundo** | Arquitectura, grill adversarial, arbitraje, revisión crítica |
-
-Rutea siempre al modelo que **mejor razone** para el tier profundo, independientemente del proveedor. Cuando aparezca un razonador más potente, úsalo para el tier de razonamiento profundo.
-
-#### Ejemplo de mapeo
-
-| Proveedor | Razonamiento profundo | Ejecución | Rápido |
-|-----------|----------------------|-----------|--------|
-| Anthropic Claude | Opus | Sonnet | Haiku |
-| Mapea al equivalente de tu proveedor (OpenAI, Google, etc.) | — | — | — |
-
-Nada de tier de razonamiento profundo donde el tier de ejecución rinde igual. Aplica a cada agente, incluido el orquestador.
-
-### ⭐ Scripts antes que tokens
-
-Trabajo repetitivo/mecánico/de alto volumen → escribe un script bash/python o usa `grep`/`rg`/`sed`/`jq`. Determinista, rápido y barato. Reserva los tokens para diseño, grill y decisiones.
-
-### Reuse-first en todas las capas
-
-Crea primitivas reutilizables antes de duplicar lógica. Preocupaciones transversales (auth, API fetch, logging, errores, i18n) → un único punto central. El reuso es parte del diseño, no un afterthought.
+| Referencia | Contenido |
+|------------|-----------|
+| [references/the-loop.md](references/the-loop.md) | Bucle universal completo de 7 pasos |
+| [references/grill.md](references/grill.md) | Método de grill adversarial + tabla de lentes por dominio |
+| [references/planning.md](references/planning.md) | Estructura del plan global + modelo de propiedad de unidades de trabajo |
+| [references/execution-modes.md](references/execution-modes.md) | Cómo paralelizar, automatizar, tierar y hacer checkpoints |
+| [references/verification.md](references/verification.md) | Definición de done + reglas de evidencia + ejemplos por dominio |
+| [references/model-routing.md](references/model-routing.md) | Routing de tiers de capacidad (vendor-neutral + ejemplo de mapeo) |
 
 ---
 
@@ -134,7 +107,7 @@ Crea primitivas reutilizables antes de duplicar lógica. Preocupaciones transver
 git clone https://github.com/davidgarciagordo/forge-methodology ~/.claude/skills/forge-methodology
 ```
 
-Claude Code detectará el skill automáticamente. Invócalo con la herramienta `Skill` usando `skill: "forge-methodology"`.
+Claude Code detecta el skill automáticamente. Invócalo con la herramienta `Skill` usando `skill: "forge-methodology"`.
 
 ### Como regla de proyecto
 
@@ -150,6 +123,10 @@ O copia directamente desde este repo:
 curl -o ~/.claude/rules/forge-methodology.md \
   https://raw.githubusercontent.com/davidgarciagordo/forge-methodology/main/SKILL.md
 ```
+
+### Sin Claude Code
+
+Lee `SKILL.md` y el pack de dominio correspondiente. La metodología funciona con cualquier asistente de IA o como proceso de equipo humano — no requiere herramientas específicas.
 
 ---
 

@@ -2,23 +2,24 @@
 
 # Forge Methodology
 
-> A disciplined pipeline for substantial software work with AI agents.
+> A disciplined methodology for substantial work with AI — any domain, any task type.
 
-**Forge** is a named workflow for AI-assisted software engineering. It structures work that's too important to improvise: new features, architectural changes, large refactors, and migrations. The short version: **spec → adversarial grill → global plan → parallel execution → green verify → visual gate**.
+**Forge** is a named workflow for human↔AI collaboration. It structures any work that is too important to improvise: new product features, architectural decisions, security assessments, marketing campaigns, financial analyses, research projects. The short version: **align intent → spec → adversarial grill → global plan → optimal execution → verified done → owner sign-off**.
 
-Forge is not a process for everything. One-liners and formatting go direct. Forge is for the work where getting the design wrong is expensive.
+Forge is not a process for everything. One-liners and formatting go direct. Forge is for the work where getting the design wrong is expensive — because AI agents are fast, and fast execution of the wrong thing is a reliable way to waste a lot of effort.
 
 ---
 
 ## Why Forge?
 
-AI agents are fast. That speed is also a risk: they'll implement the wrong thing thoroughly. Forge front-loads the hard thinking so execution is mechanical:
+AI agents are fast. That speed is also a risk: they will execute the wrong thing thoroughly. Forge front-loads the hard thinking so execution becomes mechanical:
 
-- **Adversarial grill** catches wrong assumptions before code is written
-- **Global master plan** eliminates mid-flight improvisation
+- **Aligned intent** surfaces misalignments between what was asked and what is actually needed — before any work begins
+- **Versioned spec** creates a written contract both human and AI agree on
+- **Adversarial grill** catches wrong assumptions before they are baked into deliverables
+- **Global plan** eliminates mid-flight improvisation and race conditions between parallel workers
 - **Model-per-task** keeps cost proportional to difficulty
-- **Continuous per-phase verify** catches regressions at phase N, not the PR of phase N+10
-- **Hard multi-worker rules** prevent racing conditions between parallel agents
+- **Continuous per-unit verification** catches defects at phase N, not in the review at phase N+10
 
 ---
 
@@ -26,103 +27,75 @@ AI agents are fast. That speed is also a risk: they'll implement the wrong thing
 
 | | Without Forge | With Forge |
 |---|---|---|
-| **Spec quality** | Improvised specs; assumptions never verified against the actual code → wrong things built thoroughly | Versioned spec + adversarial grill ×3 (Architect · Operator · Domain Engineer) catches false assumptions with `file:line` evidence before a line of code is written |
-| **Cost** | One expensive model for everything, including trivial tasks | Model-per-task: fast tier for mechanical work, execution tier for closed plans, deep-reasoning tier only for architecture, grill, and critical review |
-| **Regression detection** | Verify at the end of the full feature → regressions discovered in the PR of phase N+10, expensive to fix | Cheap parallel verify after each phase commit (typecheck + diff tests + domain reviewers) → regression caught at phase N |
-| **Parallel agents** | Agents overwrite each other's files; no ownership rules; false "all green" from partial test runs | File-ownership graph + 1 worktree = 1 worker = 1 branch: collisions computed and prevented in the plan before execution starts |
-| **Session resilience** | Work lost when a rate-limit or crash hits mid-feature | Sub-phase WIP commits + per-workstream `state.md` resume capsule: work survives any session boundary |
-| **Repetitive work** | Burning tokens iterating on mechanical tasks (sweeps, renames, counts) that a script would do in milliseconds | Scripts-before-tokens rule: bash/python/`grep`/`jq` for deterministic work; tokens reserved for design, grill, and decisions |
-| **Visual review** | Screenshot per PR → serial bottleneck; reviewer blocks every merge | Batched visual gate: accumulate all surface screenshots (light/dark/mobile) into one async queue; review many at once |
+| **Spec quality** | Improvised; assumptions never validated → wrong thing executed thoroughly | Versioned spec + adversarial grill ×3 (system view · human reality · technical depth) catches false assumptions with real evidence before any work begins |
+| **Cost and effort** | Expensive capability for everything, including trivial tasks | Right capability per unit: fast tier for mechanical, execution tier for closed plans, deep-reasoning only for architecture, grill, and critical decisions |
+| **Defect detection** | Verify only at the end → defects discovered late, expensive to fix | Per-unit verify against a pre-set definition of done → defects caught early, cheap to fix |
+| **Parallel work** | Parallel workers overwrite each other; no ownership rules; false "all done" from partial checks | Ownership graph + disjoint work unit assignment computed at plan time → collisions prevented before execution starts |
+| **Session resilience** | Work lost when a quota limit, session boundary, or interruption hits mid-task | Per-phase checkpoints + resume capsule per workstream: work survives any interruption |
+| **Repetitive work** | Burning expensive AI capability on mechanical tasks (sweeps, renames, searches, counts) | Tools and scripts for deterministic work; AI reserved for design, grill, and decisions |
+| **Review bottleneck** | Review every output serially → bottleneck; reviewer blocks every next step | Batched async review: accumulate outputs across units, review many at once |
 
-**The measurable difference:** fewer tokens wasted on mechanical work, fewer production bugs from unverified assumptions, real parallelism without collisions, and work that is always recoverable.
+**The measurable difference:** fewer resources wasted on mechanical work, fewer defects from unverified assumptions, real parallelism without collisions, work that is always recoverable.
 
 ---
 
-## Pipeline at a Glance
+## The Loop at a Glance
 
 ```mermaid
 flowchart TD
-    A([Start: Substantial work identified]) --> B[1. Brainstorm\nvalue question first\none focused round with owner]
-    B --> C[2. Versioned Spec\ncommitted to repo]
-    C --> D{3. Adversarial Grill ×3\ndeep-reasoning model}
-    D --> D1[Architect lens\nrules · bounded contexts\nfile:line verification]
-    D --> D2[Operator/User lens\nday-to-day cases\nwhat breaks in practice]
-    D --> D3[Domain Engineer lens\nconcurrency · edge cases\nwhat fails in prod]
+    A([Substantial work identified]) --> B[1. Align intent\nvalue question first\none focused round with owner]
+    B --> C[2. Versioned spec\nwritten artifact\nhuman + AI agree]
+    C --> D{3. Adversarial grill\n3 hostile lenses\ndeep-reasoning tier}
+    D --> D1[Lens 1: System view\nrules · constraints\nprecedents verified against reality]
+    D --> D2[Lens 2: Human reality\nday-to-day cases\nwhat breaks in practice]
+    D --> D3[Lens 3: Technical depth\nedge cases · concurrency\nwhat fails under pressure]
     D1 & D2 & D3 --> E{Findings resolved?}
-    E -- No --> F[4. Respond & Refine\nRe-spec → Re-grill\non new seams only]
+    E -- No --> F[Respond & refine\nRe-spec → Re-grill on new seams]
     F --> E
-    E -- Yes --> G[5. Global master plan\nALL phases · no gaps\nbefore execution begins]
-    G --> H{Grill the plan\ndeep-reasoning model}
+    E -- Yes --> G[4. Global plan\nall work units · no gaps\ndependencies + ownership mapped]
+    G --> H{Grill the plan\ndeep-reasoning tier}
     H -- Issues --> G
-    H -- Plan locked --> I[6. Parallel Execution\nWorkflows · isolated worktrees\nmodel-tier-per-task · disjoint file ownership\nWIP commits per phase]
-    I --> J{Per-phase verify\ntypecheck · diff tests\ndomain reviewers}
-    J -- Regression --> I
-    J -- Phase green --> K{More phases?}
-    K -- Yes --> I
-    K -- No --> L[7. Full Green Verify\ntypecheck · full suite · parity\nlive browser · light/dark/mobile]
-    L --> M{All green?}
-    M -- No --> I
-    M -- Yes --> N[8. Visual Gate\nbatched screenshots\nlight · dark · mobile]
-    N --> O{Gate passed?}
-    O -- No --> I
-    O -- Yes --> P([Merge · clean up branch/worktree])
+    H -- Locked --> I[5. Execute optimally\nparallelise disjoint units\nautomate repetitive tasks\nright capability per unit · checkpoints]
+    I --> J{Per-unit verify\nvs. definition of done}
+    J -- Not done --> I
+    J -- All done --> K[6. Full verify\nagainst pre-set definition of done\nevidence · independent check]
+    K --> L{Verified?}
+    L -- No --> I
+    L -- Yes --> M[7. Owner sign-off\nhuman gate]
+    M --> N([Done · clean up])
 ```
 
 ---
 
-## Execution & Orchestration Layer (8 Rules)
+## How It Adapts to Your Domain
 
-Forge designs well. These rules optimize **cost and reliability** for parallel multi-agent execution.
+The core loop (the 7 steps above) is domain-agnostic. **Domain packs** instantiate it with domain-specific grill lenses, definitions of done, and verification steps:
 
-| # | Rule | Key point |
-|---|------|-----------|
-| 1 | **Quota + tier scheduling** | Build an account ledger before executing. Heaviest work → highest tier. Checkpoint preventively at ~80% window, never reactively. Keep one account in reserve. |
-| 2 | **File-ownership graph** | Each phase declares files it writes + depends on. Compute the parallelizable schedule; detect cross-cutting files upfront and assign one integrator. |
-| 3 | **Continuous per-phase verify** | Each phase commit triggers cheap parallel verify (typecheck + diff tests + domain reviewers). Catch regressions at phase N, not phase N+10. |
-| 4 | **Adaptive tiered grill** | Grill depth ∝ novelty × blast radius. First pass in execution tier; escalate to deep-reasoning tier only for disputed/architectural findings. |
-| 5 | **Cheap orchestrator** | Routine coordination = scripted/fast tier/monitor. Deep-reasoning tier only for rebalancing, arbitration, grill, critical review. |
-| 6 | **Resume capsule + WIP commits** | Each workstream keeps a committed `state.md`. Sub-phase WIP commits prevent losing work when a session limit hits. |
-| 7 | **Batched visual gate + stories** | All UI components get stories. Accumulate all surface screenshots into one gate queue; review many at once instead of stalling per PR. |
-| 8 | **Phase granularity** | Each phase ≤ 1 reviewable commit / ~1-2h. Mark parallelizable vs serial in the plan (derived from the file-ownership graph). |
+| Domain | Pack |
+|--------|------|
+| Software — backend, APIs, data | [references/domain-packs/software-backend.md](references/domain-packs/software-backend.md) |
+| Software — frontend, UI, design system | [references/domain-packs/software-frontend.md](references/domain-packs/software-frontend.md) |
+| Software — multi-agent orchestration | [references/domain-packs/software-agents.md](references/domain-packs/software-agents.md) |
+| Security assessment, threat modeling | [references/domain-packs/security.md](references/domain-packs/security.md) |
+| Product design, UX/UI | [references/domain-packs/design.md](references/domain-packs/design.md) |
+| Brainstorming, strategy | [references/domain-packs/brainstorming.md](references/domain-packs/brainstorming.md) |
+| Marketing, campaigns, go-to-market | [references/domain-packs/marketing.md](references/domain-packs/marketing.md) |
+| Financial modeling and analysis | [references/domain-packs/finance.md](references/domain-packs/finance.md) |
 
-### Hard Multi-Worker Rules
-
-- **1 worktree = 1 worker = 1 branch** — no exceptions.
-- Verify a worker is dead by **PID and actual prompt**, not by naive `grep | wc`.
-- Kill the whole process tree (parent shell + agent process + any build subprocesses).
-- Launch headless with `--permission-mode acceptEdits` + explicit tool allowlist. **Never `--dangerously-skip-permissions`.**
-- **Zero billable infra resources** without explicit approval.
+For domains not yet covered: derive three lenses using the system view · human reality · technical depth pattern in [references/grill.md](references/grill.md), and define the domain's definition of done before starting.
 
 ---
 
-## Cross-Cutting Principles
+## References
 
-### ⭐ Model Per Task (most important cost control)
-
-| Tier | Use for |
-|------|---------|
-| **Fast tier** | Trivial / mechanical: one-liners, formatting, stubs |
-| **Execution tier** | Executing closed plans, refactors, migrations, volume |
-| **Deep-reasoning tier** | Architecture, adversarial grill, arbitration, critical review |
-
-Route always to the model that **reasons best** for the deep-reasoning tier, regardless of vendor. When a stronger reasoning model becomes available, use it there.
-
-#### Example mapping
-
-| Provider | Deep-reasoning | Execution | Fast |
-|----------|---------------|-----------|------|
-| Anthropic Claude | Opus | Sonnet | Haiku |
-| Map to your provider's equivalent (OpenAI, Google, etc.) | — | — | — |
-
-No deep-reasoning tier where the execution tier performs equally well. Applies to every agent, including the orchestrator.
-
-### ⭐ Scripts Before Tokens
-
-Repetitive/mechanical/high-volume work → write a bash/python script or use `grep`/`rg`/`sed`/`jq`. Deterministic, fast, cheap. Reserve tokens for design, grill, and decisions.
-
-### Reuse-First at Every Layer
-
-Create reusable primitives before duplicating logic. Cross-cutting concerns (auth, API fetch, logging, errors, i18n) → one central point. Reuse is part of design, not an afterthought.
+| Reference | Contents |
+|-----------|----------|
+| [references/the-loop.md](references/the-loop.md) | Full 7-step universal loop |
+| [references/grill.md](references/grill.md) | Adversarial grill method + lens table by domain |
+| [references/planning.md](references/planning.md) | Global plan structure + work-unit ownership model |
+| [references/execution-modes.md](references/execution-modes.md) | How to parallelise, automate, tier, and checkpoint |
+| [references/verification.md](references/verification.md) | Definition of done + evidence rules + domain examples |
+| [references/model-routing.md](references/model-routing.md) | Capability tier routing (vendor-neutral + example mapping) |
 
 ---
 
@@ -134,7 +107,7 @@ Create reusable primitives before duplicating logic. Cross-cutting concerns (aut
 git clone https://github.com/davidgarciagordo/forge-methodology ~/.claude/skills/forge-methodology
 ```
 
-Claude Code will pick up the skill automatically. Invoke it with the `Skill` tool using `skill: "forge-methodology"`.
+Claude Code picks up the skill automatically. Invoke it with the `Skill` tool using `skill: "forge-methodology"`.
 
 ### As a Project Rule
 
@@ -150,6 +123,10 @@ Or copy directly from this repo:
 curl -o ~/.claude/rules/forge-methodology.md \
   https://raw.githubusercontent.com/davidgarciagordo/forge-methodology/main/SKILL.md
 ```
+
+### Without Claude Code
+
+Read `SKILL.md` and the relevant domain pack. The methodology works with any AI assistant or as a human team process — no tooling required.
 
 ---
 
