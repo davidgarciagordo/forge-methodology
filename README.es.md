@@ -27,7 +27,7 @@ Los agentes de IA son rápidos. Esa velocidad también es un riesgo: implementar
 | | Sin Forge | Con Forge |
 |---|---|---|
 | **Calidad del spec** | Specs improvisados; suposiciones nunca verificadas contra el código real → se construye lo incorrecto a fondo | Spec versionado + grill adversarial ×3 (Arquitecto · Operador · Ingeniero de dominio) detecta suposiciones falsas con evidencia `fichero:línea` antes de escribir una línea de código |
-| **Coste** | Un modelo caro (Opus) para todo, incluidas las tareas triviales | Modelo-por-tarea: Haiku para trabajo mecánico, Sonnet para ejecutar planes cerrados, Opus solo para arquitectura, grill y revisión crítica |
+| **Coste** | Un modelo caro para todo, incluidas las tareas triviales | Modelo-por-tarea: tier rápido para trabajo mecánico, tier de ejecución para planes cerrados, tier de razonamiento profundo solo para arquitectura, grill y revisión crítica |
 | **Detección de regresiones** | Verify al final de la funcionalidad completa → regresiones descubiertas en el PR de la fase N+10, costosas de corregir | Verify barato en paralelo tras cada commit de fase (typecheck + tests del diff + revisores de dominio) → regresión detectada en la fase N |
 | **Agentes en paralelo** | Los agentes se sobreescriben ficheros entre sí; sin reglas de propiedad; falsos "todo verde" de ejecuciones parciales de tests | Grafo de propiedad de ficheros + 1 worktree = 1 worker = 1 rama: las colisiones se calculan y previenen en el plan antes de ejecutar |
 | **Resiliencia de sesión** | Trabajo perdido cuando un límite de cuota o un fallo ocurre a mitad de una funcionalidad | Commits WIP por subfase + cápsula de resume `state.md` por workstream: el trabajo sobrevive cualquier límite de sesión |
@@ -44,17 +44,17 @@ Los agentes de IA son rápidos. Esa velocidad también es un riesgo: implementar
 flowchart TD
     A([Inicio: Trabajo sustancial identificado]) --> B[1. Brainstorming\nprimero la pregunta de valor\nuna ronda enfocada con el responsable]
     B --> C[2. Spec versionado\ncommiteado en el repo]
-    C --> D{3. Grill adversarial ×3\nOpus}
+    C --> D{3. Grill adversarial ×3\nmodelo de razonamiento profundo}
     D --> D1[Lente Arquitecto\nreglas · bounded contexts\nverificación fichero:línea]
     D --> D2[Lente Operador/Usuario\ncasos del día a día\nlo que rompe en la práctica]
     D --> D3[Lente Ingeniero de dominio\nconcurrencia · edge cases\nlo que falla en prod]
     D1 & D2 & D3 --> E{¿Hallazgos resueltos?}
     E -- No --> F[4. Responder y refinar\nRe-spec → Re-grill\nsolo en las costuras nuevas]
     F --> E
-    E -- Sí --> G[5. writing-plans\nPlan maestro global\nTODAS las fases · sin huecos]
-    G --> H{Grill del plan\nOpus}
+    E -- Sí --> G[5. Plan maestro global\nTODAS las fases · sin huecos\nantes de ejecutar]
+    G --> H{Grill del plan\nmodelo de razonamiento profundo}
     H -- Problemas --> G
-    H -- Plan cerrado --> I[6. Ejecución en paralelo\nWorkflows · worktrees aislados\nmodelo-por-tarea · propiedad disjunta de ficheros\nCommits WIP por fase]
+    H -- Plan cerrado --> I[6. Ejecución en paralelo\nWorkflows · worktrees aislados\ntier-por-tarea · propiedad disjunta de ficheros\nCommits WIP por fase]
     I --> J{Verify por fase\ntypecheck · tests del diff\nrevisores de dominio}
     J -- Regresión --> I
     J -- Fase en verde --> K{¿Más fases?}
@@ -79,8 +79,8 @@ Forge diseña bien. Estas reglas optimizan el **coste y la fiabilidad** en la ej
 | 1 | **Scheduling por cuota + tier** | Construye un ledger de cuentas antes de ejecutar. Trabajo más pesado → tier más alto. Checkpoint preventivo al ~80% de la ventana, nunca reactivo. Mantén una cuenta en reserva. |
 | 2 | **Grafo de propiedad de ficheros** | Cada fase declara los ficheros que escribe y de los que depende. Calcula el schedule paralelizable; detecta ficheros cross-cutting de antemano y asigna un único integrador. |
 | 3 | **Verify continuo por fase** | Cada commit de fase dispara un verify barato en paralelo (typecheck + tests del diff + revisores de dominio). Captura regresiones en la fase N, no en la fase N+10. |
-| 4 | **Grill adaptativo por tier** | Profundidad de grill ∝ novedad × radio de impacto. Primera pasada en Sonnet; escala a Opus solo para hallazgos disputados o arquitectónicos. |
-| 5 | **Orquestador barato** | Coordinación rutinaria = scripteado/Haiku/monitor. Opus solo para rebalanceo, arbitraje, grill y revisión crítica. |
+| 4 | **Grill adaptativo por tier** | Profundidad de grill ∝ novedad × radio de impacto. Primera pasada en tier de ejecución; escala a tier de razonamiento profundo solo para hallazgos disputados o arquitectónicos. |
+| 5 | **Orquestador barato** | Coordinación rutinaria = scripteado/tier rápido/monitor. Tier de razonamiento profundo solo para rebalanceo, arbitraje, grill y revisión crítica. |
 | 6 | **Cápsula de resume + commits WIP** | Cada workstream mantiene un `state.md` commiteado. Commits WIP por subfase evitan perder trabajo cuando se alcanza un límite de sesión. |
 | 7 | **Gate visual por lotes + stories** | Todos los componentes UI tienen stories. Acumula todas las capturas de superficies en una cola de gate; revisa muchas a la vez en lugar de bloquear por PR. |
 | 8 | **Granularidad de fase** | Cada fase ≤ 1 commit revisable / ~1-2h. Marca en el plan qué fases son paralelizables vs. seriales (derivado del grafo de propiedad de ficheros). |
@@ -99,13 +99,22 @@ Forge diseña bien. Estas reglas optimizan el **coste y la fiabilidad** en la ej
 
 ### ⭐ Modelo por tarea (el control de coste más importante)
 
-| Modelo | Usar para |
-|--------|-----------|
-| **Haiku** | Trivial / mecánico: líneas sueltas, formateo, stubs |
-| **Sonnet** | Ejecutar planes cerrados, refactors, migraciones, volumen |
-| **Opus** | Arquitectura, grill adversarial, arbitraje, revisión crítica |
+| Tier | Usar para |
+|------|-----------|
+| **Tier rápido** | Trivial / mecánico: líneas sueltas, formateo, stubs |
+| **Tier de ejecución** | Ejecutar planes cerrados, refactors, migraciones, volumen |
+| **Tier de razonamiento profundo** | Arquitectura, grill adversarial, arbitraje, revisión crítica |
 
-Nada de Opus donde Sonnet rinde igual. Aplica a cada agente, incluido el orquestador.
+Rutea siempre al modelo que **mejor razone** para el tier profundo, independientemente del proveedor. Cuando aparezca un razonador más potente, úsalo para el tier de razonamiento profundo.
+
+#### Ejemplo de mapeo
+
+| Proveedor | Razonamiento profundo | Ejecución | Rápido |
+|-----------|----------------------|-----------|--------|
+| Anthropic Claude | Opus | Sonnet | Haiku |
+| Mapea al equivalente de tu proveedor (OpenAI, Google, etc.) | — | — | — |
+
+Nada de tier de razonamiento profundo donde el tier de ejecución rinde igual. Aplica a cada agente, incluido el orquestador.
 
 ### ⭐ Scripts antes que tokens
 
