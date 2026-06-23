@@ -8,6 +8,14 @@
 
 Forge is not a process for everything. One-liners and formatting go direct. Forge is for the work where getting the design wrong is expensive — because AI agents are fast, and fast execution of the wrong thing is a reliable way to waste a lot of effort.
 
+## Quick install
+
+```bash
+npx skills add davidgarciagordo/forge-methodology
+```
+
+Works with Claude Code and 20+ other agents via [skills.sh](https://skills.sh). For Claude Code specifically you can also `git clone` it into `~/.claude/skills/` — see [Installation](#installation) below.
+
 ---
 
 ## Why Forge?
