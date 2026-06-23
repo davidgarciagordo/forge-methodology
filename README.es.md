@@ -8,6 +8,14 @@
 
 Forge no es un proceso para todo. Las líneas sueltas y el formateo van directo. Forge es para el trabajo donde equivocarse en el diseño resulta caro — porque los agentes de IA son rápidos, y ejecutar lo incorrecto a toda velocidad es una forma eficiente de desperdiciar mucho esfuerzo.
 
+## Instalación rápida
+
+```bash
+npx skills add davidgarciagordo/forge-methodology
+```
+
+Funciona con Claude Code y más de 20 agentes vía [skills.sh](https://skills.sh). Para Claude Code también puedes `git clone` en `~/.claude/skills/` — ver [Instalación](#instalación) más abajo.
+
 ---
 
 ## ¿Por qué Forge?
