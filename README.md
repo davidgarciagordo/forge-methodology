@@ -167,3 +167,6 @@ Read `SKILL.md` and the relevant domain pack. The methodology works with any AI 
 ## License
 
 MIT — see [LICENSE](./LICENSE).
+
+---
+<sub>Made by [David García Gordo](https://github.com/davidgarciagordo) · MIT · part of the [claude-code-setup-optimizer](https://github.com/davidgarciagordo/claude-code-setup-optimizer) family</sub>
