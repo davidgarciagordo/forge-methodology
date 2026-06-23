@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "forge-methodology",
+  "displayName": "Forja / Forge",
+  "version": "1.0.0",
+  "description": "Human↔AI methodology: align intent → versioned spec → adversarial grill ×3 → global plan → optimised execution → verify vs DoD → owner sign-off. Domain-agnostic.",
+  "author": {
+    "name": "David García Gordo",
+    "url": "https://github.com/davidgarciagordo"
+  },
+  "homepage": "https://github.com/davidgarciagordo/forge-methodology",
+  "repository": "https://github.com/davidgarciagordo/forge-methodology",
+  "license": "MIT",
+  "keywords": ["methodology", "spec", "grill", "planning", "verification", "forge"]
+}

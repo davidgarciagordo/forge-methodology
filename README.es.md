@@ -1,8 +1,32 @@
 [English](README.md) | **Español**
 
-# Metodología Forge
+# 🔨 Metodología Forge
+
+[![Claude Code plugin](https://img.shields.io/badge/Claude_Code-plugin-D97757)](https://github.com/davidgarciagordo/claude-code-setup-optimizer) [![skills.sh](https://img.shields.io/badge/skills.sh-skill-111111)](https://skills.sh) ![License MIT](https://img.shields.io/badge/license-MIT-2da44e) ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 
 > Una metodología disciplinada para trabajo sustancial con IA — cualquier dominio, cualquier tipo de tarea.
+
+### 🧩 Parte de una familia — misma firma, tres repos
+
+| | Repo | Rol |
+|---|---|---|
+| 🛠️ | [**claude-code-setup-optimizer**](https://github.com/davidgarciagordo/claude-code-setup-optimizer) | **El hub** — metodología + automatizaciones (hooks · subagents · comandos) + `/optimize-my-setup` |
+| 🔨 | [**forge-methodology**](https://github.com/davidgarciagordo/forge-methodology) · *estás aquí* | Estructura *qué construir* — alinear → spec → grill ×3 → plan → verificar |
+| 🎨 | [**design-review**](https://github.com/davidgarciagordo/design-review) | Pule *cómo se ve* — estructura → auditoría → anti-slop → a11y → check en vivo |
+
+## 📦 Instalación
+
+```bash
+# 🟢 Como skill (Claude Code + 20+ agentes vía skills.sh)
+npx skills add davidgarciagordo/forge-methodology
+
+# 🔌 Como plugin de Claude Code (suelto)
+/plugin marketplace add davidgarciagordo/forge-methodology
+/plugin install forge-methodology@forge-methodology
+
+# 🛠️ O todos los repos desde el hub
+/plugin marketplace add davidgarciagordo/claude-code-setup-optimizer
+```
 
 **Forge** es un flujo de trabajo con nombre propio para la colaboración persona↔IA. Estructura cualquier trabajo demasiado importante para improvisar: nuevas funcionalidades, decisiones arquitectónicas, análisis de seguridad, campañas de marketing, modelos financieros, proyectos de investigación. La versión corta: **alinear intención → spec → grill adversarial → plan global → ejecución optimizada → verificado → aprobación del responsable**.
 

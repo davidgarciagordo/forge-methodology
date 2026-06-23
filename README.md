@@ -1,8 +1,18 @@
 **English** | [Español](README.es.md)
 
-# Forge Methodology
+# 🔨 Forge Methodology
+
+[![Claude Code plugin](https://img.shields.io/badge/Claude_Code-plugin-D97757)](https://github.com/davidgarciagordo/claude-code-setup-optimizer) [![skills.sh](https://img.shields.io/badge/skills.sh-skill-111111)](https://skills.sh) ![License MIT](https://img.shields.io/badge/license-MIT-2da44e) ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 
 > A disciplined methodology for substantial work with AI — any domain, any task type.
+
+### 🧩 Part of a family — same signature, three repos
+
+| | Repo | Role |
+|---|---|---|
+| 🛠️ | [**claude-code-setup-optimizer**](https://github.com/davidgarciagordo/claude-code-setup-optimizer) | **The hub** — methodology + automations (hooks · subagents · commands) + `/optimize-my-setup` |
+| 🔨 | [**forge-methodology**](https://github.com/davidgarciagordo/forge-methodology) · *you are here* | Structure *what to build* — align → spec → grill ×3 → plan → verify |
+| 🎨 | [**design-review**](https://github.com/davidgarciagordo/design-review) | Polish *how it looks* — structure → audit → anti-slop → a11y → live check |
 
 **Forge** is a named workflow for human↔AI collaboration. It structures any work that is too important to improvise: new product features, architectural decisions, security assessments, marketing campaigns, financial analyses, research projects. The short version: **align intent → spec → adversarial grill → global plan → optimal execution → verified done → owner sign-off**.
 
@@ -115,15 +125,25 @@ Real copy-paste prompts across 8 domains, with what Forge produces for each:
 
 ---
 
-## Installation
+## 📦 Installation
 
-### As a Claude Code Skill (recommended)
+```bash
+# 🟢 As a skill (Claude Code + 20+ agents via skills.sh)
+npx skills add davidgarciagordo/forge-methodology
+
+# 🔌 As a standalone Claude Code plugin
+/plugin marketplace add davidgarciagordo/forge-methodology
+/plugin install forge-methodology@forge-methodology
+
+# 🛠️ Or get all three repos from the hub
+/plugin marketplace add davidgarciagordo/claude-code-setup-optimizer
+```
+
+Or clone it straight into your skills dir — Claude Code picks it up automatically (invoke with the `Skill` tool, `skill: "forge-methodology"`):
 
 ```bash
 git clone https://github.com/davidgarciagordo/forge-methodology ~/.claude/skills/forge-methodology
 ```
-
-Claude Code picks up the skill automatically. Invoke it with the `Skill` tool using `skill: "forge-methodology"`.
 
 ### As a Project Rule
 

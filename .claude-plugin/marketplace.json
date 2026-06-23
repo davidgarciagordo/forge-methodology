@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "version": "1.0.0",
+  "name": "forge-methodology",
+  "description": "Forja / Forge — metodología human↔AI domain-agnostic. Instálala suelta o desde el hub claude-code-setup-optimizer.",
+  "owner": {
+    "name": "David García Gordo",
+    "url": "https://github.com/davidgarciagordo"
+  },
+  "plugins": [
+    {
+      "name": "forge-methodology",
+      "displayName": "Forja / Forge",
+      "description": "Align intent → versioned spec → adversarial grill ×3 → global plan → optimised execution → verify vs DoD → owner sign-off.",
+      "source": "./"
+    },
+    {
+      "name": "design-review",
+      "displayName": "Design Review",
+      "description": "Repo hermano: diseño/rediseño/auditoría integral.",
+      "source": { "source": "github", "repo": "davidgarciagordo/design-review" }
+    }
+  ]
+}
