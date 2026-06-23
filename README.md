@@ -18,13 +18,21 @@
 
 Forge is not a process for everything. One-liners and formatting go direct. Forge is for the work where getting the design wrong is expensive — because AI agents are fast, and fast execution of the wrong thing is a reliable way to waste a lot of effort.
 
-## Quick install
+## 📦 Install
 
 ```bash
+# 🟢 As a skill (Claude Code + 20+ agents via skills.sh)
 npx skills add davidgarciagordo/forge-methodology
+
+# 🔌 As a standalone Claude Code plugin
+/plugin marketplace add davidgarciagordo/forge-methodology
+/plugin install forge-methodology@forge-methodology
+
+# 🛠️ Or get all three repos from the hub
+/plugin marketplace add davidgarciagordo/claude-code-setup-optimizer
 ```
 
-Works with Claude Code and 20+ other agents via [skills.sh](https://skills.sh). For Claude Code specifically you can also `git clone` it into `~/.claude/skills/` — see [Installation](#installation) below.
+More ways (git clone, project rule, no-Claude-Code) → [Installation](#installation) below.
 
 ---
 
@@ -125,25 +133,15 @@ Real copy-paste prompts across 8 domains, with what Forge produces for each:
 
 ---
 
-## 📦 Installation
+## Installation
 
-```bash
-# 🟢 As a skill (Claude Code + 20+ agents via skills.sh)
-npx skills add davidgarciagordo/forge-methodology
-
-# 🔌 As a standalone Claude Code plugin
-/plugin marketplace add davidgarciagordo/forge-methodology
-/plugin install forge-methodology@forge-methodology
-
-# 🛠️ Or get all three repos from the hub
-/plugin marketplace add davidgarciagordo/claude-code-setup-optimizer
-```
-
-Or clone it straight into your skills dir — Claude Code picks it up automatically (invoke with the `Skill` tool, `skill: "forge-methodology"`):
+### As a Claude Code Skill (recommended)
 
 ```bash
 git clone https://github.com/davidgarciagordo/forge-methodology ~/.claude/skills/forge-methodology
 ```
+
+Claude Code picks up the skill automatically. Invoke it with the `Skill` tool using `skill: "forge-methodology"`.
 
 ### As a Project Rule
 
