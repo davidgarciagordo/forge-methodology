@@ -1,6 +1,6 @@
 ---
 name: forge-methodology
-description: Domain-agnostic human↔AI methodology that, given any substantial task, produces: aligned intent → versioned spec → adversarially grilled spec → global plan → optimised execution → verified done → owner sign-off. Applies to software, security, design, marketing, finance, research, operations, or any domain where getting the design wrong is expensive. Skip for trivials (one-liners, formatting).
+description: "Domain-agnostic human↔AI methodology that, given any substantial task, produces: aligned intent → versioned spec → adversarially grilled spec → global plan → optimised execution → verified done → owner sign-off. Applies to software, security, design, marketing, finance, research, operations, or any domain where getting the design wrong is expensive. Skip for trivials (one-liners, formatting)."
 ---
 
 # Forge — Methodology for Substantial Work with AI
