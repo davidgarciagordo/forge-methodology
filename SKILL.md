@@ -40,7 +40,7 @@ All work units, all phases, no gaps — **before any execution begins.** Depende
 See [references/planning.md](references/planning.md) for the plan structure and work-unit template.
 
 ### 5. Execute Optimally
-Parallelize disjoint work units. Automate repetitive/mechanical tasks with tools and scripts before spending AI capability or human effort on them. Right capability tier per work unit. Checkpoint per phase.
+Parallelize disjoint work units, each in its **own isolated workspace** (a branch + worktree, or a per-unit sandbox) so parallel writers never collide on disk. Share **one context pack** (key locations with file:line, decisions, vocabulary) so no agent re-discovers what another already found. Select the next unit from the plan's ready set — never improvise. Automate repetitive/mechanical tasks with tools before spending AI capability. Right capability tier per work unit. Checkpoint per phase.
 
 See [references/execution-modes.md](references/execution-modes.md) for orchestration rules.
 
