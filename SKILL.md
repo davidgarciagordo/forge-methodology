@@ -32,7 +32,9 @@ A written artifact — both human and AI agree on it. Specific enough that a thi
 ### 3. Adversarial Grill
 Three independent hostile lenses review the spec. **An unverified assumption is a finding.** Deep-reasoning tier. After: respond → re-spec → re-grill on new seams → repeat until green.
 
-See [references/grill.md](references/grill.md) for the full method and lens table by domain.
+When a human owns the call, the grill runs **interactively**: an **entry gate** of grounded clarifiers (one batch), the three automatic passes, a **user gate** that surfaces the emergent doubts — each with your recommended answer + alternatives, for the owner to accept / change / add to / dispute — then an informed re-grill. The gate is run by the orchestrator, never by a grill subagent.
+
+See [references/grill.md](references/grill.md) for the full method, the interactive gates, and the lens table by domain.
 
 ### 4. Global Plan
 All work units, all phases, no gaps — **before any execution begins.** Dependency graph computed. Parallelizable vs. serial derived from the graph. Grill the plan before locking it.
