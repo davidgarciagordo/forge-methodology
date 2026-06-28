@@ -123,11 +123,12 @@ Prompts reales listos para copiar en 8 dominios, con lo que Forge produce en cad
 | Referencia | Contenido |
 |------------|-----------|
 | [references/the-loop.md](references/the-loop.md) | Bucle universal completo de 7 pasos |
-| [references/grill.md](references/grill.md) | Método de grill adversarial + tabla de lentes por dominio |
+| [references/grill.md](references/grill.md) | Método de grill adversarial + gates interactivos (entrada → ×3 → gate de usuario → re-grill informado) + tabla de lentes por dominio |
 | [references/planning.md](references/planning.md) | Estructura del plan global + modelo de propiedad de unidades de trabajo |
 | [references/execution-modes.md](references/execution-modes.md) | Cómo paralelizar, automatizar, tierar y hacer checkpoints |
 | [references/verification.md](references/verification.md) | Definición de done + reglas de evidencia + ejemplos por dominio |
 | [references/model-routing.md](references/model-routing.md) | Routing de tiers de capacidad (vendor-neutral + ejemplo de mapeo) |
+| [skills/](skills/README.md) | Skills grill compañeras incluidas (`grill-me`, `grill-with-docs`) — la forma interactiva del grill |
 
 ---
 
