@@ -125,11 +125,12 @@ Real copy-paste prompts across 8 domains, with what Forge produces for each:
 | Reference | Contents |
 |-----------|----------|
 | [references/the-loop.md](references/the-loop.md) | Full 7-step universal loop |
-| [references/grill.md](references/grill.md) | Adversarial grill method + lens table by domain |
+| [references/grill.md](references/grill.md) | Adversarial grill method + interactive gates (entry → ×3 → user gate → informed re-grill) + lens table by domain |
 | [references/planning.md](references/planning.md) | Global plan structure + work-unit ownership model |
 | [references/execution-modes.md](references/execution-modes.md) | How to parallelise, automate, tier, and checkpoint |
 | [references/verification.md](references/verification.md) | Definition of done + evidence rules + domain examples |
 | [references/model-routing.md](references/model-routing.md) | Capability tier routing (vendor-neutral + example mapping) |
+| [skills/](skills/README.md) | Bundled companion grill skills (`grill-me`, `grill-with-docs`) — the interactive form of the grill |
 
 ---
 

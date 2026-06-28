@@ -32,6 +32,72 @@ A finding of "I couldn't check this" is also valid — it surfaces a gap in the 
    - Any findings marked "couldn't verify" that can now be checked
 3. Repeat until green: no new blocking or significant findings.
 
+> When a **human owns the call**, run the **user gate** before the re-grill — see *Running the Grill Interactively* below.
+
+---
+
+## Running the Grill Interactively
+
+The grill runs **automatically** — three lenses, no interruptions. But automatic convergence hides the
+moments where a human judgement would change the outcome. Two gates make those moments explicit
+**without slowing the machine down**:
+
+```
+A. Entry gate         → high-impact clarifiers, grounded in the code + the brief, as ONE batch.
+B. Grill ×3           → the three lenses run automatically. No user interruption.
+C. User gate          → the doubts the grill surfaced, each with a recommended answer + alternatives,
+                        presented for the human to accept / change / add to / dispute — as ONE batch.
+D. Informed re-grill  → one more automatic pass that incorporates the human's decisions,
+                        then the conclusions (re-spec / findings / sign-off).
+```
+
+### A. Entry gate (before the lenses)
+
+Resolve what only the owner can answer — and **nothing the code can answer for you**. Read the target
+and the brief first; anything verifiable by exploration is verified, not asked. Then surface the
+remaining high-impact decisions as a **single multi-select batch**:
+
+- Each question carries 2–4 candidate answers, **your recommended one first and marked "(recommended)"**.
+- The host's free-text / "other" option lets the owner add an answer you didn't list.
+- Ask only what changes the grill's direction. A handful of questions, one batch — not an interrogation.
+
+If the host has no interactive prompt, state your assumed answers explicitly and proceed.
+
+### C. User gate (after the three passes, before conclusions)
+
+The three lenses surface doubts, contradictions, and unverified assumptions. **Do not resolve them
+silently.** For each open doubt, compute your **recommended answer and the live alternatives**, then
+present them all as **one multi-select batch** for the owner to decide:
+
+- Each item: the doubt in plain language + your recommended answer (pre-selected) + the alternatives
+  + the lens(es) that raised it.
+- The owner can **accept** the recommendation, **pick an alternative**, **add their own** answer, or
+  **dispute** it (reject + note).
+- Group by severity (blocking → significant → minor) so it is scannable; pre-select the recommended answers.
+- Cap each batch at the host's limit. In Claude Code, `AskUserQuestion` allows ≤4 questions, 2–4 options
+  each, and auto-adds an "Other" free-text field (= add-your-own / dispute). If more doubts remain, run
+  several batches, most decision-critical first, and say how many remain.
+
+This gate is run by the **orchestrating agent, never by a grill subagent** — subagents cannot prompt the
+owner. The lenses produce findings + recommended answers; the orchestrator surfaces them and collects
+the decisions.
+
+### D. Informed re-grill
+
+Feed the owner's decisions back in and run **one more automatic pass**, focused on:
+
+- The seams the chosen answers create.
+- Anything the owner disputed or added that the lenses had not considered.
+
+Then converge to conclusions. Repeat the gate only if the re-grill surfaces genuinely new blocking
+doubts — do not loop the human on settled points.
+
+### When to skip the gates
+
+Proportional to **novelty × blast radius** (see *Grill Depth*). A low-novelty, low-blast artifact needs
+no human gate — grill, fix, done. Surface the gate when a real human judgement is at stake: a trade-off
+with no clearly-right answer, a disputed assumption, a scope boundary only the owner owns.
+
 ---
 
 ## Lenses by Domain
