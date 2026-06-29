@@ -28,7 +28,15 @@ npx skills add davidgarciagordo/forge-methodology
 /plugin marketplace add davidgarciagordo/claude-code-setup-optimizer
 ```
 
-**Forge** es un flujo de trabajo con nombre propio para la colaboración persona↔IA. Estructura cualquier trabajo demasiado importante para improvisar: nuevas funcionalidades, decisiones arquitectónicas, análisis de seguridad, campañas de marketing, modelos financieros, proyectos de investigación. La versión corta: **alinear intención → spec → grill adversarial → plan global → ejecución optimizada → verificado → aprobación del responsable**.
+**Forge** es un flujo de trabajo con nombre propio para la colaboración persona↔IA. Estructura cualquier trabajo demasiado importante para improvisar: nuevas funcionalidades, decisiones arquitectónicas, análisis de seguridad, campañas de marketing, modelos financieros, proyectos de investigación. La versión corta: **alinear intención → descomponer la referencia → spec (con Matriz de Aceptación) → grill adversarial → plan global → ejecución optimizada → verificado → aprobación del responsable**.
+
+> **Lo que hace que "hecho" sea mecánico (no advisory).** El fallo más caro de Forge es entregar algo que
+> pasaba sus propios tests pero se quedaba corto frente al objetivo — *"Hecho contra nosotros, no contra el
+> objetivo"*. La **columna vertebral de completitud mecánica** lo cierra: **nombras una referencia externa y
+> enumeras sus capacidades** (Descomposición de la Referencia), que **se convierten en una Matriz de
+> Aceptación** que es la Definición de Hecho canónica en el spec; una **4ª lente del grill** caza lo que
+> *falta* (no solo lo que rompe); un **verificador independiente** audita cada fila (`verified-by ≠ ejecutor`);
+> y un **hook bloquea abrir el PR** mientras una fila in-scope no esté trazada. **GREEN ≠ COMPLETE.**
 
 Forge no es un proceso para todo. Las líneas sueltas y el formateo van directo. Forge es para el trabajo donde equivocarse en el diseño resulta caro — porque los agentes de IA son rápidos, y ejecutar lo incorrecto a toda velocidad es una forma eficiente de desperdiciar mucho esfuerzo.
 

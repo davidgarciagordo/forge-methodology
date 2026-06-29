@@ -22,6 +22,7 @@ Design work is done when **all** of the following are true:
 - [ ] Usability validated: tested with real users or reviewed against established usability criteria (task completion, findability, error recovery)
 - [ ] Accessibility checked: contrast ratios, keyboard flow, screen reader semantics
 - [ ] Design system consistency verified: tokens used correctly, no unexplained divergence from established patterns
+- [ ] **External visual fidelity verified per screen** against the Reference Standard (when one exists): each designed screen side-by-side with the reference's equivalent screen, graded to the spec's fidelity bar (`visual-fidelity-checker`). Distinct from internal design-system consistency above.
 - [ ] All key states designed and documented: default, hover/focus, active, disabled, empty, loading, error, overflow/long content
 - [ ] Responsive behavior specified for all target breakpoints
 - [ ] Owner visual gate passed: human sign-off on the design at all themes and breakpoints
@@ -52,6 +53,8 @@ Design work is done when **all** of the following are true:
 ### Completeness
 - All required states and variants are designed (not left to "figure out in implementation")
 - Designs exist for all required locales, themes (light/dark), and breakpoints
+- **Every in-scope screen/flow of the Reference Standard is present** (the `completeness-critic` cross-walk): a reference screen with no equivalent design is a blocking completeness gap, not a "phase 2" item — unless explicitly cut in Non-goals
+- **External fidelity per screen** vs. the reference (the `visual-fidelity-checker` side-by-side) — internal design-system consistency is necessary but does not prove the design matches the reference it promised
 
 ---
 

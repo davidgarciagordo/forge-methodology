@@ -17,6 +17,12 @@ Forge is not a process for everything. It is for the work where improvising the 
 
 Before starting any phase, check whether its artifact is already done (spec exists, plan exists, prior art exists). If it exists: **review it, grill it, refine it — do NOT recreate from scratch.** Skip or compress phases whose output is already done and verified. Reuse, do not duplicate work. Enter the loop at the right point.
 
+> **The non-skippable floor — Adapt reorders, it never deletes.** No matter how much prior art exists, two
+> things are never compressed away: **(1) the Reference-matrix** — the enumerated reference and its Acceptance
+> Matrix in the spec — and **(2) the independent verify against that matrix** (the `independent-verifier` /
+> `completeness-critic` pass + the GREEN ≠ COMPLETE gate). "We're adapting an existing spec / the tests pass"
+> is not a reason to skip either. Adapt may merge or fast-path other steps; it may never delete these two.
+
 ---
 
 ## The Loop (7 Steps)
@@ -26,11 +32,14 @@ Full detail in [references/the-loop.md](references/the-loop.md).
 ### 1. Align Intent
 Lead with the **value question first**: what problem does this actually solve and for whom? One focused round with the owner. Explicit decisions on scope, constraints, trade-offs, non-goals. Hard gate: **nothing gets executed until intent is aligned.**
 
+### 1.5. Reference Decomposition
+**Name the external reference the work is measured against, and enumerate its in-scope capabilities as a flat list** (each with a stable `req-id`). This is the cure for "Done against ourselves, not against the goal." The reference is a *named, inspectable thing* (competitor, spec, regulation, prior system) — not "best practices." The enumerated list **becomes the Acceptance Matrix** in the spec and threads forward to plan and verify. Genuinely novel work declares **greenfield** explicitly and enumerates from first principles. Run with the `reference-decomposer` agent; confirm nothing is missing with `completeness-critic`.
+
 ### 2. Write a Versioned Spec
-A written artifact — both human and AI agree on it. Specific enough that a third party could verify whether the outcome meets it. Versioned and kept alongside the work.
+A written artifact — both human and AI agree on it. Specific enough that a third party could verify whether the outcome meets it. Versioned and kept alongside the work. **The Definition of Done lives canonically here, as the Acceptance Matrix** (`req-id | source | in-scope? | built? | evidence | verified-by ≠ executor`) plus an explicit **Non-goals** section. Use [templates/spec-and-dod.md](templates/spec-and-dod.md). DoD is fixed in the spec — never deferred to the plan or the final sign-off.
 
 ### 3. Adversarial Grill
-Three independent hostile lenses review the spec. **An unverified assumption is a finding.** Deep-reasoning tier. After: respond → re-spec → re-grill on new seams → repeat until green.
+Three independent hostile lenses review the spec — **plus a standing fourth lens, Completeness vs Reference, whenever there is an external reference.** The first three hunt what *breaks*; the fourth hunts what is *missing*: **a reference requirement not covered is a finding** (blocking for any in-scope capability absent from the spec/plan). **An unverified assumption is a finding.** Deep-reasoning tier. After: respond → re-spec → re-grill on new seams → repeat until green.
 
 When a human owns the call, the grill runs **interactively**: an **entry gate** of grounded clarifiers (one batch), the three automatic passes, a **user gate** that surfaces the emergent doubts — each with your recommended answer + alternatives, for the owner to accept / change / add to / dispute — then an informed re-grill. The gate is run by the orchestrator, never by a grill subagent.
 
@@ -47,7 +56,7 @@ Parallelize disjoint work units, each in its **own isolated workspace** (a branc
 See [references/execution-modes.md](references/execution-modes.md) for orchestration rules.
 
 ### 6. Verify Against the Definition of Done
-Definition of done fixed **before** execution. Evidence before asserting. Independent verification (not the executor's own check). Continuous per-unit verify throughout; full independent pass at the end.
+DoD fixed **before** execution (it is the Acceptance Matrix). **GREEN ≠ COMPLETE:** GREEN = the tests that exist pass over what was built; COMPLETE = every in-scope reference requirement traced to evidence and independently verified. A phase is done only if COMPLETE. **Verify audits the matrix, not the diff** — every in-scope row `built = yes` + real evidence + `verified-by ≠ executor` (run `independent-verifier` + `completeness-critic`). The `hooks/check-acceptance-matrix.sh` hook **blocks** "declare done"/PR while any in-scope row is untraced. Evidence before asserting; continuous per-unit verify throughout; full independent pass at the end.
 
 See [references/verification.md](references/verification.md) for the method and domain examples.
 
@@ -106,9 +115,29 @@ Disagreeing with the plan — with evidence and reasoning — is part of the rol
 
 ---
 
+## The Mechanical Completeness Spine
+
+Forge's references are *reasoning you load*. The spine is the set of **executable units** that make
+completeness mechanical instead of advisory — they cure "the advisory gets skipped / Done against ourselves,
+not against the goal." One artifact (the **enumerated reference → Acceptance Matrix**) threads research → spec
+→ plan → verify, enforced at every step:
+
+| Unit | Kind | Enforces |
+|------|------|----------|
+| [templates/spec-and-dod.md](templates/spec-and-dod.md) | template | DoD = Acceptance Matrix, canonical in the spec; Reference Standard enumerated or greenfield declared |
+| [`reference-decomposer`](agents/reference-decomposer.md) | agent | reference → enumerated `req-id` list → seeds the matrix |
+| [`completeness-critic`](agents/completeness-critic.md) | agent | 4th grill lens: a reference capability absent from spec/plan = **blocking** (early **and** at verify) |
+| [`independent-verifier`](agents/independent-verifier.md) | agent | row-by-row matrix audit; evidence per row; `verified-by ≠ executor` |
+| [`visual-fidelity-checker`](agents/visual-fidelity-checker.md) | agent | per-UI-surface side-by-side vs. the reference's screen (external fidelity ≠ theme parity) |
+| [hooks/check-acceptance-matrix.sh](hooks/check-acceptance-matrix.sh) | hook | **blocks** "declare done"/`gh pr create` while any in-scope row lacks built + evidence + independent verify |
+| `Satisfies-reqs` in the plan | field | every in-scope `req-id` is owned by a work unit |
+
+Full map: [agents/README.md](agents/README.md) · install the hook: [hooks/README.md](hooks/README.md).
+
 ## Templates
 
-- [templates/work-unit-plan.md](templates/work-unit-plan.md) — declare a work unit in the plan
+- [templates/spec-and-dod.md](templates/spec-and-dod.md) — spec with Reference Standard + Acceptance Matrix (the canonical DoD)
+- [templates/work-unit-plan.md](templates/work-unit-plan.md) — declare a work unit in the plan (with `Satisfies-reqs`)
 - [templates/state-capsule.md](templates/state-capsule.md) — resume capsule per workstream
 - [templates/phase-gate-checklist.md](templates/phase-gate-checklist.md) — gate a phase before advancing
 

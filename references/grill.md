@@ -9,10 +9,11 @@ The grill is Forge's core quality gate. It is not a friendly review. Its job is 
 ### How to run a grill
 
 1. **Select three lenses** for the domain (see the table below). Each lens has a distinct hostile perspective.
-2. **Run all three independently.** No lens sees the others' findings while it works.
-3. **Each lens searches for failures**, not improvements. Its only question: *"What breaks? What has been assumed but not verified? What could go wrong?"*
-4. **An unverified assumption is a finding.** When a lens can check something against reality (existing systems, actual data, real constraints, live environments), it must — instead of asking about what it can look up itself.
-5. **Use the deep-reasoning tier.** The point is to catch what a surface read misses.
+2. **Add the standing fourth lens — Completeness vs Reference — whenever the work is measured against an external reference** (a competitor, a published spec, a regulation, a prior system). See *The Fourth Lens* below. The first three hunt what **breaks**; the fourth hunts what is **missing**.
+3. **Run the lenses independently.** No lens sees the others' findings while it works.
+4. **Each lens searches for failures**, not improvements. Its only question: *"What breaks? What has been assumed but not verified? What could go wrong? — and, for the fourth lens: what does the reference have that this does not?"*
+5. **An unverified assumption is a finding.** When a lens can check something against reality (existing systems, actual data, real constraints, live environments), it must — instead of asking about what it can look up itself.
+6. **Use the deep-reasoning tier.** The point is to catch what a surface read misses.
 
 ### Findings format
 
@@ -116,6 +117,42 @@ The three lenses always cover the same three angles: **system view · human real
 | **Brainstorming/Strategy** | Critic — what assumption underlies this idea and is it true? | Alternative view — what is the strongest counter-argument or competing approach? | Feasibility — what would it actually take to execute this, and is that realistic? |
 
 > **Note:** the lenses above are starting points. Adapt them to your domain. Three lenses covering the same angle are weaker than three genuinely different perspectives.
+
+---
+
+## The Fourth Lens — Completeness vs Reference
+
+The three classic lenses are tuned to catch what **breaks**. They are blind to what is **silently absent**:
+a feature the reference has and we never built, a screen we left out, a regulation clause we skipped. That
+blind spot is a documented, expensive failure — a product built "with parity to a reference" shipped short,
+and nobody caught it until the owner's final sign-off, because no lens was looking for *absence*.
+
+So whenever the work is measured against an **external reference** (a competitor product, a published spec,
+an RFC, a regulation, a prior system being replaced), add a standing fourth lens:
+
+> **Completeness vs Reference** — its only question: *"What does the reference have that this spec / plan /
+> artifact does not?"* It cross-walks every enumerated reference capability (`req-id`) against the work.
+
+It mirrors the grill's core axiom:
+
+> **An unverified assumption is a finding.** → **A reference requirement not covered is a finding.**
+
+Rules for the fourth lens:
+
+- It requires an **enumerated** reference. If the spec names a reference but does not list its capabilities,
+  the first finding is *"reference not decomposed — run `reference-decomposer`."* "Parity with X" with no
+  enumeration of what X does is not a spec.
+- **Early (on the spec/plan):** any in-scope reference capability with no Acceptance Matrix row, or no
+  work-unit owner in the plan (`Satisfies-reqs`), is a **blocking** finding.
+- **Late (at verify):** any in-scope capability not actually built — or built shallower than the reference
+  has it — is a finding.
+- A capability quietly moved from in-scope to out-of-scope **without an explicit Non-goals entry** is a
+  blocking finding. Scope may be cut, but only explicitly, by the owner.
+- It runs as the **`completeness-critic`** agent (see [`../agents/completeness-critic.md`](../agents/completeness-critic.md)),
+  on the deep-reasoning tier, both early and late.
+
+For **greenfield** work (no external reference, declared explicitly in the spec), the fourth lens checks the
+first-principles capability list for the same completeness instead.
 
 ---
 

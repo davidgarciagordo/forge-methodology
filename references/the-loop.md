@@ -16,6 +16,30 @@ This is the core of Forge. Every step applies regardless of domain: software, se
 
 ---
 
+## Step 1.5 — Reference Decomposition (between Align and Spec)
+
+Before writing the spec, **name the external reference the work will be measured against, and enumerate its
+in-scope capabilities as a flat list.** This is the cure for the most expensive *completeness* failure:
+"Done against ourselves, not against the goal" — where a team judges completeness against its own internal
+checklist and ships short of the reference it promised parity with.
+
+- The reference is a **named, inspectable thing**: a competitor product, a published spec, an RFC, a
+  regulation, a reference implementation, a screenshot set, the prior system being replaced. "Best
+  practices" is not a reference — it cannot be enumerated.
+- Take whatever research / competitive analysis already exists and **turn it into an enumerated list**: one
+  capability per line, each named as the reference names it, each with a stable `req-id` (R1, R2, …).
+- **This single artifact threads forward**: the enumerated list *becomes* the Acceptance Matrix in the spec
+  (Step 2), every row maps to a work-unit in the plan (Step 4, via `Satisfies-reqs`), and verify audits it
+  (Step 6). One artifact, research → spec → plan → verify — not re-derived at each step.
+- If the work is genuinely novel, declare **greenfield (no reference)** explicitly and enumerate from first
+  principles instead. Greenfield is a deliberate, reviewable choice — not a default to skip this step.
+
+Run this with the **`reference-decomposer`** agent (reference → enumerated list) and confirm nothing is
+missing with the **`completeness-critic`** agent. Output goes straight into the spec template
+([`../templates/spec-and-dod.md`](../templates/spec-and-dod.md)).
+
+---
+
 ## Step 2 — Write a Versioned Spec
 
 Produce a written artifact that both the human and the AI agree on. This becomes the single source of truth.
@@ -23,6 +47,11 @@ Produce a written artifact that both the human and the AI agree on. This becomes
 - Version it (committed to a repo, a document store, or any system with history).
 - Make it specific enough that a third party could verify whether the outcome meets it.
 - Keep it alongside the work it describes.
+- **The Definition of Done lives canonically here**, as the **Acceptance Matrix**: every in-scope `req-id`
+  from Step 1.5 is a row (`req-id | source | in-scope? | built? | evidence | verified-by ≠ executor`), plus
+  an explicit **Non-goals** section listing everything cut from scope. Use
+  [`../templates/spec-and-dod.md`](../templates/spec-and-dod.md). The DoD is not deferred to the plan or to
+  the final sign-off — it is fixed in the spec, before execution.
 
 ---
 
@@ -32,6 +61,7 @@ Run **three independent hostile lenses** on the spec. This is not a friendly rev
 
 **Rules for the grill:**
 - Always run all three lenses. Never skip one because "it looks fine."
+- **Add the fourth lens — Completeness vs Reference — whenever the work is measured against an external reference.** The first three hunt what *breaks*; the fourth hunts what is *missing*. Its axiom mirrors the first: **a reference requirement not covered is a finding** (blocking for any in-scope capability absent from the spec/plan). It runs as the `completeness-critic` agent.
 - An **unverified assumption is a finding.** When a lens can check something against reality (the actual system, the actual data, the actual constraints), it must — not ask about what it can verify.
 - Use the **deep-reasoning tier** (the most capable model or analyst available).
 
@@ -77,11 +107,18 @@ See [execution-modes.md](./execution-modes.md) for detailed orchestration rules.
 
 ## Step 6 — Verify Against the Definition of Done
 
-**Fix the definition of done before execution begins.** During execution, verify continuously per work unit; run a full independent verification at the end.
+**Fix the definition of done before execution begins** (it is the Acceptance Matrix in the spec). During execution, verify continuously per work unit; run a full independent verification at the end.
 
+> **GREEN ≠ COMPLETE.** GREEN = the tests that exist pass over what was built. COMPLETE = every in-scope
+> requirement of the reference is traced to evidence and independently verified. **A phase is done only if
+> COMPLETE, never with GREEN alone.** Verify audits the **Acceptance Matrix**, not the diff.
+
+- **Audit the matrix**: every in-scope `req-id` must be `built = yes`, with real evidence, signed off by a `verified-by` that is **not the executor**. Run the `independent-verifier` and `completeness-critic` agents.
 - **Evidence before asserting**: never claim done without real output/data showing it.
 - **Independent verification**: the executor's own check does not count. Get a second, independent pass.
 - **Compare against baseline**: when something fails, determine whether it was pre-existing or introduced.
+
+The `hooks/check-acceptance-matrix.sh` hook blocks "declare done" / opening a PR while any in-scope row is untraced — completeness is enforced, not trusted.
 
 See [verification.md](./verification.md) for the full method, domain examples, and the done-checklist format.
 
@@ -102,6 +139,19 @@ The human owner reviews the verified output and signs off. This is the final gat
 **Intelligence = adapting the loop to what already exists, not recreating it from scratch.**
 
 Before starting any step, check whether its artifact is already done (a spec exists, a plan exists, prior art exists). If it exists: **review it, grill it, refine it**. Skip or compress steps whose output is already done and verified. Enter the loop at the right point.
+
+### The non-skippable floor (Adapt reorders, it never deletes)
+
+Adapt is not an escape hatch. No matter how much prior art exists, **two things are never compressed away**:
+
+1. **The Reference-matrix** — the enumerated reference (Step 1.5) and its Acceptance Matrix in the spec. If
+   prior art already has one, *reuse and verify* it; if it does not, you must produce it. "We're adapting an
+   existing spec" is not a reason to skip enumerating the reference.
+2. **The independent verify against the matrix** — the `independent-verifier`/`completeness-critic` pass
+   (Step 6) and the GREEN ≠ COMPLETE gate. Existing tests passing does not substitute for it.
+
+Adapt may merge, reorder, or fast-path other steps. It may never delete these two. They are the floor that
+keeps "Adapt the Pipeline" from becoming "skip the part that proves we're done."
 
 ---
 
