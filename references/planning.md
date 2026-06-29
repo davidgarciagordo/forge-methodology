@@ -34,6 +34,7 @@ Each work unit in the plan declares:
 ```
 Work Unit: [name]
   Phase:              [which phase or milestone this belongs to]
+  Satisfies-reqs:     [req-ids from the spec's Acceptance Matrix this unit delivers — e.g. R3, R7]
   Inputs:             [what this unit depends on — outputs of other work units]
   Outputs:            [what this unit produces]
   Owner:              [which agent, person, or capability tier executes this]
@@ -41,6 +42,11 @@ Work Unit: [name]
   Serial-after:       [list of work units that must complete first]
   Acceptance criteria:[how we know this unit is done — specific, checkable]
 ```
+
+**`Satisfies-reqs` makes the matrix and the plan one connected artifact.** Every in-scope `req-id` in the
+spec's Acceptance Matrix must be claimed by at least one work unit's `Satisfies-reqs`. A reference
+capability with no owning work unit is a planning gap — and the `completeness-critic` flags it as blocking.
+This is the link that prevents "we planned around the requirement instead of for it."
 
 ---
 
@@ -73,6 +79,7 @@ Mark each phase in the plan as parallelizable or serial (derived from the depend
 Before locking the plan:
 
 - [ ] All work units are listed — no "we'll add that later"
+- [ ] **Every in-scope requirement in the spec's Acceptance Matrix has an owner** — it appears in at least one work unit's `Satisfies-reqs`. No reference capability is left unplanned.
 - [ ] Every work unit has declared inputs and outputs
 - [ ] Every work unit has an assigned owner (person, agent, or capability tier)
 - [ ] The dependency graph is computed; cross-cutting units are identified and assigned

@@ -21,7 +21,8 @@ Frontend work is done when **all** of the following are true:
 
 - [ ] Typecheck passes
 - [ ] Unit and integration tests green
-- [ ] Visual parity across all themes (light/dark, high-contrast if applicable)
+- [ ] **External visual fidelity verified per surface** — each UI surface side-by-side against the *reference's* equivalent screen, to the fidelity bar the spec demanded (see *External Visual Fidelity Gate* below). This is **not** the same as the next line.
+- [ ] Visual parity across all themes (light/dark, high-contrast if applicable) — *internal* theme correctness within our own design system
 - [ ] Responsive layout verified at all defined breakpoints (mobile, tablet, desktop)
 - [ ] Accessibility audit passed: keyboard navigation, screen reader output, contrast ratios
 - [ ] Design tokens used (no hardcoded color/spacing/font values)
@@ -57,11 +58,38 @@ Frontend work is done when **all** of the following are true:
 
 ---
 
+## External Visual Fidelity Gate (per surface, not deferred)
+
+There are **two different visual checks**, and the failure mode is conflating them:
+
+| | Internal theme parity | **External visual fidelity** |
+|---|---|---|
+| **Question** | Is the surface correct in light/dark/high-contrast within *our* design system? | Does the surface match the *reference's* equivalent screen? |
+| **Reference** | Our own design tokens | The external Reference Standard (competitor screen, screenshot set, prior system) |
+| **Already covered by** | "Visual parity across all themes" in the DoD | This gate |
+
+The CRM-parity failure was an **external** fidelity miss (the build looked unlike the reference) that an
+internal theme-parity check could never catch. So fidelity to the reference is gated **per UI surface,
+during execution** — not batched and deferred to the owner's final sign-off:
+
+1. For each in-scope UI `req-id` whose `fuente` is a reference screen, run the **`visual-fidelity-checker`**
+   agent: it captures the reference screen and the built surface and produces a **side-by-side**.
+2. Grade against the **fidelity bar the spec demanded** (pixel-match vs. structural/IA fidelity with our
+   design layer applied) — not against taste.
+3. A missing element/affordance of the reference screen is **both** a fidelity delta **and** a completeness
+   finding (escalate to `completeness-critic`).
+4. The side-by-side is the **evidence** for those UI rows in the Acceptance Matrix. A UI row cannot be marked
+   `built = yes` without it.
+
 ## Visual Gate Process
 
 Accumulate all verification screenshots (light/dark/mobile across all affected surfaces) into a single async review queue. The owner reviews all at once — this avoids serial per-PR bottlenecks.
 
 For components that cannot be storied (RSC, data-fetching, authenticated routes), gate live in a staging environment.
+
+> The async owner queue does **not** replace the per-surface external fidelity gate above — the per-surface
+> check happens *during* execution and produces the evidence; the owner queue is the final human review *on
+> top of* it. Deferring fidelity entirely to the owner queue is exactly the failure this gate prevents.
 
 ---
 

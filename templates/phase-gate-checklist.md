@@ -7,6 +7,9 @@ Use before marking a phase complete and moving to the next. Adapt the domain-spe
 ## Universal Gate (all domains)
 
 - [ ] All work units in this phase have met their declared acceptance criteria
+- [ ] **Every in-scope Acceptance Matrix row owned by this phase is `built = yes` with non-empty evidence** (GREEN ≠ COMPLETE — a green suite over an untraced matrix is not done)
+- [ ] **Each of those rows has a `verified-by` that is independent of the executor** (the `independent-verifier` agent, owner ≠ executor)
+- [ ] **No in-scope reference capability for this phase was silently dropped** (`completeness-critic` clean; any cut is recorded in Non-goals)
 - [ ] Outputs from this phase are versioned / committed / persisted — not just in memory or a local working copy
 - [ ] Independent verification has been run (not just the executor's own check)
 - [ ] Verification results are documented (output, test report, review notes — not just "it passed")
