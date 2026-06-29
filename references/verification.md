@@ -4,13 +4,44 @@ Verification in Forge has one hard rule: **fix the definition of done before exe
 
 ---
 
+## GREEN ≠ COMPLETE (the first-class axiom)
+
+> **GREEN** = the tests that exist pass over what was built.
+> **COMPLETE** = every in-scope requirement of the reference is traced to evidence and independently verified.
+> **A phase is done only if COMPLETE — never with GREEN alone.**
+
+This is the axiom this whole reference is built around, because the failure it prevents is real and
+expensive: a build passed its own tests (GREEN), was declared done, and shipped missing whole capabilities
+the reference had — caught only at the owner's final sign-off, never at verify. GREEN measures the tests you
+*chose to write*; it says nothing about the requirements you *never covered*.
+
+The consequence for how you verify:
+
+> **Verify audits the Acceptance Matrix, not the diff.** The question is never "do my tests pass?" It is
+> "is every in-scope row of the matrix `built = yes`, backed by real evidence, and signed off by someone who
+> is not me?" A green suite over an incomplete matrix is not done.
+
+Verification therefore runs against the **Acceptance Matrix** in the spec (see
+[`../templates/spec-and-dod.md`](../templates/spec-and-dod.md)) using the **`independent-verifier`** agent
+(row-by-row evidence audit, verifier ≠ executor) and the **`completeness-critic`** agent (hunts any reference
+capability missing from the matrix). The `hooks/check-acceptance-matrix.sh` hook blocks "declare done" / PR
+while the matrix is not 100% traced — so COMPLETE is machine-checked, not advisory.
+
+---
+
 ## The Definition of Done
 
-Write the definition of done as part of the spec (Step 2) or the plan (Step 4). It must be:
+The Definition of Done lives **canonically in the spec (Step 2)**, as the Acceptance Matrix — not in the
+plan, not in someone's memory, not deferred to the final sign-off. The plan and verification *reference* it;
+they do not redefine it. It must be:
 
 - **Specific**: a third party can check it without asking for clarification.
-- **Complete**: it covers all dimensions of correctness, not just the happy path.
-- **Independent**: it can be verified by someone or something other than the executor.
+- **Complete**: it covers **every in-scope capability of the reference** (the Acceptance Matrix is the list),
+  not just the happy path.
+- **Independent**: every row is verified by someone or something other than the executor.
+
+> The matrix *is* the DoD. "Done" = every in-scope row built + evidenced + independently verified. Tests
+> green on what exists is a *subset* of evidence, not the whole of done.
 
 ---
 
