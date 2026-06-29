@@ -61,9 +61,13 @@ find_matrix_files() {
   if [ -f "$repo_root/.forge/spec.md" ]; then
     printf '%s\n' "$repo_root/.forge/spec.md"; return 0
   fi
+  # Files carrying the `forge:template` marker are blank templates, not live specs — skip them.
   grep -rlE '^##[[:space:]]+Acceptance Matrix' "$repo_root" \
     --include='*.md' \
-    --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=vendor 2>/dev/null || true
+    --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=vendor 2>/dev/null \
+    | while IFS= read -r mf; do
+        grep -q 'forge:template' "$mf" 2>/dev/null || printf '%s\n' "$mf"
+      done || true
 }
 
 matrices=()

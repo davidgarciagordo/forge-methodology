@@ -1,4 +1,6 @@
-<!-- forge:spec -->
+<!-- forge:template — this is the blank template. Copy it to your repo (e.g. .forge/spec.md); your live
+     copy is the real spec. The enforcement hook SKIPS any file carrying this `forge:template` marker, so
+     the pristine template is never mistaken for an incomplete live matrix. -->
 # Spec + Definition of Done — `[work name]`
 
 > The spec is the single source of truth. **The Definition of Done lives canonically here, in the spec**
@@ -6,9 +8,10 @@
 > the Acceptance Matrix below is 100% satisfied for the in-scope rows.
 >
 > Copy this file into your repo (suggested path: `.forge/spec.md` or `docs/<feature>/spec.md`), fill every
-> **required** section, and keep it versioned alongside the work. The `<!-- forge:spec -->` marker and the
-> `## Acceptance Matrix` heading are load-bearing: the enforcement hook (`hooks/check-acceptance-matrix.sh`)
-> parses them.
+> **required** section, **delete the `forge:template` marker comment at the very top**, and keep it versioned
+> alongside the work. The `## Acceptance Matrix` heading is load-bearing: the enforcement hook
+> (`hooks/check-acceptance-matrix.sh`) discovers and parses any markdown file with that heading (skipping
+> files that still carry the `forge:template` marker).
 
 ---
 

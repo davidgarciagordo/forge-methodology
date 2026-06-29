@@ -22,6 +22,10 @@ requirement of the reference traced to evidence and independently verified).
 2. `.forge/spec.md` at the repo root.
 3. Any tracked `*.md` containing a `## Acceptance Matrix` heading.
 
+Files that still carry the `<!-- forge:template -->` marker (the pristine `spec-and-dod.md` template) are
+**skipped** by the scan, so the blank template is never mistaken for an incomplete live matrix. Delete that
+marker when you turn a copy into your real spec.
+
 If no matrix is found the hook **does not block** (the repo may not use Forge) and prints a notice.
 Set `FORGE_REQUIRE_MATRIX=1` to make a missing/empty matrix itself a blocking condition.
 
