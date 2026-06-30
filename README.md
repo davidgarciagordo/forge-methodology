@@ -6,13 +6,14 @@
 
 > A disciplined methodology for substantial work with AI — any domain, any task type.
 
-### 🧩 Part of a family — same signature, three repos
+### 🧩 Part of a family — same signature, four repos
 
 | | Repo | Role |
 |---|---|---|
 | 🛠️ | [**claude-code-setup-optimizer**](https://github.com/davidgarciagordo/claude-code-setup-optimizer) | **The hub** — methodology + automations (hooks · subagents · commands) + `/optimize-my-setup` |
 | 🔨 | [**forge-methodology**](https://github.com/davidgarciagordo/forge-methodology) · *you are here* | Structure *what to build* — align → spec → grill ×3 → plan → verify |
 | 🎨 | [**design-review**](https://github.com/davidgarciagordo/design-review) | Polish *how it looks* — structure → audit → anti-slop → a11y → live check |
+| 💸 | [**token-economy**](https://github.com/davidgarciagordo/token-economy) | Spend *less to do it* — the "Token economy in multi-agent work" principle made mechanism: context-pack (discover-once), read-only terse agents, frugal output-style, pluggable memory. Complements [caveman](https://github.com/JuliusBrussee/caveman) (output) on the input/orchestration axis. |
 
 **Forge** is a named workflow for human↔AI collaboration. It structures any work that is too important to improvise: new product features, architectural decisions, security assessments, marketing campaigns, financial analyses, research projects. The short version: **align intent → decompose the reference → spec (with an Acceptance Matrix) → adversarial grill → global plan → optimal execution → verified done → owner sign-off**.
 
@@ -36,7 +37,7 @@ npx skills add davidgarciagordo/forge-methodology
 /plugin marketplace add davidgarciagordo/forge-methodology
 /plugin install forge-methodology@forge-methodology
 
-# 🛠️ Or get all three repos from the hub
+# 🛠️ Or get all four repos from the hub
 /plugin marketplace add davidgarciagordo/claude-code-setup-optimizer
 ```
 
