@@ -6,13 +6,14 @@
 
 > Una metodología disciplinada para trabajo sustancial con IA — cualquier dominio, cualquier tipo de tarea.
 
-### 🧩 Parte de una familia — misma firma, tres repos
+### 🧩 Parte de una familia — misma firma, cuatro repos
 
 | | Repo | Rol |
 |---|---|---|
 | 🛠️ | [**claude-code-setup-optimizer**](https://github.com/davidgarciagordo/claude-code-setup-optimizer) | **El hub** — metodología + automatizaciones (hooks · subagents · comandos) + `/optimize-my-setup` |
 | 🔨 | [**forge-methodology**](https://github.com/davidgarciagordo/forge-methodology) · *estás aquí* | Estructura *qué construir* — alinear → spec → grill ×3 → plan → verificar |
 | 🎨 | [**design-review**](https://github.com/davidgarciagordo/design-review) | Pule *cómo se ve* — estructura → auditoría → anti-slop → a11y → check en vivo |
+| 💸 | [**token-economy**](https://github.com/davidgarciagordo/token-economy) | Gasta *menos en hacerlo* — el principio "Token economy in multi-agent work" hecho mecanismo: context-pack (descubrir una vez), agentes read-only terse, output-style frugal, memoria pluggable. Complementa a [caveman](https://github.com/JuliusBrussee/caveman) (salida) en el eje entrada/orquestación. |
 
 ## 📦 Instalación
 
