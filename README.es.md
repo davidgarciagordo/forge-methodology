@@ -52,6 +52,7 @@ Los agentes de IA son rápidos. Esa velocidad también es un riesgo: ejecutarán
 - El **plan global** elimina la improvisación durante la ejecución y las condiciones de carrera entre workers paralelos
 - El **modelo-por-tarea** mantiene el coste proporcional a la dificultad
 - El **verify continuo por unidad** detecta defectos en la fase N, no en la revisión de la fase N+10
+- **Economía de tokens en trabajo multi-agente** — context pack descubierto una sola vez (cada agente recibe el mismo pack en vez de re-escanear); salida terse de los agentes (OK/KO + hallazgo de una línea); análisis read-only, mutación en una única pasada; memoria propiedad del orquestador (enchufable: claude-mem | otro | ninguno→artefacto en fichero); exploración acotada + caché de dominio evita repetir scans costosos
 
 ---
 
