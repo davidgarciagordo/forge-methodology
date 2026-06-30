@@ -12,7 +12,7 @@
   "repository": "https://github.com/davidgarciagordo/forge-methodology",
   "license": "MIT",
   "keywords": ["methodology", "spec", "grill", "planning", "verification", "forge"],
-  "agents": "./agents",
+  "skills": ["./", "./skills/grill-me", "./skills/grill-with-docs"],
   "commands": "./commands",
   "hooks": "./hooks/hooks.json"
 }
