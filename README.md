@@ -45,6 +45,25 @@ More ways (git clone, project rule, no-Claude-Code) → [Installation](#installa
 
 ---
 
+## 🚀 How to use
+
+**"Run it through the Forge"** — apply it to any substantial task; it runs the 7-step loop ([below](#the-loop-at-a-glance)) in codified order with machine-checked gates, and **asks you** (multi-select, recommendations pre-marked) at the **spec/grill** and **plan** gates — nothing executes on a decision you didn't pick.
+
+```bash
+# Claude Code (with the working-methods plugin) — the codified spine, gates enforced:
+/forge-run <your task>
+
+# Or load the skill directly and follow its loop:
+#   skill: forge-methodology
+```
+
+- **Any AI / no Claude Code:** follow [`SKILL.md`](SKILL.md) — run each gate in order, it's self-contained.
+- **Skip for trivials** (one-liners, formatting). Forge is for work where getting the design wrong is expensive.
+
+Worked examples → [Examples](#examples).
+
+---
+
 ## Why Forge?
 
 AI agents are fast. That speed is also a risk: they will execute the wrong thing thoroughly. Forge front-loads the hard thinking so execution becomes mechanical:

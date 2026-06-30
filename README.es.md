@@ -29,6 +29,25 @@ npx skills add davidgarciagordo/forge-methodology
 /plugin marketplace add davidgarciagordo/claude-code-setup-optimizer
 ```
 
+---
+
+## 🚀 Cómo se usa
+
+**"Pásalo por la Forja"** — aplícala a cualquier trabajo sustancial; corre el loop de 7 pasos ([abajo](#the-loop-at-a-glance)) en orden codificado con gates checkeados por máquina, y **te pregunta** (multi-select, recomendadas premarcadas) en los gates de **spec/grill** y **plan** — nada se ejecuta sobre una decisión que no marcaste.
+
+```bash
+# Claude Code (con el plugin working-methods) — la columna vertebral codificada, gates forzados:
+/forge-run <tu tarea>
+
+# O carga la skill directamente y sigue su loop:
+#   skill: forge-methodology
+```
+
+- **Cualquier IA / sin Claude Code:** sigue [`SKILL.md`](SKILL.md) — corre cada gate en orden, es autocontenido.
+- **Sáltatela en lo trivial** (one-liners, formato). Forge es para el trabajo donde equivocar el diseño sale caro.
+
+Ejemplos → [Examples](#examples).
+
 **Forge** es un flujo de trabajo con nombre propio para la colaboración persona↔IA. Estructura cualquier trabajo demasiado importante para improvisar: nuevas funcionalidades, decisiones arquitectónicas, análisis de seguridad, campañas de marketing, modelos financieros, proyectos de investigación. La versión corta: **alinear intención → descomponer la referencia → spec (con Matriz de Aceptación) → grill adversarial → plan global → ejecución optimizada → verificado → aprobación del responsable**.
 
 > **Lo que hace que "hecho" sea mecánico (no advisory).** El fallo más caro de Forge es entregar algo que
