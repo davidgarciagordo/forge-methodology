@@ -1,6 +1,6 @@
 ---
 name: forge-methodology
-description: "Domain-agnostic human↔AI methodology that, given any substantial task, produces: aligned intent → versioned spec → adversarially grilled spec → global plan → optimised execution → verified done → owner sign-off. Applies to software, security, design, marketing, finance, research, operations, or any domain where getting the design wrong is expensive. Skip for trivials (one-liners, formatting)."
+description: "Domain-agnostic human↔AI methodology for substantial work — produces: aligned intent → versioned spec → adversarially grilled spec → global plan → optimised execution → verified done → owner sign-off. Use when the user invokes `/forge-run`, says 'run it through the Forge' / 'forge this' / 'pásalo por la Forja' / 'forja', OR starts substantial work too important to improvise: a new feature, an architecture/security decision, a marketing campaign, a financial/research analysis — any domain where getting the design wrong is expensive. Skip for trivials (one-liners, formatting)."
 ---
 
 # Forge — Methodology for Substantial Work with AI
