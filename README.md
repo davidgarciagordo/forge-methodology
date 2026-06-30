@@ -54,6 +54,7 @@ AI agents are fast. That speed is also a risk: they will execute the wrong thing
 - **Global plan** eliminates mid-flight improvisation and race conditions between parallel workers
 - **Model-per-task** keeps cost proportional to difficulty
 - **Continuous per-unit verification** catches defects at phase N, not in the review at phase N+10
+- **Token economy in multi-agent work** — discover-once context pack (each agent receives the same pack rather than re-scanning); terse agent output (OK/KO + 1-line findings); read-only analysis, mutate in one pass; memory orchestrator-owned (pluggable: claude-mem | other | none→file artifact); capped exploration + domain cache avoids re-running expensive scans
 
 ---
 
