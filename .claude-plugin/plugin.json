@@ -13,6 +13,5 @@
   "license": "MIT",
   "keywords": ["methodology", "spec", "grill", "planning", "verification", "forge"],
   "skills": ["./", "./skills/grill-me", "./skills/grill-with-docs"],
-  "commands": "./commands",
-  "hooks": "./hooks/hooks.json"
+  "commands": "./commands"
 }
