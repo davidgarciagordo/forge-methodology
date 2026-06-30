@@ -103,7 +103,10 @@ Do not use the deep-reasoning tier where the execution tier performs equally wel
 
 ### Automate Before Spending Effort
 
-Repetitive, mechanical, or high-volume tasks → automate with a tool, script, or program before spending AI capability or human effort. Reserve AI for design, grill, and decisions.
+Repetitive, mechanical, or high-volume tasks → automate with a tool, script, or program before spending AI capability or human effort. Reserve AI for design, grill, and decisions. Two concrete rules:
+
+- **Deterministic external tooling = run the tool, not a model.** Linters, formatters, type-checkers, codemods (eslint · prettier · rector · ecs · phpstan · ruff · gofmt · tsc · biome…) are run as **tools**, preferring their **`--fix`/autofix** so they self-resolve. A model is spent only on the **residual** the tool cannot auto-fix (interpret + patch), at the **cheapest tier** that works. **Never put a reasoning model — least of all the deep-reasoning tier — in front of a tool that has `--fix`.** (A common anti-pattern: running the top model to "do" rector/ecs/phpstan, which only have to be *executed*.)
+- **Mechanical bulk → a temp script, not hand-editing.** For sweeps, renames, counts, and repetitive transforms, generate a throwaway bash/python script and run it deterministically (cheapest model, or none) instead of editing N files through the model one by one.
 
 ### Token Economy in Multi-Agent Work (discover once, judge many)
 
