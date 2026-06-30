@@ -105,6 +105,18 @@ Do not use the deep-reasoning tier where the execution tier performs equally wel
 
 Repetitive, mechanical, or high-volume tasks → automate with a tool, script, or program before spending AI capability or human effort. Reserve AI for design, grill, and decisions.
 
+### Token Economy in Multi-Agent Work (discover once, judge many)
+
+When a step fans out to multiple agents (parallel grill lenses, per-carril execution, research sweep), the default failure is **every agent re-discovers the same context and writes essays** — measured on a real run at ~80% redundant work and ~5× the necessary tokens. Five rules:
+
+1. **Discover once, reuse.** Phase 1 builds a shared **context pack** (file:line map + the already-known findings); downstream agents **read the pack**, they do not re-scan the source or re-derive what's known. Chain each phase's result forward as the next phase's input.
+2. **Terse agent output.** A sub-agent's last message is data for the orchestrator, not a human report. Require: line 1 `OK`/`KO` + ≤8-word why, then findings one line each (`tag · file:line · problem → fix`). No preamble, no restating the brief, no summary tables, no essays. This alone cuts output tokens hard.
+3. **Analyze read-only; mutate in ONE pass.** Grill / review / diagnosis agents get **no write tools** — they return findings. All edits happen in a single apply pass *after* the decision gate. Parallel agents with write access edit the same files uncoordinated and bypass the user gate.
+4. **Pluggable memory (optional accelerator, never required).** If a persistent memory tool exists (any `search`/`write`-style), the **orchestrator** (not each agent — avoids write races) searches before a phase to skip rediscovery and writes confirmed results + reusable research after. With none, fall back to file artifacts — never block.
+5. **Cap exploration, cache by domain.** Bound web/browser fan-out (N sources, 1 capture each); cache reusable research keyed by domain so re-runs and loops don't re-pay for it.
+
+The win compounds across iterations: the 2nd+ pass over the same target reuses the context pack and costs a fraction of the first.
+
 ### Specs and Plans are Versioned Artifacts
 
 They live alongside the work, committed. Work survives the session (checkpoint per phase/milestone).
