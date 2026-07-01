@@ -15,7 +15,7 @@ Just this plugin:
 /plugin install forge-methodology
 ```
 
-Or the whole suite (this + design-review, token-economy, working-methods, automations) from one catalog:
+Or the whole suite (this + design-review, token-economy, working-methods, automations) from [one catalog](https://github.com/davidgarciagordo/claude-plugins):
 
 ```bash
 /plugin marketplace add davidgarciagordo/claude-plugins
