@@ -33,7 +33,7 @@ npx skills add davidgarciagordo/forge-methodology
 
 ## 🚀 Cómo se usa
 
-**"Pásalo por la Forja"** — aplícala a cualquier trabajo sustancial; corre el loop de 7 pasos ([abajo](#the-loop-at-a-glance)) en orden codificado con gates checkeados por máquina, y **te pregunta** (multi-select, recomendadas premarcadas) en los gates de **spec/grill** y **plan** — nada se ejecuta sobre una decisión que no marcaste.
+**"Pásalo por la Forja"** — aplícala a cualquier trabajo sustancial; corre el loop de 7 pasos ([abajo](#el-bucle-de-un-vistazo)) en orden codificado con gates checkeados por máquina, y **te pregunta** (multi-select, recomendadas premarcadas) en los gates de **spec/grill** y **plan** — nada se ejecuta sobre una decisión que no marcaste.
 
 ```bash
 # Claude Code (con el plugin working-methods) — la columna vertebral codificada, gates forzados:
@@ -46,7 +46,7 @@ npx skills add davidgarciagordo/forge-methodology
 - **Cualquier IA / sin Claude Code:** sigue [`SKILL.md`](SKILL.md) — corre cada gate en orden, es autocontenido.
 - **Sáltatela en lo trivial** (one-liners, formato). Forge es para el trabajo donde equivocar el diseño sale caro.
 
-Ejemplos → [Examples](#examples).
+Ejemplos resueltos → [Ejemplos](#ejemplos).
 
 **Forge** es un flujo de trabajo con nombre propio para la colaboración persona↔IA. Estructura cualquier trabajo demasiado importante para improvisar: nuevas funcionalidades, decisiones arquitectónicas, análisis de seguridad, campañas de marketing, modelos financieros, proyectos de investigación. La versión corta: **alinear intención → descomponer la referencia → spec (con Matriz de Aceptación) → grill adversarial → plan global → ejecución optimizada → verificado → aprobación del responsable**.
 
@@ -56,7 +56,8 @@ Ejemplos → [Examples](#examples).
 > enumeras sus capacidades** (Descomposición de la Referencia), que **se convierten en una Matriz de
 > Aceptación** que es la Definición de Hecho canónica en el spec; una **4ª lente del grill** caza lo que
 > *falta* (no solo lo que rompe); un **verificador independiente** audita cada fila (`verified-by ≠ ejecutor`);
-> y un **hook bloquea abrir el PR** mientras una fila in-scope no esté trazada. **GREEN ≠ COMPLETE.**
+> y un **hook bloquea abrir el PR** mientras una fila in-scope no esté trazada. **GREEN ≠ COMPLETE.** Ver
+> [La columna vertebral de completitud mecánica](#la-columna-vertebral-de-completitud-mecánica).
 
 Forge no es un proceso para todo. Las líneas sueltas y el formateo van directo. Forge es para el trabajo donde equivocarse en el diseño resulta caro — porque los agentes de IA son rápidos, y ejecutar lo incorrecto a toda velocidad es una forma eficiente de desperdiciar mucho esfuerzo.
 
@@ -97,26 +98,67 @@ Los agentes de IA son rápidos. Esa velocidad también es un riesgo: ejecutarán
 ```mermaid
 flowchart TD
     A([Trabajo sustancial identificado]) --> B[1. Alinear intención\nprimero la pregunta de valor\nuna ronda enfocada con el responsable]
-    B --> C[2. Spec versionado\nartefacto escrito\npersona e IA de acuerdo]
-    C --> D{3. Grill adversarial\n3 lentes hostiles\ntier de razonamiento profundo}
+    B --> B2[1.5 Descomposición de la referencia\nnombrar la referencia externa\nenumerar capacidades → req-ids]
+    B2 --> C[2. Spec versionado\nMatriz de Aceptación = DoD canónico\nreq-id · in-scope · built · evidence · verified-by]
+    C --> D{3. Grill adversarial\n3 lentes hostiles + 4ª lente\ntier de razonamiento profundo}
     D --> D1[Lente 1: Visión de sistema\nreglas · restricciones\nprecedentes verificados contra la realidad]
     D --> D2[Lente 2: Realidad humana\ncasos del día a día\nlo que rompe en la práctica]
     D --> D3[Lente 3: Profundidad técnica\nedge cases · concurrencia\nlo que falla bajo presión]
-    D1 & D2 & D3 --> E{¿Hallazgos resueltos?}
+    D --> D4[Lente 4: Completitud vs Referencia\n¿qué tiene la referencia\nque esto NO? = hallazgo]
+    D1 & D2 & D3 & D4 --> E{¿Hallazgos resueltos?}
     E -- No --> F[Responder y refinar\nRe-spec → Re-grill en costuras nuevas]
     F --> E
     E -- Sí --> G[4. Plan global\ntodas las unidades · sin huecos\ndependencias + propiedad mapeadas]
     G --> H{Grill del plan\ntier de razonamiento profundo}
     H -- Problemas --> G
     H -- Cerrado --> I[5. Ejecutar de forma óptima\nparalelizar unidades disjuntas\nautomatizar tareas repetitivas\ncapacidad adecuada por unidad · checkpoints]
-    I --> J{Verify por unidad\nvs. definición de done}
+    I --> J{Verify por unidad\nvs. Matriz de Aceptación\nGREEN ≠ COMPLETE}
     J -- No listo --> I
-    J -- Todo listo --> K[6. Verify completo\ncontra definición de done preestablecida\nevidencia · verificación independiente]
-    K --> L{¿Verificado?}
+    J -- Todo listo --> K[6. Verify completo\nindependent-verifier audita la matriz\nevidencia por fila · verified-by ≠ ejecutor]
+    K --> L{¿Matriz trazada al 100%?\nel hook bloquea el PR si no}
     L -- No --> I
     L -- Sí --> M[7. Aprobación del responsable\ngate humano]
     M --> N([Hecho · limpieza])
 ```
+
+---
+
+## La columna vertebral de completitud mecánica
+
+Las referencias de la metodología son razonamiento que una persona o un agente *carga*. La columna vertebral
+es el conjunto de **unidades ejecutables** que hacen la completitud **mecánica en vez de advisory** — la cura
+para *"lo advisory se salta / Hecho contra nosotros, no contra el objetivo."* Un solo artefacto, la
+**referencia enumerada → Matriz de Aceptación**, se enhebra desde la investigación hasta el verify y se hace
+cumplir en cada paso:
+
+```
+reference-decomposer ─► referencia enumerada (R1..Rn) ─► Matriz de Aceptación (DoD canónico, en el spec)
+        │
+        ▼
+completeness-critic (4ª lente del grill, temprano)  ─► ¿cada Rn tiene fila en la matriz + owner de unidad de trabajo? bloqueante si no
+        │
+   …ejecutar…  (visual-fidelity-checker: comparación lado a lado por superficie de UI vs. la pantalla de la referencia = evidencia)
+        │
+        ▼
+completeness-critic + independent-verifier (verify)  ─► cada Rn in-scope construido + evidenciado + verificado ≠ ejecutor
+        │
+        ▼
+hooks/check-acceptance-matrix.sh  ─► BLOQUEA "declarar hecho"/`gh pr create` si la matriz no está trazada al 100%
+```
+
+| Unidad | Tipo | Qué hace cumplir |
+|------|------|------------------|
+| [`templates/spec-and-dod.md`](templates/spec-and-dod.md) | template | DoD = Matriz de Aceptación, **canónica en el spec**; Reference Standard enumerado, o greenfield declarado explícitamente |
+| [`agents/reference-decomposer`](agents/reference-decomposer.md) | agente | referencia nombrada → lista plana enumerada de `req-id` → siembra la matriz |
+| [`agents/completeness-critic`](agents/completeness-critic.md) | agente | la **4ª lente del grill**: una capacidad de la referencia ausente del spec/plan es un hallazgo **bloqueante** (corre temprano *y* en el verify) |
+| [`agents/independent-verifier`](agents/independent-verifier.md) | agente | auditoría fila a fila de la matriz; evidencia real por fila; `verified-by ≠ ejecutor` |
+| [`agents/visual-fidelity-checker`](agents/visual-fidelity-checker.md) | agente | comparación lado a lado por superficie de UI vs. la pantalla de la referencia — fidelidad **externa**, distinta de la paridad interna claro/oscuro |
+| [`hooks/check-acceptance-matrix.sh`](hooks/check-acceptance-matrix.sh) | hook | **bloquea** "declarar hecho"/`gh pr create` mientras cualquier fila in-scope carezca de `built` + evidencia + `verified-by` independiente |
+| `Satisfies-reqs` (campo del plan) | campo | cada `req-id` in-scope tiene una unidad de trabajo dueña — ninguna capacidad de la referencia queda sin planificar |
+
+**GREEN ≠ COMPLETE.** GREEN = los tests que existen pasan sobre lo construido. COMPLETE = cada requisito
+in-scope de la referencia está trazado a evidencia y verificado de forma independiente. Una fase está hecha
+solo si es COMPLETE. Mapas completos: [`agents/README.md`](agents/README.md) · [`hooks/README.md`](hooks/README.md).
 
 ---
 
@@ -157,6 +199,9 @@ Prompts reales listos para copiar en 8 dominios, con lo que Forge produce en cad
 | [references/execution-modes.md](references/execution-modes.md) | Cómo paralelizar, automatizar, tierar y hacer checkpoints |
 | [references/verification.md](references/verification.md) | Definición de done + reglas de evidencia + ejemplos por dominio |
 | [references/model-routing.md](references/model-routing.md) | Routing de tiers de capacidad (vendor-neutral + ejemplo de mapeo) |
+| [agents/](agents/README.md) | La columna vertebral ejecutable: `reference-decomposer`, `completeness-critic`, `independent-verifier`, `visual-fidelity-checker` |
+| [hooks/](hooks/README.md) | El hook de enforcement: bloquea "declarar hecho"/PR sobre una Matriz de Aceptación incompleta |
+| [templates/spec-and-dod.md](templates/spec-and-dod.md) | Spec con Reference Standard + Matriz de Aceptación (el DoD canónico) |
 | [skills/](skills/README.md) | Skills grill compañeras incluidas (`grill-me`, `grill-with-docs`) — la forma interactiva del grill |
 
 ---
