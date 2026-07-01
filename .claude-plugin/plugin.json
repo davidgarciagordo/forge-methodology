@@ -13,5 +13,6 @@
   "license": "MIT",
   "keywords": ["methodology", "spec", "grill", "planning", "verification", "forge"],
   "skills": ["./", "./skills/grill-me", "./skills/grill-with-docs"],
-  "commands": "./commands"
+  "commands": "./commands",
+  "agents": ["./agents/completeness-critic.md", "./agents/independent-verifier.md", "./agents/reference-decomposer.md", "./agents/visual-fidelity-checker.md"]
 }
