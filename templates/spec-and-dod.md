@@ -68,15 +68,16 @@ R3  — [reference capability]
 
 ---
 
-## 3. Acceptance Matrix — *required* — the contract
+## Acceptance Matrix
+
+<!-- REQUIRED §3 — the contract. Do NOT rename or remove this exact heading: the enforcement hook
+     discovers the spec by scanning for it. -->
 
 Every in-scope capability from §2 becomes a row. **This table is the Definition of Done.** A phase / the
 whole work is `COMPLETE` only when **every `in-scope = yes` row** has `built = yes`, non-empty `evidence`,
 and a `verified-by` that is **not the executor**.
 
 The enforcement hook parses this exact table. Keep the header columns and order:
-
-## Acceptance Matrix
 
 | req-id | fuente (ref §/screen) | in-scope? | built? | evidence (test/screenshot/link) | verified-by (≠ executor) |
 |--------|----------------------|-----------|--------|---------------------------------|--------------------------|

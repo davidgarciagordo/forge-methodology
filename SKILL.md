@@ -25,43 +25,79 @@ Before starting any phase, check whether its artifact is already done (spec exis
 
 ---
 
-## The Loop (7 Steps)
+## The Loop
 
-Full detail in [references/the-loop.md](references/the-loop.md).
+Full detail in [references/the-loop.md](references/the-loop.md). The owner decides at exactly
+**two checkpoints** (steps 4 and 7), both as ONE multi-select batch with recommendations
+pre-marked — everything else runs without interrupting them.
 
-### 1. Align Intent
-Lead with the **value question first**: what problem does this actually solve and for whom? One focused round with the owner. Explicit decisions on scope, constraints, trade-offs, non-goals. Hard gate: **nothing gets executed until intent is aligned.**
+### 1. Align Intent + Brainstorm
+Lead with the **value question first**: what problem does this actually solve and for whom? Run a
+real brainstorm — surface the option space (2-3 genuinely different approaches with trade-offs),
+not just the first idea restated. One focused round with the owner: explicit decisions on scope,
+constraints, trade-offs, non-goals. Hard gate: **nothing gets executed until intent is aligned.**
 
-### 1.5. Reference Decomposition
+### 2. Reference Decomposition
 **Name the external reference the work is measured against, and enumerate its in-scope capabilities as a flat list** (each with a stable `req-id`). This is the cure for "Done against ourselves, not against the goal." The reference is a *named, inspectable thing* (competitor, spec, regulation, prior system) — not "best practices." The enumerated list **becomes the Acceptance Matrix** in the spec and threads forward to plan and verify. Genuinely novel work declares **greenfield** explicitly and enumerates from first principles. Run with the `reference-decomposer` agent; confirm nothing is missing with `completeness-critic`.
 
-### 2. Write a Versioned Spec
-A written artifact — both human and AI agree on it. Specific enough that a third party could verify whether the outcome meets it. Versioned and kept alongside the work. **The Definition of Done lives canonically here, as the Acceptance Matrix** (`req-id | source | in-scope? | built? | evidence | verified-by ≠ executor`) plus an explicit **Non-goals** section. Use [templates/spec-and-dod.md](templates/spec-and-dod.md). DoD is fixed in the spec — never deferred to the plan or the final sign-off.
+### 3. Draft + Grill ×3
+Write the **draft** — the chosen approach worked into a concrete design/plan sketch (not yet the
+formal spec). Then three independent hostile lenses attack the DRAFT — **plus the standing fourth
+lens, Completeness vs Reference, whenever there is an external reference.** The first three hunt
+what *breaks*; the fourth hunts what is *missing*: **a reference requirement not covered is a
+blocking finding. An unverified assumption is a finding.** Deep-reasoning tier, read-only lenses.
+Grilling the draft (cheap to change) before the spec (expensive to change) is the point.
 
-### 3. Adversarial Grill
-Three independent hostile lenses review the spec — **plus a standing fourth lens, Completeness vs Reference, whenever there is an external reference.** The first three hunt what *breaks*; the fourth hunts what is *missing*: **a reference requirement not covered is a finding** (blocking for any in-scope capability absent from the spec/plan). **An unverified assumption is a finding.** Deep-reasoning tier. After: respond → re-spec → re-grill on new seams → repeat until green.
+See [references/grill.md](references/grill.md) for the full method and the lens table by domain.
 
-When a human owns the call, the grill runs **interactively**: an **entry gate** of grounded clarifiers (one batch), the three automatic passes, a **user gate** that surfaces the emergent doubts — each with your recommended answer + alternatives, for the owner to accept / change / add to / dispute — then an informed re-grill. The gate is run by the orchestrator, never by a grill subagent.
+### 4. Owner Checkpoint #1 — multi-select with recommendations
+Surface the grill's emergent decisions to the owner as **ONE `AskUserQuestion` batch
+(multi-select)**: each item = a real decision the grill exposed, with **your recommended answer
+pre-marked** and the alternatives (+ the owner can add or dispute). Never a stream of one-off
+questions; never a decision buried in prose. The orchestrator runs this gate — never a grill
+subagent (subagents cannot talk to the owner).
 
-See [references/grill.md](references/grill.md) for the full method, the interactive gates, and the lens table by domain.
+### 5. Versioned Spec
+Integrate the draft + grill verdicts + owner decisions into the formal spec — a written artifact
+both human and AI agree on, specific enough that a third party could verify the outcome against
+it. Versioned and kept alongside the work. **The Definition of Done lives canonically here, as the
+Acceptance Matrix** (`req-id | source | in-scope? | built? | evidence | verified-by ≠ executor`)
+plus an explicit **Non-goals** section. Use [templates/spec-and-dod.md](templates/spec-and-dod.md). DoD is fixed in the spec — never deferred to the plan or the final sign-off.
 
-### 4. Global Plan
-All work units, all phases, no gaps — **before any execution begins.** Dependency graph computed. Parallelizable vs. serial derived from the graph. Grill the plan before locking it.
+### 6. Re-Grill ×2 (the spec)
+Two focused passes over the SPEC: (a) **do the fixes hold** — verify every checkpoint-#1 decision
+landed and survives attack; (b) **the new seams** — the fixes themselves create new edges; attack
+those, plus re-verify assumptions against the real repo. Not a third full grill — the draft
+already had one; this is regression + novelty.
 
-See [references/planning.md](references/planning.md) for the plan structure and work-unit template.
+### 7. Owner Checkpoint #2 — multi-select with recommendations
+Same mechanism as #4: ONE multi-select batch with the re-grill's outcomes and any remaining
+owner-only calls (cut lines, phasing v1/v1.1/v2, budget), recommendations pre-marked. After this
+gate the spec is **locked**.
 
-### 5. Execute Optimally
-Parallelize disjoint work units, each in its **own isolated workspace** (a branch + worktree, or a per-unit sandbox) so parallel writers never collide on disk. Share **one context pack** (key locations with file:line, decisions, vocabulary) so no agent re-discovers what another already found. Select the next unit from the plan's ready set — never improvise. Automate repetitive/mechanical tasks with tools before spending AI capability. Right capability tier per work unit. Checkpoint per phase.
+### 8. Global Plan + Execution Proposal
+All work units, all phases, no gaps — **before any execution begins.** Dependency graph computed;
+parallelizable vs serial derived from it; per-phase specs/plans written and versioned. Close with
+an explicit **execution proposal**: the most agile, clear and effective way to run the plan —
+**multi-agent by default when units are disjoint** (isolated worktrees per writer, ONE shared
+context pack with file:line so no agent re-discovers, read-only+terse diagnosis lenses, the right
+model tier per unit, deterministic tools before model effort). Present the proposal in one line
+per phase; the owner already decided everything else at the checkpoints.
 
-See [references/execution-modes.md](references/execution-modes.md) for orchestration rules.
+See [references/planning.md](references/planning.md) and [references/execution-modes.md](references/execution-modes.md).
 
-### 6. Verify Against the Definition of Done
-DoD fixed **before** execution (it is the Acceptance Matrix). **GREEN ≠ COMPLETE:** GREEN = the tests that exist pass over what was built; COMPLETE = every in-scope reference requirement traced to evidence and independently verified. A phase is done only if COMPLETE. **Verify audits the matrix, not the diff** — every in-scope row `built = yes` + real evidence + `verified-by ≠ executor` (run `independent-verifier` + `completeness-critic`). The `hooks/check-acceptance-matrix.sh` hook **blocks** "declare done"/PR while any in-scope row is untraced. Evidence before asserting; continuous per-unit verify throughout; full independent pass at the end.
+### 9. Execute → Verify → Sign-off
+Execute per the proposal: parallelize disjoint units in isolated workspaces, select from the
+plan's ready set — never improvise; checkpoint per phase. Then verify against the DoD: **GREEN ≠
+COMPLETE** — GREEN = existing tests pass; COMPLETE = every in-scope reference requirement traced
+to evidence and independently verified. **Verify audits the matrix, not the diff** — every
+in-scope row `built = yes` + real evidence + `verified-by ≠ executor` (run `independent-verifier`
++ `completeness-critic`; the `hooks/check-acceptance-matrix.sh` hook **blocks** declare-done/PR
+while any in-scope row is untraced). Finally the human owner reviews the verified output and signs
+off — evidence, not assertions; outstanding decisions and non-goals surfaced; the owner can cycle
+back to any earlier step.
 
 See [references/verification.md](references/verification.md) for the method and domain examples.
-
-### 7. Owner Sign-off
-Human owner reviews verified output and signs off. Provide evidence, not assertions. Outstanding decisions and non-goals surfaced. Owner can cycle back to any earlier step.
 
 ---
 
@@ -147,7 +183,7 @@ not against the goal." One artifact (the **enumerated reference → Acceptance M
 | [hooks/check-acceptance-matrix.sh](hooks/check-acceptance-matrix.sh) | hook | **blocks** "declare done"/`gh pr create` while any in-scope row lacks built + evidence + independent verify |
 | `Satisfies-reqs` in the plan | field | every in-scope `req-id` is owned by a work unit |
 
-Full map: [agents/README.md](agents/README.md) · install the hook: [hooks/README.md](hooks/README.md).
+Full map: [references/agents-overview.md](references/agents-overview.md) · install the hook: [hooks/README.md](hooks/README.md).
 
 ## Templates
 
@@ -164,6 +200,6 @@ Forge is self-contained and works with any AI assistant or human team. In **Clau
 
 - `superpowers:brainstorming` — structured facilitation for Step 1
 - `superpowers:writing-plans` — guided planning for Step 4
-- `grill-me` — adversarial review harness for Steps 3–4
+- `forge-methodology:grill-me` — adversarial review harness for the grill steps (qualified name — a popular standalone `grill-me` skill also exists)
 
 These are accelerators, not requirements. The methodology stands on its own without them.

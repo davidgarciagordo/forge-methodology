@@ -1,7 +1,7 @@
 ---
 name: completeness-critic
 description: The fourth grill lens — Completeness vs Reference. Audits a spec or plan for ABSENCES against the enumerated reference. Axiom: a capability of the reference that is absent from the spec/plan is a BLOCKING finding. Runs EARLY on the spec (before execution) and AGAIN at verify (against the built artifact). Use whenever a spec claims parity/equivalence with an external reference, or when you suspect scope was cut silently. Distinct from the other grill lenses, which hunt what BREAKS — this one hunts what is MISSING.
-tools: Read, Grep, Glob, WebSearch, WebFetch, Bash
+tools: Read, Grep, Glob, WebSearch, WebFetch
 model: opus
 ---
 

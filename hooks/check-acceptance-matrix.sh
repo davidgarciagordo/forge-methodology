@@ -43,7 +43,7 @@ cmd="$(extract_command)"
 # FORGE_DONE (e.g. `git commit -m "...[forge-done]"` or `FORGE_DONE=1 ...`).
 is_declare_done() {
   printf '%s' "$cmd" | grep -Eiq 'gh[[:space:]]+pr[[:space:]]+create' && return 0
-  printf '%s' "$cmd" | grep -Eq 'forge-done|FORGE_DONE' && return 0
+  printf '%s' "$cmd" | grep -Eq '\[forge-done\]|(^|[[:space:];&])FORGE_DONE=1' && return 0
   return 1
 }
 
@@ -54,19 +54,24 @@ fi
 # ---- 3. Locate the Acceptance Matrix ----------------------------------------------------------
 repo_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
+# A file is a blank TEMPLATE (not a live spec) only when it carries the actual marker COMMENT
+# (`<!-- forge:template`). Matching the bare string would also hit prose that merely mentions
+# the marker (e.g. the template's own "delete the marker" instructions surviving in a live spec),
+# silently disabling the gate — or, inverted, block a pristine template copied to .forge/spec.md.
+is_template() { grep -qE '<!--[[:space:]]*forge:template' "$1" 2>/dev/null; }
+
 find_matrix_files() {
   if [ -n "${FORGE_ACCEPTANCE_MATRIX:-}" ] && [ -f "$FORGE_ACCEPTANCE_MATRIX" ]; then
-    printf '%s\n' "$FORGE_ACCEPTANCE_MATRIX"; return 0
+    is_template "$FORGE_ACCEPTANCE_MATRIX" || printf '%s\n' "$FORGE_ACCEPTANCE_MATRIX"; return 0
   fi
   if [ -f "$repo_root/.forge/spec.md" ]; then
-    printf '%s\n' "$repo_root/.forge/spec.md"; return 0
+    is_template "$repo_root/.forge/spec.md" || printf '%s\n' "$repo_root/.forge/spec.md"; return 0
   fi
-  # Files carrying the `forge:template` marker are blank templates, not live specs — skip them.
-  grep -rlE '^##[[:space:]]+Acceptance Matrix' "$repo_root" \
+  grep -rlE '^##[[:space:]]+([0-9]+\.[[:space:]]+)?Acceptance Matrix' "$repo_root" \
     --include='*.md' \
     --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=vendor 2>/dev/null \
     | while IFS= read -r mf; do
-        grep -q 'forge:template' "$mf" 2>/dev/null || printf '%s\n' "$mf"
+        is_template "$mf" || printf '%s\n' "$mf"
       done || true
 }
 
@@ -78,7 +83,7 @@ done < <(find_matrix_files)
 if [ "${#matrices[@]}" -eq 0 ]; then
   if [ "${FORGE_REQUIRE_MATRIX:-0}" = "1" ]; then
     echo "FORGE BLOCK: no Acceptance Matrix found and FORGE_REQUIRE_MATRIX=1." >&2
-    echo "Create a spec from templates/spec-and-dod.md before declaring done." >&2
+    echo "Create a spec from $(cd "$(dirname "$0")/.." && pwd)/templates/spec-and-dod.md before declaring done." >&2
     exit 2
   fi
   echo "forge: no Acceptance Matrix found — skipping completeness check (set FORGE_REQUIRE_MATRIX=1 to enforce)." >&2
@@ -112,12 +117,13 @@ report="$(
         }
         inmatrix=1; seen_sep=0; next
       }
+      # end of table: first line without a pipe closes the matrix (was dead code before —
+      # a later table in the same file bled into the matrix and produced phantom rows)
+      inmatrix && $0 !~ /\|/ { inmatrix=0; next }
       inmatrix && /\|/ {
         # separator row like |---|---|
         if ($0 ~ /^[ \t]*\|[ \t:|-]+\|[ \t]*$/) { seen_sep=1; next }
         if (!seen_sep) next
-        # blank line / end of table
-        if (trim($0) == "") { inmatrix=0; next }
         split($0, cells, "|")
         id=trim(cells[col_id])
         if (id=="" ) next
@@ -130,7 +136,7 @@ report="$(
         if (empty(vb))    problems = problems " no-verified-by"
         else {
           v=tolower(trim(vb))
-          if (v=="executor" || v=="ejecutor" || v=="self" || v=="same" || v ~ /≠/) problems = problems " verified-by-not-independent"
+          if (v=="executor" || v=="ejecutor" || v=="self" || v=="same") problems = problems " verified-by-not-independent"
         }
         if (problems != "") { bad++; printf("  [%s] %s ->%s\n", FILE, id, problems) }
       }
