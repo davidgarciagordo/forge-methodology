@@ -24,28 +24,27 @@ Or the whole suite (this + design-review, token-economy, working-methods, automa
 
 ## How to use
 
-```bash
-/forge-run <your task>
-```
+Load the skill (`skill: "forge-methodology"`) — or just say **"forge this"** / **"pásalo por la Forja"** — and follow its loop. It asks you at exactly **two checkpoints** (after the draft grill and after the spec re-grill), both as one multi-select batch with recommendations pre-marked — nothing executes on a decision you didn't pick.
 
-Or load the skill directly (`skill: "forge-methodology"`) and follow its loop. It asks you at the **spec/grill** and **plan** gates (multi-select, recommendations pre-marked) — nothing executes on a decision you didn't pick.
+> `/forge-run <task>` is the fully-codified runner with machine-checked phase gates — it ships in the separate [`working-methods`](https://github.com/davidgarciagordo/claude-code-setup-optimizer) plugin (same catalog). This plugin alone gives you the methodology + agents + the acceptance-matrix hook.
 
 ## How it works
 
 The loop, in codified order:
 
-1. **Align intent** — value question first, one focused round with the owner.
+1. **Align intent + brainstorm** — value question first; a real option space (2-3 approaches), one focused round with the owner.
 2. **Reference Decomposition** — name an external reference, enumerate its capabilities into `req-id`s.
-3. **Versioned spec** — the `req-id`s become the Acceptance Matrix, the canonical Definition of Done.
-4. **Adversarial grill ×3** — system view, human reality, technical depth — plus a 4th lens, Completeness vs Reference, that flags any reference capability missing from the spec as a blocking finding.
-5. **Global plan** — all work units, no gaps, dependencies and ownership mapped, grilled before locking.
-6. **Execute** — parallelise disjoint units, right capability tier per unit, checkpoint per phase.
-7. **Verify** — `independent-verifier` audits the matrix row by row (`verified-by ≠ executor`); a hook blocks "declare done"/`gh pr create` while any in-scope row is untraced. **GREEN ≠ COMPLETE.**
-8. **Owner sign-off.**
+3. **Draft + grill ×3** — the chosen approach as a concrete draft, attacked by 3 hostile lenses + the Completeness-vs-Reference 4th lens (grill the draft while it's cheap to change).
+4. **Owner checkpoint #1** — ONE multi-select batch: every decision the grill exposed, recommendations pre-marked.
+5. **Versioned spec** — draft + verdicts + your decisions become the spec; the `req-id`s become the Acceptance Matrix, the canonical Definition of Done.
+6. **Re-grill ×2** — do the fixes hold + attack the new seams the fixes created.
+7. **Owner checkpoint #2** — ONE multi-select batch; after it the spec is locked.
+8. **Global plan + execution proposal** — all work units, no gaps, dependencies mapped, per-phase specs written; closes proposing the most effective execution (multi-agent by default: isolated worktrees, one shared context pack, model tier per unit).
+9. **Execute → verify → sign-off** — `independent-verifier` audits the matrix row by row (`verified-by ≠ executor`); a hook blocks "declare done"/`gh pr create` while any in-scope row is untraced. **GREEN ≠ COMPLETE.**
 
 **Domain packs** instantiate the loop for backend, frontend, multi-agent orchestration, security, design, brainstorming, marketing, and finance — see [references/domain-packs/](references/domain-packs/).
 
-Full detail: [SKILL.md](SKILL.md), [references/the-loop.md](references/the-loop.md), [references/grill.md](references/grill.md), [agents/README.md](agents/README.md), [hooks/README.md](hooks/README.md).
+Full detail: [SKILL.md](SKILL.md), [references/the-loop.md](references/the-loop.md), [references/grill.md](references/grill.md), [references/agents-overview.md](references/agents-overview.md), [hooks/README.md](hooks/README.md).
 
 ## Advantages
 

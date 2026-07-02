@@ -24,11 +24,21 @@ Make the demanded degree explicit from the spec before judging: a spec may want 
 structural/IA fidelity with the local design layer applied. Grade against *that* bar, not your taste.
 
 ## Method — one comparison per surface
+
+**Capture strategy (resolve FIRST — you cannot screenshot with WebFetch, it returns text):**
+in order of preference, (a) a browser-automation CLI available via Bash — `agent-browser` if the
+skill/CLI is installed, else `npx playwright screenshot <url> <out.png>`; (b) a screenshot set
+already provided in the run (spec assets, `.forge/` artifacts, the owner's files); (c) NEITHER
+available → do NOT fake it: return **BLOCKED per surface** stating that visual evidence cannot be
+produced, so the matrix row stays unevidenced and the gate holds. Never mark a UI row evidenced
+from a text description.
+
 For each in-scope UI `req-id` whose `fuente` is a reference screen:
-1. **Capture the reference screen** — WebFetch/screenshot the reference product's equivalent screen, or
-   load the provided screenshot set. Name the exact screen.
-2. **Capture the built surface** — render it (Storybook story, running app route, screenshot). Cover the
-   states the reference shows (default, populated, empty, etc.) and the breakpoints in scope.
+1. **Capture the reference screen** — via the capture strategy above (reference product's
+   equivalent screen), or load the provided screenshot set. Name the exact screen.
+2. **Capture the built surface** — render it (Storybook story, running app route) and capture via
+   the same strategy. Cover the states the reference shows (default, populated, empty, etc.) and
+   the breakpoints in scope.
 3. **Side-by-side compare** on: layout & grid, information density, visual hierarchy, component inventory
    (is every element of the reference screen present?), affordances (buttons/menus/filters the reference
    offers), spacing rhythm, typographic scale, and — if pixel-fidelity demanded — color/spacing exactness.

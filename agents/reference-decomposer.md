@@ -36,7 +36,7 @@ that by making the reference explicit and countable **before** any spec or plan 
    hides items).
 
 ## Output format
-Produce exactly this, ready to paste into `templates/spec-and-dod.md` §2 and §3:
+Produce exactly this, ready to paste into the spec's §2 and §3 (the spec template ships with this plugin at `${CLAUDE_PLUGIN_ROOT}/templates/spec-and-dod.md`):
 
 ```
 Reference: <name + version/URL/section>

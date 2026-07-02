@@ -9,7 +9,7 @@ Steps:
 
 1. Locate the spec / Acceptance Matrix: `$FORGE_ACCEPTANCE_MATRIX`, else `.forge/spec.md`, else any
    tracked `*.md` containing a `## Acceptance Matrix` heading. If none exists, tell the user to create one
-   from `templates/spec-and-dod.md` and run `reference-decomposer` first — completeness cannot be judged
+   from `${CLAUDE_PLUGIN_ROOT}/templates/spec-and-dod.md` and run `reference-decomposer` first — completeness cannot be judged
    without an enumerated reference.
 
 2. Run the machine check (it parses the matrix and reports incomplete in-scope rows):
