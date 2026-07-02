@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "forge-methodology",
   "displayName": "Forja / Forge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Human↔AI methodology: align intent → versioned spec → adversarial grill ×3 → global plan → optimised execution → verify vs DoD → owner sign-off. Domain-agnostic.",
   "author": {
     "name": "David García Gordo",
@@ -11,8 +11,24 @@
   "homepage": "https://github.com/davidgarciagordo/forge-methodology",
   "repository": "https://github.com/davidgarciagordo/forge-methodology",
   "license": "MIT",
-  "keywords": ["methodology", "spec", "grill", "planning", "verification", "forge"],
-  "skills": ["./", "./skills/grill-me", "./skills/grill-with-docs"],
+  "keywords": [
+    "methodology",
+    "spec",
+    "grill",
+    "planning",
+    "verification",
+    "forge"
+  ],
+  "skills": [
+    "./",
+    "./skills/grill-me",
+    "./skills/grill-with-docs"
+  ],
   "commands": "./commands",
-  "agents": ["./agents/completeness-critic.md", "./agents/independent-verifier.md", "./agents/reference-decomposer.md", "./agents/visual-fidelity-checker.md"]
+  "agents": [
+    "./agents/completeness-critic.md",
+    "./agents/independent-verifier.md",
+    "./agents/reference-decomposer.md",
+    "./agents/visual-fidelity-checker.md"
+  ]
 }
