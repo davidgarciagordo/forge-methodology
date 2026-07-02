@@ -4,11 +4,7 @@ Forge requires a global plan covering ALL work units before execution begins. No
 
 ---
 
-## Why a Global Plan?
-
-A partial plan creates the illusion of alignment. Execution starts, then hits an unplanned dependency, improvises, and diverges from the spec. The global plan eliminates mid-flight design decisions by requiring them up front.
-
-> Once the global plan is locked, execution is mechanical.
+A partial plan hits an unplanned dependency mid-execution and improvises away from the spec. The global plan forces those decisions up front: **once locked, execution is mechanical.**
 
 ---
 
