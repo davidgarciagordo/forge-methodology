@@ -1,11 +1,11 @@
 ---
 name: forge-methodology
-description: "Domain-agnostic human↔AI methodology for substantial work — produces: aligned intent → versioned spec → adversarially grilled spec → global plan → optimised execution → verified done → owner sign-off. Use when ANY of: (a) the user invokes `/forge-run` or says 'run it through the Forge' / 'forge this' / 'pásalo por la Forja' / 'forja'; (b) the work claims parity/equivalence with a named reference (competitor, spec, regulation, prior system); (c) the design is expensive to redo — multi-file/multi-phase, hard-to-reverse decision, or production/customer-facing (new feature, architecture/security decision, campaign, financial/research analysis). Do NOT use when the change is a single reversible edit (one-liner, formatting, minor tweak)."
+description: "Domain-agnostic human↔AI methodology for substantial work — produces: aligned intent → versioned spec → adversarially grilled spec → global plan → optimised execution → verified done → owner sign-off. The trigger is DESIGN vs EXECUTION, not file count. Use when ANY of: (a) the user invokes `/forge-run` or says 'run it through the Forge' / 'forge this' / 'pásalo por la Forja' / 'forja'; (b) the work claims parity/equivalence with a named reference (competitor, spec, regulation, prior system); (c) it needs a design decision expensive to get wrong — a new feature/product/integration, an architecture/security decision, a behavior contract others depend on, a campaign or financial/research analysis. Do NOT use when the work is EXECUTING something already decided (a bug fix, a mechanical sweep/migration, applying a written plan or review findings) even across many files, nor for a single reversible edit."
 ---
 
 # Forge — Methodology for Substantial Work with AI
 
-> **"Run it through the Forge"** = apply this pipeline. **Apply when ANY holds:** the work claims parity with a named reference · the design is multi-file/multi-phase · the decision is hard to reverse · the output is production/customer-facing. **Go direct when ALL hold:** single edit · reversible · no reference claim (one-liners, formatting, minor tweaks).
+> **"Run it through the Forge"** = apply this pipeline. **The trigger is design vs execution, not file count.** **Apply when** the work needs a design decision expensive to get wrong: parity with a named reference · a new feature/product/integration · an architecture/security decision · a behavior contract others depend on. **Go direct when** the work is executing something already decided — a bug fix, a mechanical sweep/migration, applying a plan or review findings — *even across many files* — or a single reversible edit. Count decisions, not files.
 
 ---
 
