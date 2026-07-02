@@ -93,11 +93,11 @@ Feed the owner's decisions back in and run **one more automatic pass**, focused 
 Then converge to conclusions. Repeat the gate only if the re-grill surfaces genuinely new blocking
 doubts — do not loop the human on settled points.
 
-### When to skip the gates
+### When to skip the gates (binary rule)
 
-Proportional to **novelty × blast radius** (see *Grill Depth*). A low-novelty, low-blast artifact needs
-no human gate — grill, fix, done. Surface the gate when a real human judgement is at stake: a trade-off
-with no clearly-right answer, a disputed assumption, a scope boundary only the owner owns.
+**Run the gates when ANY holds:** novelty is high/unknown OR blast radius is high (see *Grill Depth*) OR a
+finding is owner-only (a trade-off with no clearly-right answer, a disputed assumption, a scope boundary).
+**Skip the gates only when ALL are false** — then grill, fix, done, no human interruption.
 
 ---
 
@@ -122,13 +122,10 @@ The three lenses always cover the same three angles: **system view · human real
 
 ## The Fourth Lens — Completeness vs Reference
 
-The three classic lenses are tuned to catch what **breaks**. They are blind to what is **silently absent**:
-a feature the reference has and we never built, a screen we left out, a regulation clause we skipped. That
-blind spot is a documented, expensive failure — a product built "with parity to a reference" shipped short,
-and nobody caught it until the owner's final sign-off, because no lens was looking for *absence*.
-
-So whenever the work is measured against an **external reference** (a competitor product, a published spec,
-an RFC, a regulation, a prior system being replaced), add a standing fourth lens:
+The three classic lenses catch what **breaks**; they are blind to what is **silently absent** — a feature
+the reference has and we never built, a screen left out, a regulation clause skipped. Whenever the work is
+measured against an **external reference** (a competitor product, a published spec, an RFC, a regulation, a
+prior system being replaced), add a standing fourth lens:
 
 > **Completeness vs Reference** — its only question: *"What does the reference have that this spec / plan /
 > artifact does not?"* It cross-walks every enumerated reference capability (`req-id`) against the work.
@@ -167,11 +164,3 @@ Grill depth should be proportional to **novelty × blast radius**:
 | Any | High | Full three-lens grill + re-grill after fixes |
 
 Skip re-grill on artifacts that are already verified. Only re-grill the new seams.
-
----
-
-## The Key Principle
-
-> **An unverified assumption is a finding.**
-
-A lens that says "I assume X is true" without checking has not done its job. When a lens can verify something — by reading the existing system, the actual data, the live environment — it must do so and report what it found, not what it assumed.
