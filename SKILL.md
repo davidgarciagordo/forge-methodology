@@ -1,13 +1,11 @@
 ---
 name: forge-methodology
-description: "Domain-agnostic human↔AI methodology for substantial work — produces: aligned intent → versioned spec → adversarially grilled spec → global plan → optimised execution → verified done → owner sign-off. Use when the user invokes `/forge-run`, says 'run it through the Forge' / 'forge this' / 'pásalo por la Forja' / 'forja', OR starts substantial work too important to improvise: a new feature, an architecture/security decision, a marketing campaign, a financial/research analysis — any domain where getting the design wrong is expensive. Skip for trivials (one-liners, formatting)."
+description: "Domain-agnostic human↔AI methodology for substantial work — produces: aligned intent → versioned spec → adversarially grilled spec → global plan → optimised execution → verified done → owner sign-off. Use when ANY of: (a) the user invokes `/forge-run` or says 'run it through the Forge' / 'forge this' / 'pásalo por la Forja' / 'forja'; (b) the work claims parity/equivalence with a named reference (competitor, spec, regulation, prior system); (c) the design is expensive to redo — multi-file/multi-phase, hard-to-reverse decision, or production/customer-facing (new feature, architecture/security decision, campaign, financial/research analysis). Do NOT use when the change is a single reversible edit (one-liner, formatting, minor tweak)."
 ---
 
 # Forge — Methodology for Substantial Work with AI
 
-> **"Run it through the Forge"** = apply this pipeline. Use for any substantial work where getting the design wrong is expensive: new features, architectural decisions, campaigns, analyses, assessments, research. Go direct for trivials (one-liners, formatting, minor tweaks).
-
-Forge is not a process for everything. It is for the work where improvising the design produces thorough execution of the wrong thing.
+> **"Run it through the Forge"** = apply this pipeline. **Apply when ANY holds:** the work claims parity with a named reference · the design is multi-file/multi-phase · the decision is hard to reverse · the output is production/customer-facing. **Go direct when ALL hold:** single edit · reversible · no reference claim (one-liners, formatting, minor tweaks).
 
 ---
 
@@ -154,8 +152,6 @@ When a step fans out to multiple agents (parallel grill lenses, per-carril execu
 4. **Pluggable memory (optional accelerator, never required).** If a persistent memory tool exists (any `search`/`write`-style), the **orchestrator** (not each agent — avoids write races) searches before a phase to skip rediscovery and writes confirmed results + reusable research after. With none, fall back to file artifacts — never block.
 5. **Cap exploration, cache by domain.** Bound web/browser fan-out (N sources, 1 capture each); cache reusable research keyed by domain so re-runs and loops don't re-pay for it.
 
-The win compounds across iterations: the 2nd+ pass over the same target reuses the context pack and costs a fraction of the first.
-
 ### Specs and Plans are Versioned Artifacts
 
 They live alongside the work, committed. Work survives the session (checkpoint per phase/milestone).
@@ -198,8 +194,8 @@ Full map: [references/agents-overview.md](references/agents-overview.md) · inst
 
 Forge is self-contained and works with any AI assistant or human team. In **Claude Code**, several skills automate parts of the pipeline:
 
-- `superpowers:brainstorming` — structured facilitation for Step 1
-- `superpowers:writing-plans` — guided planning for Step 4
+- `superpowers:brainstorming` — structured facilitation for Step 1 (Align Intent)
+- `superpowers:writing-plans` — guided planning for Step 8 (Global Plan)
 - `forge-methodology:grill-me` — adversarial review harness for the grill steps (qualified name — a popular standalone `grill-me` skill also exists)
 
 These are accelerators, not requirements. The methodology stands on its own without them.
