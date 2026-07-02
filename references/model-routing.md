@@ -53,4 +53,4 @@ The orchestrator itself follows the same rule. Routine coordination is fast-tier
 
 ## Grill Depth and Tier
 
-The grill (Step 3) always uses the deep-reasoning tier for the initial pass. Subsequent re-grills can start in the execution tier and escalate only disputed or architectural findings to the deep-reasoning tier — this cuts the biggest reasoning cost without losing rigor on the seams that matter.
+The grill always uses the deep-reasoning tier for the initial pass. Subsequent re-grills can start in the execution tier and escalate only disputed or architectural findings to the deep-reasoning tier — this cuts the biggest reasoning cost without losing rigor on the seams that matter.

@@ -10,11 +10,7 @@ Verification in Forge has one hard rule: **fix the definition of done before exe
 > **COMPLETE** = every in-scope requirement of the reference is traced to evidence and independently verified.
 > **A phase is done only if COMPLETE — never with GREEN alone.**
 
-This is the axiom this whole reference is built around, because the failure it prevents is real and
-expensive: a build passed its own tests (GREEN), was declared done, and shipped missing whole capabilities
-the reference had — caught only at the owner's final sign-off, never at verify. GREEN measures the tests you
-*chose to write*; it says nothing about the requirements you *never covered*.
-
+GREEN measures the tests you *chose to write*; it says nothing about the requirements you *never covered*.
 The consequence for how you verify:
 
 > **Verify audits the Acceptance Matrix, not the diff.** The question is never "do my tests pass?" It is
@@ -31,7 +27,7 @@ while the matrix is not 100% traced — so COMPLETE is machine-checked, not advi
 
 ## The Definition of Done
 
-The Definition of Done lives **canonically in the spec (Step 2)**, as the Acceptance Matrix — not in the
+The Definition of Done lives **canonically in the spec (loop step 5)**, as the Acceptance Matrix — not in the
 plan, not in someone's memory, not deferred to the final sign-off. The plan and verification *reference* it;
 they do not redefine it. It must be:
 

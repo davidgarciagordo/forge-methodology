@@ -70,16 +70,7 @@ A multi-agent execution is done when:
 
 ---
 
-## War Stories
+## Failure modes these rules prevent
 
-**False-negative liveness check → duplicate worker race condition:**
-
-A worker's process count returned 0 (due to a grep pattern that matched only the exact process name, which had changed). The orchestrator concluded the worker was dead and launched a second worker into the same worktree. Both workers wrote to the same files for ~15 minutes before the conflict was noticed. Resolution required manually diffing both sets of changes and re-applying non-conflicting work.
-
-*Lesson: verify liveness by reading the worker's actual prompt output and PID — not by counting grep matches.*
-
-**Worker self-reports "250 tests passing" → critical failure in independent verify:**
-
-A worker ran its assigned module's tests, all passed, and declared the phase done. An independent verify job (typecheck + full suite) run after all workers completed found a typecheck error across the integration surface (not in any single module's tests) and 6 significant test failures in modules the worker had not run. The worker had not been wrong — its area was green. The definition of done was wrong: it had not specified "full suite," only "the area the worker touches."
-
-*Lesson: "green" must always mean typecheck + full suite. The definition of done must specify scope and independence, not just pass/fail.*
+- **False-negative liveness check → duplicate-worker race.** A grep-based process count returned 0 for a live worker; a second worker was launched into the same worktree and both wrote to the same files. Verify liveness by PID + actual prompt output, never by counting grep matches.
+- **Worker self-reports "250 tests passing" → critical failures in independent verify.** The worker's own area was green; the independent full typecheck + full suite found an integration-surface typecheck error and 6 failures in modules the worker never ran. "Green" must always mean typecheck + full suite, verified independently.

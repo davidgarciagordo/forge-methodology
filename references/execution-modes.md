@@ -109,7 +109,7 @@ Identify all serialization points in the plan before execution begins. Discoveri
 If execution surfaces a genuine design question the plan did not answer:
 
 1. **Stop execution** for the affected work units.
-2. Return to Step 3 (Grill) or Step 4 (Plan) to resolve the question.
+2. Return to the Grill or the Global Plan step to resolve the question.
 3. Update the spec and plan.
 4. Resume execution with the updated plan.
 

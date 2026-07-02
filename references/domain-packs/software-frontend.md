@@ -1,6 +1,6 @@
 # Forge — Software Frontend Pack
 
-> Domain pack for Forge methodology. Instantiates the universal 7-step loop for frontend development.
+> Domain pack for Forge methodology. Instantiates the Forge loop for frontend development.
 > Core references: [the-loop.md](../the-loop.md) · [grill.md](../grill.md) · [verification.md](../verification.md)
 
 ---
@@ -68,9 +68,9 @@ There are **two different visual checks**, and the failure mode is conflating th
 | **Reference** | Our own design tokens | The external Reference Standard (competitor screen, screenshot set, prior system) |
 | **Already covered by** | "Visual parity across all themes" in the DoD | This gate |
 
-The CRM-parity failure was an **external** fidelity miss (the build looked unlike the reference) that an
-internal theme-parity check could never catch. So fidelity to the reference is gated **per UI surface,
-during execution** — not batched and deferred to the owner's final sign-off:
+An external fidelity miss (the build looks unlike the reference) is invisible to any internal theme-parity
+check. So fidelity to the reference is gated **per UI surface, during execution** — not batched and
+deferred to the owner's final sign-off:
 
 1. For each in-scope UI `req-id` whose `fuente` is a reference screen, run the **`visual-fidelity-checker`**
    agent: it captures the reference screen and the built surface and produces a **side-by-side**.

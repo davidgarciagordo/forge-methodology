@@ -1,6 +1,6 @@
 # Forge — Finance Pack
 
-> Domain pack for Forge methodology. Instantiates the universal 7-step loop for financial modeling, analysis, reporting, and decision support.
+> Domain pack for Forge methodology. Instantiates the Forge loop for financial modeling, analysis, reporting, and decision support.
 > Core references: [the-loop.md](../the-loop.md) · [grill.md](../grill.md) · [verification.md](../verification.md)
 
 ---
