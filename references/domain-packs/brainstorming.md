@@ -1,6 +1,6 @@
 # Forge — Brainstorming Pack
 
-> Domain pack for Forge methodology. Instantiates the universal 7-step loop for structured ideation, strategy sessions, and decision-making.
+> Domain pack for Forge methodology. Instantiates the Forge loop for structured ideation, strategy sessions, and decision-making.
 > Core references: [the-loop.md](../the-loop.md) · [grill.md](../grill.md) · [verification.md](../verification.md)
 
 ---
@@ -19,7 +19,7 @@
 
 Brainstorming in Forge is not an open-ended idea dump. The goal is to produce **a decision or a ranked set of options with explicit assumptions** — an artifact the team can act on.
 
-### Step 1 (Align Intent) — especially important here
+### Align Intent — especially important here
 
 Before generating ideas, answer:
 - What specific decision or problem are we trying to resolve?
@@ -28,7 +28,7 @@ Before generating ideas, answer:
 
 Without a clear decision frame, brainstorming produces ideas, not answers.
 
-### Step 2 (Versioned Spec) — for brainstorming = a decision brief
+### Versioned Spec — for brainstorming = a decision brief
 
 The spec for a brainstorming session is a **decision brief** containing:
 - The decision to be made (specific, bounded)
@@ -36,7 +36,7 @@ The spec for a brainstorming session is a **decision brief** containing:
 - Options generated (labeled, not yet evaluated)
 - Key assumptions per option
 
-### Step 3 (Adversarial Grill) — stress-test before committing
+### Adversarial Grill — stress-test before committing
 
 Run the three lenses on the leading option(s) before deciding. Common findings:
 - Assumptions that are stated as facts but have not been verified

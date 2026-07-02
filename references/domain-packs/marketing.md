@@ -1,6 +1,6 @@
 # Forge — Marketing Pack
 
-> Domain pack for Forge methodology. Instantiates the universal 7-step loop for marketing campaigns, messaging, content, and go-to-market work.
+> Domain pack for Forge methodology. Instantiates the Forge loop for marketing campaigns, messaging, content, and go-to-market work.
 > Core references: [the-loop.md](../the-loop.md) · [grill.md](../grill.md) · [verification.md](../verification.md)
 
 ---

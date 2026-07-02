@@ -1,6 +1,6 @@
 # Forge — Security Pack
 
-> Domain pack for Forge methodology. Instantiates the universal 7-step loop for security assessments, threat modeling, and security-focused work.
+> Domain pack for Forge methodology. Instantiates the Forge loop for security assessments, threat modeling, and security-focused work.
 > Core references: [the-loop.md](../the-loop.md) · [grill.md](../grill.md) · [verification.md](../verification.md)
 
 ---

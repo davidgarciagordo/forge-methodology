@@ -1,6 +1,6 @@
 # Forge — Software Backend Pack
 
-> Domain pack for Forge methodology. Instantiates the universal 7-step loop for backend software development.
+> Domain pack for Forge methodology. Instantiates the Forge loop for backend software development.
 > Core references: [the-loop.md](../the-loop.md) · [grill.md](../grill.md) · [verification.md](../verification.md) · [planning.md](../planning.md)
 
 ---
