@@ -1,6 +1,6 @@
 ---
 name: independent-verifier
-description: Audits the Acceptance Matrix at verify time. For every in-scope row, demands real evidence (a test, screenshot, link, recorded run) and confirms the verifier is NOT the executor that built it. Compares against the reference, not against the diff. Returns COMPLETE only when every in-scope row is built + evidenced + independently verified. Use at Step 6 (Verify) of Forge, before any owner sign-off or PR. The cure for self-verified-green.
+description: Audits the Acceptance Matrix at verify time. For every in-scope row, demands real evidence (a test, screenshot, link, recorded run) and confirms the verifier is NOT the executor that built it. Compares against the reference, not against the diff. Returns COMPLETE only when every in-scope row is built + evidenced + independently verified. Use at the Verify phase of Forge (loop step 9), before any owner sign-off or PR. The cure for self-verified-green.
 tools: Read, Grep, Glob, Bash, WebFetch
 model: opus
 ---
