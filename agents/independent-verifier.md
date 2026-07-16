@@ -30,7 +30,7 @@ For every `in-scope = yes` row in the Acceptance Matrix:
    a screenshot (open it), a link (follow it), a recorded run. `—`, `TODO`, `WIP`, `pending`, prose
    assertions ("it works") are **not evidence**. Re-run the cited test when you can; report the result.
 3. **Against the reference, not the diff.** Compare the built behavior to the reference capability the
-   row maps to (`fuente`). "It does something" is not "it does what the reference does." Flag depth gaps.
+   row maps to (`source`). "It does something" is not "it does what the reference does." Flag depth gaps.
 4. **Independent verifier present?** Confirm `verified-by` is filled and ≠ the executor. Fill it with your
    own identity only for rows you actually re-verified.
 5. **Baseline for failures.** If a cited test fails, check whether it fails on baseline too (pre-existing,

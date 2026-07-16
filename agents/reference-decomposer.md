@@ -47,7 +47,7 @@ R4  — <capability>                                    [UNVERIFIED — could no
 …
 
 Acceptance Matrix (seed):
-| req-id | fuente (ref §/screen) | in-scope? | built? | evidence | verified-by (≠ executor) |
+| req-id | source (ref §/screen) | in-scope? | built? | evidence | verified-by (≠ executor) |
 |--------|----------------------|-----------|--------|----------|--------------------------|
 | R1 | <ref §> | yes | no | — | — |
 | R2 | <ref §> | yes | no | — | — |
