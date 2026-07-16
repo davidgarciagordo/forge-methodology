@@ -20,7 +20,9 @@ requirement of the reference traced to evidence and independently verified).
 
 1. `$FORGE_ACCEPTANCE_MATRIX` — explicit path to the spec file.
 2. `.forge/spec.md` at the repo root.
-3. Any tracked `*.md` containing a `## Acceptance Matrix` heading.
+3. Any **git-tracked** `*.md` containing a `## Acceptance Matrix` heading (untracked scratch files never
+   gate a PR). Outside a git repo, the hook falls back to a filesystem scan from the root, excluding
+   `.git`/`node_modules`/`vendor`.
 
 Files that still carry the `<!-- forge:template -->` marker (the pristine `spec-and-dod.md` template) are
 **skipped** by the scan, so the blank template is never mistaken for an incomplete live matrix. Delete that
@@ -28,6 +30,26 @@ marker when you turn a copy into your real spec.
 
 If no matrix is found the hook **does not block** (the repo may not use Forge) and prints a notice.
 Set `FORGE_REQUIRE_MATRIX=1` to make a missing/empty matrix itself a blocking condition.
+
+### Old or multiple specs (escape hatch)
+
+The scan finds **every** live matrix in the repo, so a finished-but-never-completed spec from a past
+feature would block every new PR forever. Two escapes, both honest:
+
+- **Point the hook at the active spec**: set `FORGE_ACCEPTANCE_MATRIX=path/to/active-spec.md` (in the hook
+  command's environment or your settings `env`) — discovery then stops at that file and ignores the rest.
+- **Archive the old spec**: re-add the `<!-- forge:template -->` marker at the top of the stale file — the
+  scan skips template-marked files. Do this only for specs that no longer represent claimable work.
+
+The block message prints both escapes when it fires.
+
+### Malformed headers are warned, not silently passed
+
+The parser matches columns **by header name**. A header that lacks `in-scope`, `built`, or `evidence`
+would silently un-gate every row under it (each row resolves as out-of-scope). The hook now prints a
+`forge: warning: matrix header incomplete …` line to stderr naming the missing column(s), and reports
+"no gateable in-scope rows" instead of claiming `COMPLETE`. With `FORGE_REQUIRE_MATRIX=1` a matrix that
+gates zero rows is itself blocking.
 
 ### Cell semantics
 

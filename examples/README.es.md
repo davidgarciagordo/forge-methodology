@@ -64,11 +64,21 @@ sin consultas N+1 introducidas
 
 ### Qué hace Forge con esto
 
-- **Spec producido:** documento versionado que define el esquema de la clave de idempotencia, la estrategia de almacenamiento (tabla dedicada o capa de caché), los tipos de evento en scope, el tratamiento de errores para duplicados vs. replay genuino, y el contrato de API del endpoint de webhook.
+- **Descomposición de la referencia (paso 2):** el agente `reference-decomposer` enumera la referencia con nombre — la documentación de webhooks de Stripe (reintentos, firmas, tipos de evento) — en `req-id`s estables, de modo que la completitud se juzga contra el contrato de Stripe, no contra nuestra propia checklist.
+- **Spec producido (paso 5):** documento versionado que define el esquema de la clave de idempotencia, la estrategia de almacenamiento (tabla dedicada o capa de caché), el tratamiento de errores para duplicados vs. replay genuino, y el contrato de API — cerrando con la Matriz de Aceptación sembrada desde esos `req-id`s (el DoD canónico):
+
+  | req-id | source | in-scope? | built? | evidence | verified-by (≠ executor) |
+  |---|---|---|---|---|---|
+  | R1 — clave de idempotencia guardada + comprobada por evento | Stripe docs §idempotency | yes | no | — | — |
+  | R2 — handler seguro ante los 3 reintentos de Stripe | Stripe docs §retries | yes | no | — | — |
+  | R3 — firma verificada en cada evento | Stripe docs §signatures | yes | no | — | — |
+
 - **Grill — lente de Arquitecto de plataforma:** lee el código del handler existente, comprueba si ya existe un wrapper de transacción en la base de código, identifica los bounded contexts afectados (pedidos, inventario, facturación) y señala cualquier índice faltante en la columna de clave de idempotencia.
 - **Grill — lente de Operador real:** somete a prueba el spec contra el caso de Stripe reintentando tras un commit parcial, un timeout de red en mitad del handler y un operador reproduciendo manualmente un evento para resolver un problema de soporte — los casos que nunca aparecen en el camino feliz.
 - **Grill — lente de Ingeniero del dominio:** comprueba condiciones de carrera cuando dos reintentos de Stripe llegan con milisegundos de diferencia, verifica el nivel de aislamiento de la transacción y señala si la comprobación de idempotencia y la acción de negocio están dentro del mismo límite transaccional.
-- **Definición de done:** typecheck en verde, suite completa en verde (no solo el módulo de webhook), los tests de integración cubren los escenarios de reintento, el checklist de seguridad está despejado, sin regresiones respecto a la línea base.
+- **Grill — 4ª lente de Completitud vs Referencia (`completeness-critic`):** cualquier capacidad de los webhooks de Stripe ausente de la matriz (p. ej. el versionado de tipos de evento) es un hallazgo **bloqueante** — el silencio no es recortar scope.
+- **Checkpoints del responsable (pasos 4 y 7):** exactamente dos lotes multi-select — las decisiones que el grill destapó (estrategia de almacenamiento, qué tipos de evento van a v1), con recomendaciones premarcadas. Tras el #2 el spec queda cerrado.
+- **Done (paso 9):** verify audita la **matriz, no el diff** — cada fila in-scope con `built = yes` + evidencia real (test con nombre, ejecución grabada) + `verified-by ≠ executor` (agente `independent-verifier`). El hook bloquea `gh pr create` hasta entonces. **GREEN ≠ COMPLETE.**
 
 ---
 
@@ -95,11 +105,14 @@ para cada componente nuevo
 
 ### Qué hace Forge con esto
 
-- **Spec producido:** un informe de decisión que concreta cuál es la causa real del abandono (a partir de analíticas, no por suposición), qué cubre el flujo rediseñado en cada paso, qué componentes se reutilizan frente a cuáles son nuevos, y qué significa "abandono reducido" en términos medibles y verificables antes de mover un píxel.
+- **Descomposición de la referencia (paso 2):** el rediseño nombra su referencia — el flujo actual que se reemplaza más las pantallas de referencia (flujo de un competidor o set de mocks aprobados) — y el agente `reference-decomposer` enumera cada pantalla/estado en `req-id`s (uno por paso × estado: por defecto, error, usuario que retoma), cada uno con su `source` apuntando a la pantalla de referencia.
+- **Spec producido (paso 5):** un informe de decisión que concreta cuál es la causa real del abandono (a partir de analíticas, no por suposición), qué componentes se reutilizan frente a cuáles son nuevos, y qué significa "abandono reducido" en términos medibles — cerrando con la Matriz de Aceptación, p. ej. `R4 — formulario del paso 3, estado de error en móvil | source: mock M-07 | in-scope: yes | built: no | — | —`.
 - **Grill — lente de UX/Usuario:** cuestiona si el paso 3 es la causa o un síntoma, solicita los desgloses de analíticas por dispositivo, idioma y fuente de tráfico, y prueba el spec ante el caso de un usuario que retoma la incorporación en mitad desde un dispositivo diferente.
 - **Grill — lente de Accesibilidad:** señala cualquier paso que dependa únicamente de estados hover, comprueba la gestión del foco al avanzar entre pasos, y verifica que el indicador de progreso se anuncia correctamente a los lectores de pantalla.
 - **Grill — lente de Sistema de diseño:** comprueba si el rediseño usa los tokens y componentes existentes o introduce silenciosamente valores codificados, y señala cualquier superficie donde el nuevo flujo rompa en modo oscuro o en el breakpoint más pequeño definido.
-- **Definición de done:** gate visual superado (capturas de cada paso en claro/oscuro × móvil/tablet/escritorio), auditoría de accesibilidad superada, stories de componente fusionadas, métrica de abandono medible antes y después — no se declara reducida sin datos.
+- **Grill — 4ª lente de Completitud vs Referencia:** una pantalla o estado de la referencia sin fila en la matriz (el estado vacío, el skeleton para 3G lento) es un hallazgo **bloqueante** antes de mover un píxel.
+- **Checkpoints del responsable (pasos 4 y 7):** dos lotes multi-select — p. ej. "¿recortar el camino de usuario-que-retoma a v1.1?" aparece como decisión explícita con recomendación, nunca como omisión silenciosa.
+- **Done (paso 9):** la matriz al 100% en las filas in-scope — para las filas de UI la evidencia la produce el agente `visual-fidelity-checker` (side-by-side de cada superficie construida vs. su pantalla de referencia, claro/oscuro × breakpoints), y después `independent-verifier` confirma `verified-by ≠ executor`. El abandono es medible antes/después — no se declara reducido sin datos. **GREEN ≠ COMPLETE.**
 
 ---
 

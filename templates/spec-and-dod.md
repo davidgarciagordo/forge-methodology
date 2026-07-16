@@ -62,7 +62,7 @@ R3  — [reference capability]
 > **Reference:** `GREENFIELD — no external reference.`
 >
 > Justify why no reference applies (genuinely novel; nothing comparable exists). Then enumerate the
-> capabilities **from first principles** instead — the matrix still applies, the `fuente` column just reads
+> capabilities **from first principles** instead — the matrix still applies, the `source` column just reads
 > `first-principles` instead of a reference section. Declaring greenfield is an explicit, reviewable choice,
 > not a default to dodge the reference step.
 
@@ -79,7 +79,7 @@ and a `verified-by` that is **not the executor**.
 
 The enforcement hook parses this exact table. Keep the header columns and order:
 
-| req-id | fuente (ref §/screen) | in-scope? | built? | evidence (test/screenshot/link) | verified-by (≠ executor) |
+| req-id | source (ref §/screen) | in-scope? | built? | evidence (test/screenshot/link) | verified-by (≠ executor) |
 |--------|----------------------|-----------|--------|---------------------------------|--------------------------|
 | R1 | [ref §/screen or `first-principles`] | yes | no | — | — |
 | R2 | [ref §/screen] | yes | no | — | — |
@@ -88,7 +88,7 @@ The enforcement hook parses this exact table. Keep the header columns and order:
 **Column contract:**
 
 - **req-id** — stable id from §2. Referenced by the plan's `Satisfies-reqs` field.
-- **fuente** — where the requirement comes from: the reference section/screen, or `first-principles`.
+- **source** — where the requirement comes from: the reference section/screen, or `first-principles`.
 - **in-scope?** — `yes` / `no`. A `no` row must be justified in §4 Non-goals.
 - **built?** — `yes` / `no`. Only `yes` when the capability actually exists in the artifact.
 - **evidence** — a *checkable* pointer: a test name/path, a screenshot file, a PR/commit link, a recorded

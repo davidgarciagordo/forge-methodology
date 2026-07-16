@@ -72,7 +72,7 @@ An external fidelity miss (the build looks unlike the reference) is invisible to
 check. So fidelity to the reference is gated **per UI surface, during execution** — not batched and
 deferred to the owner's final sign-off:
 
-1. For each in-scope UI `req-id` whose `fuente` is a reference screen, run the **`visual-fidelity-checker`**
+1. For each in-scope UI `req-id` whose `source` is a reference screen, run the **`visual-fidelity-checker`**
    agent: it captures the reference screen and the built surface and produces a **side-by-side**.
 2. Grade against the **fidelity bar the spec demanded** (pixel-match vs. structural/IA fidelity with our
    design layer applied) — not against taste.
