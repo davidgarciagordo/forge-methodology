@@ -61,11 +61,21 @@ checklist cleared, no N+1 queries introduced
 
 ### What Forge does with it
 
-- **Spec produced:** versioned document defining the idempotency key schema, storage strategy (dedicated table or cache layer), event types in scope, error handling for duplicate vs. genuine replay, and the API contract for the webhook endpoint.
+- **Reference decomposition (step 2):** the `reference-decomposer` agent enumerates the named reference — Stripe's webhook documentation (retries, signatures, event types) — into stable `req-id`s, so completeness is judged against Stripe's contract, not against our own checklist.
+- **Spec produced (step 5):** versioned document defining the idempotency key schema, storage strategy (dedicated table or cache layer), error handling for duplicate vs. genuine replay, and the API contract — closing with the Acceptance Matrix seeded from those `req-id`s (the canonical Definition of Done):
+
+  | req-id | source | in-scope? | built? | evidence | verified-by (≠ executor) |
+  |---|---|---|---|---|---|
+  | R1 — idempotency key stored + checked per event | Stripe docs §idempotency | yes | no | — | — |
+  | R2 — handler safe under Stripe's 3× retry | Stripe docs §retries | yes | no | — | — |
+  | R3 — signature verified on every event | Stripe docs §signatures | yes | no | — | — |
+
 - **Grill — Platform Architect lens:** reads the existing handler code, checks whether a transaction wrapper already exists in the codebase, identifies bounded contexts affected (orders, inventory, billing), and flags any missing index on the idempotency key column.
 - **Grill — Real Operator lens:** stress-tests the spec against Stripe retrying after a partial commit, a network timeout mid-handler, and an operator manually replaying an event to resolve a support issue — the cases that never appear in the happy path.
 - **Grill — Domain Engineer lens:** checks for race conditions when two Stripe retries arrive within milliseconds of each other, verifies transaction isolation level, and flags whether the idempotency check and the business action are inside the same transaction boundary.
-- **Definition of done:** typecheck green, full suite green (not just the webhook module), integration tests cover retry scenarios, security checklist cleared, no regressions against baseline.
+- **Grill — Completeness-vs-Reference 4th lens (`completeness-critic`):** any Stripe webhook capability absent from the matrix (e.g. event-type versioning) is a **blocking** finding — silence is not scope-cutting.
+- **Owner checkpoints (steps 4 and 7):** exactly two multi-select batches — the decisions the grill exposed (storage strategy, which event types are v1), recommendations pre-marked. After #2 the spec is locked.
+- **Done (step 9):** verify audits the **matrix, not the diff** — every in-scope row `built = yes` + real evidence (named test, recorded run) + `verified-by ≠ executor` (the `independent-verifier` agent). The hook blocks `gh pr create` until then. **GREEN ≠ COMPLETE.**
 
 ---
 
@@ -90,11 +100,14 @@ accessibility audit; component stories created for every new component
 
 ### What Forge does with it
 
-- **Spec produced:** a decision brief that pins down which step is the actual drop-off source (from analytics, not assumed), what the redesigned flow covers per step, which components are reused vs. new, and what "reduced drop-off" means in measurable, verifiable terms before any pixel is moved.
+- **Reference decomposition (step 2):** the redesign names its reference — the current flow being replaced plus the reference onboarding screens (competitor flow or approved mock set) — and the `reference-decomposer` agent enumerates each screen/state into `req-id`s (one per step × state: default, error, returning-user), each with its `source` pointing at the reference screen.
+- **Spec produced (step 5):** a decision brief that pins down which step is the actual drop-off source (from analytics, not assumed), which components are reused vs. new, and what "reduced drop-off" means in measurable terms — closing with the Acceptance Matrix, e.g. `R4 — step-3 form, mobile error state | source: mock M-07 | in-scope: yes | built: no | — | —`.
 - **Grill — UX/User lens:** challenges whether step 3 is the cause or a symptom, requests the analytics breakdowns by device, locale, and referral, and tests the spec against the case of a user who returns mid-onboarding on a different device.
 - **Grill — Accessibility lens:** flags any step that relies on hover states only, checks focus management when the user advances between steps, and verifies that the progress indicator is announced correctly to screen readers.
 - **Grill — Design System lens:** checks whether the redesign uses existing tokens and components or silently introduces hardcoded values, and flags any surface where the new flow breaks in dark mode or at the smallest defined breakpoint.
-- **Definition of done:** visual gate passed (screenshots for every step in light/dark × mobile/tablet/desktop), accessibility audit passed, component stories merged, drop-off metric measurable before and after — not declared reduced without data.
+- **Grill — Completeness-vs-Reference 4th lens:** a reference screen or state with no matrix row (the empty state, the slow-3G skeleton) is a **blocking** finding before any pixel moves.
+- **Owner checkpoints (steps 4 and 7):** two multi-select batches — e.g. "cut the returning-user path to v1.1?" appears as an explicit decision with a recommendation, never as a silent omission.
+- **Done (step 9):** the matrix at 100% for in-scope rows — for UI rows the evidence is produced by the `visual-fidelity-checker` agent (side-by-side of each built surface vs. its reference screen, light/dark × breakpoints), then `independent-verifier` confirms `verified-by ≠ executor`. Drop-off is measurable before/after — not declared reduced without data. **GREEN ≠ COMPLETE.**
 
 ---
 
