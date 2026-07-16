@@ -33,7 +33,7 @@ available → do NOT fake it: return **BLOCKED per surface** stating that visual
 produced, so the matrix row stays unevidenced and the gate holds. Never mark a UI row evidenced
 from a text description.
 
-For each in-scope UI `req-id` whose `fuente` is a reference screen:
+For each in-scope UI `req-id` whose `source` is a reference screen:
 1. **Capture the reference screen** — via the capture strategy above (reference product's
    equivalent screen), or load the provided screenshot set. Name the exact screen.
 2. **Capture the built surface** — render it (Storybook story, running app route) and capture via
