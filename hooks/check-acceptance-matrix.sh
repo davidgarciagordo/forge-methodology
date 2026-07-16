@@ -14,7 +14,8 @@
 # Matrix discovery order:
 #   1. $FORGE_ACCEPTANCE_MATRIX  (explicit path to a spec/markdown file)
 #   2. .forge/spec.md
-#   3. any tracked *.md containing a "## Acceptance Matrix" heading (scanned from repo root)
+#   3. any git-tracked *.md containing a "## Acceptance Matrix" heading (outside a git repo,
+#      falls back to a filesystem scan from the root, excluding .git/node_modules/vendor)
 #
 # If no matrix is found, the hook does NOT block (the repo may not use Forge) but prints a notice.
 # To make a missing matrix itself blocking, set FORGE_REQUIRE_MATRIX=1.
@@ -67,12 +68,23 @@ find_matrix_files() {
   if [ -f "$repo_root/.forge/spec.md" ]; then
     is_template "$repo_root/.forge/spec.md" || printf '%s\n' "$repo_root/.forge/spec.md"; return 0
   fi
-  grep -rlE '^##[[:space:]]+([0-9]+\.[[:space:]]+)?Acceptance Matrix' "$repo_root" \
-    --include='*.md' \
-    --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=vendor 2>/dev/null \
-    | while IFS= read -r mf; do
-        is_template "$mf" || printf '%s\n' "$mf"
-      done || true
+  # Scan git-TRACKED *.md only (untracked scratch/vendored files must not gate a PR).
+  # Outside a git repo, fall back to a filesystem scan.
+  if git -C "$repo_root" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    git -C "$repo_root" ls-files -z -- '*.md' 2>/dev/null \
+      | while IFS= read -r -d '' rel; do
+          mf="$repo_root/$rel"
+          grep -qE '^##[[:space:]]+([0-9]+\.[[:space:]]+)?Acceptance Matrix' "$mf" 2>/dev/null || continue
+          is_template "$mf" || printf '%s\n' "$mf"
+        done || true
+  else
+    grep -rlE '^##[[:space:]]+([0-9]+\.[[:space:]]+)?Acceptance Matrix' "$repo_root" \
+      --include='*.md' \
+      --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=vendor 2>/dev/null \
+      | while IFS= read -r mf; do
+          is_template "$mf" || printf '%s\n' "$mf"
+        done || true
+  fi
 }
 
 matrices=()
@@ -115,6 +127,14 @@ report="$(
           if (hc ~ /evidence|evidencia/) col_ev=i
           if (hc ~ /verified-by/)   col_vb=i
         }
+        # A header missing in-scope/built/evidence silently un-gates every row (cells resolve
+        # empty → the row is skipped as out-of-scope). Warn loudly instead of passing in silence.
+        missing=""
+        if (!col_scope) missing = missing " in-scope"
+        if (!col_built) missing = missing " built"
+        if (!col_ev)    missing = missing " evidence"
+        if (missing != "")
+          printf("forge: warning: matrix header incomplete in %s — missing column(s):%s. Rows under this header CANNOT be gated; fix the header (see templates/spec-and-dod.md).\n", FILE, missing) > "/dev/stderr"
         inmatrix=1; seen_sep=0; next
       }
       # end of table: first line without a pipe closes the matrix (was dead code before —
@@ -157,13 +177,22 @@ if [ -n "$violations" ]; then
     echo ""
     echo "Each in-scope row needs: built=yes + non-empty evidence + verified-by ≠ executor."
     echo "Run the independent-verifier agent, fill the evidence, then retry."
+    echo ""
+    echo "If a blocking row belongs to an OLD spec unrelated to this PR: point the hook at the active spec"
+    echo "(FORGE_ACCEPTANCE_MATRIX=path/to/active-spec.md) or archive the old one by re-adding the"
+    echo "'<!-- forge:template' marker at its top (the scan skips template-marked files)."
   } >&2
   exit 2
 fi
 
-if [ -n "$norows" ] && [ "${FORGE_REQUIRE_MATRIX:-0}" = "1" ]; then
-  echo "FORGE BLOCK: an Acceptance Matrix heading was found but has no in-scope rows ($norows)." >&2
-  exit 2
+if [ -n "$norows" ]; then
+  if [ "${FORGE_REQUIRE_MATRIX:-0}" = "1" ]; then
+    echo "FORGE BLOCK: an Acceptance Matrix heading was found but has no in-scope rows ($norows)." >&2
+    exit 2
+  fi
+  # Don't claim COMPLETE for a matrix that gated zero rows (empty table or incomplete header).
+  echo "forge: Acceptance Matrix found but no gateable in-scope rows — nothing to enforce (see warnings above; set FORGE_REQUIRE_MATRIX=1 to make this blocking)." >&2
+  exit 0
 fi
 
 echo "forge: Acceptance Matrix COMPLETE — all in-scope rows built + evidenced + independently verified." >&2
