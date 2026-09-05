@@ -3,7 +3,7 @@
   "name": "forge-methodology",
   "displayName": "Forja / Forge",
   "version": "1.0.1",
-  "description": "Human↔AI methodology: align intent → versioned spec → adversarial grill ×3 → global plan → optimised execution → verify vs DoD → owner sign-off. Domain-agnostic.",
+  "description": "9-step human↔AI methodology: an enumerated external reference feeds an Acceptance Matrix (one req-id per capability), and a hook blocks gh pr create while any in-scope row lacks real evidence or an independent verifier. Domain-agnostic.",
   "author": {
     "name": "David García Gordo",
     "url": "https://github.com/davidgarciagordo"

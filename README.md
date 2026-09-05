@@ -13,7 +13,7 @@ Just this plugin:
 /plugin install forge-methodology
 ```
 
-Or the whole suite (this + design-review, token-economy, working-methods, automations) from [one catalog](https://github.com/davidgarciagordo/claude-plugins):
+Or the whole suite (this + design-review, token-economy, working-methods, automations, swarm) from [one catalog](https://github.com/davidgarciagordo/claude-plugins):
 
 ```bash
 /plugin marketplace add davidgarciagordo/claude-plugins
@@ -45,7 +45,7 @@ Or the whole suite (this + design-review, token-economy, working-methods, automa
 4. Build R3, then run `/forge-verify-matrix` (or the `independent-verifier` agent) to fill evidence + an independent `verified-by` for R2 and R3.
 5. `gh pr create` again → `forge: Acceptance Matrix COMPLETE — all in-scope rows built + evidenced + independently verified.`
 
-> **What the hook does and does not guarantee.** It is a `PreToolUse` guardrail on the agent's own `gh pr create` (plus opt-in `[forge-done]` / `FORGE_DONE=1` markers). It stops the *agent* from declaring done early; it is **not** server-side branch protection — a human pushing and merging from the web UI bypasses it. For a server-side gate, run the same script in CI ([hooks/README.md](hooks/README.md) shows the invocation).
+> **What the hook does and does not guarantee.** It is a `PreToolUse` guardrail on the agent's own `gh pr create` (plus opt-in `[forge-done]` / `FORGE_DONE=1` markers). It stops the *agent* from declaring done early; it is **not** server-side branch protection — a human pushing and merging from the web UI bypasses it. For a server-side gate, run the same script in CI ([hooks/README.md](hooks/README.md) shows the invocation). **It is also fail-open by default**: if it finds no Acceptance Matrix at all, it prints a notice and does **not** block — the repo may simply not be using Forge for that PR. Set `FORGE_REQUIRE_MATRIX=1` if you want a missing matrix to be a blocking condition too.
 
 ## What's in the box
 
