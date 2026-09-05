@@ -1,10 +1,10 @@
 **English** | [Español](README.es.md)
 
-# forge-methodology
+# 🔥 forge-methodology
 
 AI-assisted work fails in two repeatable ways, and both look like success until someone checks. **"Done against ourselves, not against the goal"**: the work gets measured against the executor's own checklist instead of the thing it was supposed to match — a "parity with X" project ships with half of X because nobody ever enumerated what X does. And **"self-verified-green"**: the same agent that built the thing declares it verified, and green tests over *what exists* get mistaken for a complete result. Forge is a 9-step human↔AI methodology (a Claude Code plugin) that turns both failures from advisories into **code**: the external reference is enumerated into an **Acceptance Matrix** — one `req-id` per capability — and a hook **blocks `gh pr create`** while any in-scope row lacks real evidence or an independent verifier. Completeness stops being a promise and becomes an exit code.
 
-## Install
+## 📦 Install
 
 Just this plugin:
 
@@ -20,7 +20,7 @@ Or the whole suite (this + design-review, token-economy, working-methods, automa
 /plugin install forge-methodology@davidgarciagordo-plugins
 ```
 
-## Quick start
+## 🚀 Quick start
 
 1. Install (above), then say **"forge this: add idempotent payment webhooks, parity with Stripe's webhook spec"** — the loop runs, asking you at exactly **two checkpoints** (multi-select batches, recommendations pre-marked).
 2. Step 2 enumerates the reference into `req-id`s; the spec's **Acceptance Matrix** becomes the Definition of Done:
@@ -47,7 +47,7 @@ Or the whole suite (this + design-review, token-economy, working-methods, automa
 
 > **What the hook does and does not guarantee.** It is a `PreToolUse` guardrail on the agent's own `gh pr create` (plus opt-in `[forge-done]` / `FORGE_DONE=1` markers). It stops the *agent* from declaring done early; it is **not** server-side branch protection — a human pushing and merging from the web UI bypasses it. For a server-side gate, run the same script in CI ([hooks/README.md](hooks/README.md) shows the invocation). **It is also fail-open by default**: if it finds no Acceptance Matrix at all, it prints a notice and does **not** block — the repo may simply not be using Forge for that PR. Set `FORGE_REQUIRE_MATRIX=1` if you want a missing matrix to be a blocking condition too.
 
-## What's in the box
+## 🧩 What's in the box
 
 | Component | Type | What it does | Invocation |
 |---|---|---|---|
@@ -64,7 +64,7 @@ Or the whole suite (this + design-review, token-economy, working-methods, automa
 | [references/](references/) | 7 docs + 8 domain packs | [the-loop](references/the-loop.md), [grill](references/grill.md), [planning](references/planning.md), [execution-modes](references/execution-modes.md), [model-routing](references/model-routing.md), [verification](references/verification.md), [agents-overview](references/agents-overview.md) | loaded by the skill |
 | [examples/](examples/README.md) | examples | 8 copy-paste end-to-end prompts across domains | copy-paste |
 
-## How it works — the 9-step loop
+## ⚙️ How it works — the 9-step loop
 
 1. **Align intent + brainstorm** — value question first; a real option space (2-3 approaches), one focused round with the owner.
 2. **Reference Decomposition** — name an external reference, enumerate its capabilities into `req-id`s.
@@ -82,7 +82,7 @@ Or the whole suite (this + design-review, token-economy, working-methods, automa
 
 Full detail: [SKILL.md](SKILL.md), [references/the-loop.md](references/the-loop.md), [references/grill.md](references/grill.md), [references/agents-overview.md](references/agents-overview.md), [hooks/README.md](hooks/README.md).
 
-## Glossary
+## 📖 Glossary
 
 - **Grill** — an adversarial review pass: independent hostile lenses attack a draft or spec to break it while changing it is still cheap.
 - **Lens** — one grill perspective with its own failure hypothesis (e.g. platform architect · real operator · domain engineer); the standing 4th lens hunts what is *missing*, not what breaks.
@@ -91,21 +91,21 @@ Full detail: [SKILL.md](SKILL.md), [references/the-loop.md](references/the-loop.
 - **GREEN ≠ COMPLETE** — GREEN = the tests that exist pass over what was built; COMPLETE = every in-scope reference requirement traced to evidence and independently verified. Only COMPLETE is done.
 - **State capsule** — the per-workstream resume artifact ([template](templates/state-capsule.md)) so work survives sessions, quotas, and interruptions.
 
-## When NOT to use it
+## 🚫 When NOT to use it
 
 **The trigger is design vs execution, not file count.** Go direct — no Forge — when the work is *executing something already decided*: a bug fix, a mechanical sweep or migration, applying a written plan or review findings (even across many files), or a single reversible edit. Use Forge when the work needs a design decision that is expensive to get wrong: parity with a named reference, a new feature/product/integration, an architecture or security decision, a behavior contract others depend on.
 
 Honest cost: a full run spends **4+ deep-reasoning-tier passes before any execution** (grill ×3 + completeness lens, re-grill ×2, plan grill, independent verify). Below a certain work size the methodology costs more than the mistake it prevents — that's what the trigger above is for. Count decisions, not files.
 
-## `/forge-run`?
+## ❓ `/forge-run`?
 
 `/forge-run <task>` — the fully-codified runner with machine-checked phase gates — is **not in this plugin**; it ships in the separate [`working-methods`](https://github.com/davidgarciagordo/claude-code-setup-optimizer) plugin (same catalog). Standalone, this plugin gives you the methodology skill (triggered by "forge this"), the two grill skills, the 4 agents, the `/forge-verify-matrix` command, and the acceptance-matrix hook.
 
-## Alternatives
+## 🔀 Alternatives
 
 - **git clone as a skill** (older, pre-plugin method): `git clone https://github.com/davidgarciagordo/forge-methodology ~/.claude/skills/forge-methodology`.
 - **As a project rule** — if you want Forge enforced as a CLAUDE.md rule rather than an invoked skill, copy `SKILL.md` into your rules directory: `cp SKILL.md ~/.claude/rules/forge-methodology.md`.
 
-## License
+## ⚖️ License
 
 MIT © David García Gordo
