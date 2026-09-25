@@ -66,22 +66,9 @@ Or the whole suite (this + design-review, token-economy, working-methods, automa
 
 ## ⚙️ How it works — the 9-step loop
 
-```mermaid
-flowchart TD
-    A["1. Align intent + brainstorm"] --> B["2. Reference Decomposition → req-ids"]
-    B --> C["3. Draft + grill ×3 + completeness lens"]
-    C --> D{"4. Owner checkpoint #1<br/>(ONE multi-select batch)"}
-    D --> E["5. Versioned spec + Acceptance Matrix"]
-    E --> F["6. Re-grill ×2"]
-    F --> G{"7. Owner checkpoint #2<br/>(spec locked)"}
-    G --> H["8. Global plan + execution proposal"]
-    H --> I["9. Execute (multi-agent, isolated worktrees)"]
-    I --> J["independent-verifier audits the matrix row by row"]
-    J --> K{"gh pr create"}
-    K -- "matrix incomplete" --> L["hook BLOCKS (exit 2)"]
-    L --> I
-    K -- "matrix COMPLETE" --> M["PR opens"]
-```
+[![The Forge loop — 9 steps](docs/diagrams/forge-loop.png)](docs/diagrams/forge-loop.html)
+
+*Interactive version: docs/diagrams/forge-loop.html (open locally)*
 
 1. **Align intent + brainstorm** — value question first; a real option space (2-3 approaches), one focused round with the owner.
 2. **Reference Decomposition** — name an external reference, enumerate its capabilities into `req-id`s.

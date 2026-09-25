@@ -66,22 +66,9 @@ O toda la suite (este + design-review, token-economy, working-methods, automatio
 
 ## ⚙️ Cómo funciona — el loop de 9 pasos
 
-```mermaid
-flowchart TD
-    A["1. Alinear intención + brainstorm"] --> B["2. Descomposición de la referencia → req-ids"]
-    B --> C["3. Borrador + grill ×3 + lente de completitud"]
-    C --> D{"4. Checkpoint del responsable #1<br/>(UN lote multi-select)"}
-    D --> E["5. Spec versionado + Matriz de Aceptación"]
-    E --> F["6. Re-grill ×2"]
-    F --> G{"7. Checkpoint del responsable #2<br/>(spec cerrado)"}
-    G --> H["8. Plan global + propuesta de ejecución"]
-    H --> I["9. Ejecutar (multiagente, worktrees aislados)"]
-    I --> J["independent-verifier audita la matriz fila a fila"]
-    J --> K{"gh pr create"}
-    K -- "matriz incompleta" --> L["hook BLOQUEA (exit 2)"]
-    L --> I
-    K -- "matriz COMPLETA" --> M["se abre el PR"]
-```
+[![El loop de la Forja — 9 pasos](docs/diagrams/forge-loop.es.png)](docs/diagrams/forge-loop.es.html)
+
+*Versión interactiva: docs/diagrams/forge-loop.es.html (ábrelo en local)*
 
 1. **Alinear intención + brainstorm** — primero la pregunta de valor; espacio de opciones real (2-3 enfoques), una ronda enfocada con el responsable.
 2. **Descomposición de la referencia** — nombra una referencia externa, enumera sus capacidades en `req-id`s.
