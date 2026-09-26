@@ -6,10 +6,10 @@ reference → Acceptance Matrix** — from research through verify.
 
 | Agent | Runs at | Job | Axiom | Tier |
 |-------|---------|-----|-------|------|
-| [`reference-decomposer`](reference-decomposer.md) | Step 2 (Reference Decomposition) | Named reference → flat enumerated capability list with req-ids → seeds the Acceptance Matrix | "Parity with X" must enumerate what X does | execution |
-| [`completeness-critic`](completeness-critic.md) | Steps 3/6 (grill the draft/spec) **and** Step 9 (verify) | The 4th grill lens: hunts **absences** vs. the reference | A reference capability absent from the spec/plan = **blocking** finding | deep-reasoning |
-| [`independent-verifier`](independent-verifier.md) | Step 9 (Verify) | Audits the matrix row-by-row; demands evidence; enforces verifier ≠ executor | GREEN ≠ COMPLETE; self-verified-green doesn't count | deep-reasoning |
-| [`visual-fidelity-checker`](visual-fidelity-checker.md) | Step 9 (execution, per UI unit) | Side-by-side of each UI surface vs. the reference's screen | External fidelity ≠ internal theme parity | execution |
+| [`reference-decomposer`](../agents/reference-decomposer.md) | Step 2 (Reference Decomposition) | Named reference → flat enumerated capability list with req-ids → seeds the Acceptance Matrix | "Parity with X" must enumerate what X does | execution |
+| [`completeness-critic`](../agents/completeness-critic.md) | Steps 3/6 (grill the draft/spec) **and** Step 9 (verify) | The 4th grill lens: hunts **absences** vs. the reference | A reference capability absent from the spec/plan = **blocking** finding | deep-reasoning |
+| [`independent-verifier`](../agents/independent-verifier.md) | Step 9 (Verify) | Audits the matrix row-by-row; demands evidence; enforces verifier ≠ executor | GREEN ≠ COMPLETE; self-verified-green doesn't count | deep-reasoning |
+| [`visual-fidelity-checker`](../agents/visual-fidelity-checker.md) | Step 9 (execution, per UI unit) | Side-by-side of each UI surface vs. the reference's screen | External fidelity ≠ internal theme parity | execution |
 
 ## How they chain
 

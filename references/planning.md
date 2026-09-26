@@ -1,5 +1,15 @@
 # Planning — Global Plan Before Execution
 
+**Contents**
+
+- [Work Unit](#work-unit)
+- [Plan Structure](#plan-structure)
+- [The Dependency Graph](#the-dependency-graph)
+- [Phase Granularity](#phase-granularity)
+- [The Planning Checklist](#the-planning-checklist)
+- [Resume Capsule](#resume-capsule)
+- [Work Unit Template](#work-unit-template)
+
 Forge requires a global plan covering ALL work units before execution begins. No gaps. No "we'll figure it out later."
 
 ---
@@ -100,10 +110,10 @@ Blocked on:  [anything waiting for external input]
 
 Checkpoint this capsule at the end of each phase. Resume by reading it — not by re-deriving from scratch from the spec and git history.
 
-See the template at [../templates/state-capsule.md](../templates/state-capsule.md).
+When opening a workstream, copy the template [../templates/state-capsule.md](../templates/state-capsule.md).
 
 ---
 
 ## Work Unit Template
 
-See [../templates/work-unit-plan.md](../templates/work-unit-plan.md) for a ready-to-fill template.
+When writing a work unit, copy the ready-to-fill template [../templates/work-unit-plan.md](../templates/work-unit-plan.md).

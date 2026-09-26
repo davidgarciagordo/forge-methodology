@@ -1,4 +1,6 @@
 ---
+name: forge-verify-matrix
+disable-model-invocation: true
 description: Audit the Forge Acceptance Matrix — block done unless every in-scope row is built + evidenced + independently verified.
 ---
 

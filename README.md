@@ -10,7 +10,7 @@ Just this plugin:
 
 ```bash
 /plugin marketplace add davidgarciagordo/forge-methodology
-/plugin install forge-methodology
+/plugin install forge-methodology@forge-methodology
 ```
 
 Or the whole suite (this + design-review, token-economy, working-methods, automations, swarm) from [one catalog](https://github.com/davidgarciagordo/claude-plugins):
@@ -58,7 +58,7 @@ Or the whole suite (this + design-review, token-economy, working-methods, automa
 | [`completeness-critic`](agents/completeness-critic.md) | agent (deep tier) | 4th grill lens: hunts what is **missing** vs the reference (absence = blocking) | subagent — steps 3 and 9 |
 | [`independent-verifier`](agents/independent-verifier.md) | agent (deep tier) | Row-by-row matrix audit: real evidence per row, `verified-by ≠ executor` | subagent — step 9 |
 | [`visual-fidelity-checker`](agents/visual-fidelity-checker.md) | agent (execution tier) | Side-by-side of each built UI surface vs the reference's equivalent screen | subagent — UI rows |
-| [`/forge-verify-matrix`](commands/forge-verify-matrix.md) | command | Manual run of the completeness gate + the two verify agents | `/forge-verify-matrix` |
+| [`/forge-verify-matrix`](skills/forge-verify-matrix/SKILL.md) | skill (user-invoked) | Manual run of the completeness gate + the two verify agents | `/forge-verify-matrix` |
 | [`check-acceptance-matrix.sh`](hooks/check-acceptance-matrix.sh) | hook (`PreToolUse` on Bash) | Blocks `gh pr create` / `[forge-done]` while any in-scope row is untraced | automatic once installed |
 | [templates/](templates/) | 4 templates | [spec-and-dod](templates/spec-and-dod.md) (the matrix), [work-unit-plan](templates/work-unit-plan.md) (`Satisfies-reqs`), [state-capsule](templates/state-capsule.md), [phase-gate-checklist](templates/phase-gate-checklist.md) | copy into your repo |
 | [references/](references/) | 7 docs + 8 domain packs | [the-loop](references/the-loop.md), [grill](references/grill.md), [planning](references/planning.md), [execution-modes](references/execution-modes.md), [model-routing](references/model-routing.md), [verification](references/verification.md), [agents-overview](references/agents-overview.md) | loaded by the skill |
@@ -103,12 +103,12 @@ Honest cost: a full run spends **4+ deep-reasoning-tier passes before any execut
 
 ## ❓ `/forge-run`?
 
-`/forge-run <task>` — the fully-codified runner with machine-checked phase gates — is **not in this plugin**; it ships in the separate [`working-methods`](https://github.com/davidgarciagordo/claude-code-setup-optimizer) plugin (same catalog). Standalone, this plugin gives you the methodology skill (triggered by "forge this"), the two grill skills, the 4 agents, the `/forge-verify-matrix` command, and the acceptance-matrix hook.
+`/forge-run <task>` — the fully-codified runner with machine-checked phase gates — is **not in this plugin**; it ships in the separate [`working-methods`](https://github.com/davidgarciagordo/claude-code-setup-optimizer) plugin (same catalog). Standalone, this plugin gives you the methodology skill (triggered by "forge this"), the two grill skills, the 4 agents, the user-invoked `/forge-verify-matrix` skill, and the acceptance-matrix hook.
 
 ## 🔀 Alternatives
 
 - **git clone as a skill** (older, pre-plugin method): `git clone https://github.com/davidgarciagordo/forge-methodology ~/.claude/skills/forge-methodology`.
-- **As a project rule** — if you want Forge enforced as a CLAUDE.md rule rather than an invoked skill, copy `SKILL.md` into your rules directory: `cp SKILL.md ~/.claude/rules/forge-methodology.md`.
+- **As a user rule** — if you want Forge enforced as a CLAUDE.md-style rule rather than an invoked skill, copy `SKILL.md` into your user rules directory: `cp SKILL.md ~/.claude/rules/forge-methodology.md` (or into `.claude/rules/` for a single project).
 
 ## ⚖️ License
 

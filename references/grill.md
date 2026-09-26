@@ -1,5 +1,13 @@
 # Grill — Adversarial Review Method
 
+**Contents**
+
+- [The Method](#the-method)
+- [Running the Grill Interactively](#running-the-grill-interactively)
+- [Lenses by Domain](#lenses-by-domain)
+- [The Fourth Lens — Completeness vs Reference](#the-fourth-lens--completeness-vs-reference)
+- [Grill Depth](#grill-depth)
+
 The grill is Forge's core quality gate. It is not a friendly review. Its job is to find what breaks.
 
 ---
@@ -145,7 +153,7 @@ Rules for the fourth lens:
   has it — is a finding.
 - A capability quietly moved from in-scope to out-of-scope **without an explicit Non-goals entry** is a
   blocking finding. Scope may be cut, but only explicitly, by the owner.
-- It runs as the **`completeness-critic`** agent (see [`../agents/completeness-critic.md`](../agents/completeness-critic.md)),
+- It runs as the **`completeness-critic`** agent (defined in `agents/completeness-critic.md`),
   on the deep-reasoning tier, both early and late.
 
 For **greenfield** work (no external reference, declared explicitly in the spec), the fourth lens checks the

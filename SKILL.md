@@ -1,6 +1,6 @@
 ---
 name: forge-methodology
-description: "Domain-agnostic human↔AI methodology for substantial work — produces: aligned intent → versioned spec → adversarially grilled spec → global plan → optimised execution → verified done → owner sign-off. The trigger is DESIGN vs EXECUTION, not file count. Use when ANY of: (a) the user invokes `/forge-run` or says 'run it through the Forge' / 'forge this' / 'pásalo por la Forja' / 'forja'; (b) the work claims parity/equivalence with a named reference (competitor, spec, regulation, prior system); (c) it needs a design decision expensive to get wrong — a new feature/product/integration, an architecture/security decision, a behavior contract others depend on, a campaign or financial/research analysis. Do NOT use when the work is EXECUTING something already decided (a bug fix, a mechanical sweep/migration, applying a written plan or review findings) even across many files, nor for a single reversible edit."
+description: "Domain-agnostic human↔AI methodology for substantial work: aligned intent → grilled, versioned spec → global plan → execution → independently verified done → owner sign-off. Use when (a) the user says 'run it through the Forge' / 'forge this' / 'pásalo por la Forja', or the working-methods `/forge-run` runner delegates here; (b) the work claims parity with a named reference (competitor, spec, regulation, prior system); (c) it needs a design decision expensive to get wrong (new feature/product/integration, architecture/security, a contract others depend on, a campaign or financial analysis)."
 ---
 
 # Forge — Methodology for Substantial Work with AI
@@ -25,7 +25,7 @@ Before starting any phase, check whether its artifact is already done (spec exis
 
 ## The Loop
 
-Full detail in [references/the-loop.md](references/the-loop.md). The owner decides at exactly
+Read [references/the-loop.md](references/the-loop.md) when you need a step's full inputs, outputs and exit criteria. The owner decides at exactly
 **two checkpoints** (steps 4 and 7), both as ONE multi-select batch with recommendations
 pre-marked — everything else runs without interrupting them.
 
@@ -46,7 +46,7 @@ what *breaks*; the fourth hunts what is *missing*: **a reference requirement not
 blocking finding. An unverified assumption is a finding.** Deep-reasoning tier, read-only lenses.
 Grilling the draft (cheap to change) before the spec (expensive to change) is the point.
 
-See [references/grill.md](references/grill.md) for the full method and the lens table by domain.
+Read [references/grill.md](references/grill.md) when running a grill (steps 3 and 6) — it has the full method, the lens table by domain and the findings format.
 
 ### 4. Owner Checkpoint #1 — multi-select with recommendations
 Surface the grill's emergent decisions to the owner as **ONE `AskUserQuestion` batch
@@ -82,7 +82,7 @@ context pack with file:line so no agent re-discovers, read-only+terse diagnosis 
 model tier per unit, deterministic tools before model effort). Present the proposal in one line
 per phase; the owner already decided everything else at the checkpoints.
 
-See [references/planning.md](references/planning.md) and [references/execution-modes.md](references/execution-modes.md).
+Read [references/planning.md](references/planning.md) when writing the global plan, and [references/execution-modes.md](references/execution-modes.md) when choosing how to execute it.
 
 ### 9. Execute → Verify → Sign-off
 Execute per the proposal: parallelize disjoint units in isolated workspaces, select from the
@@ -95,7 +95,7 @@ while any in-scope row is untraced). Finally the human owner reviews the verifie
 off — evidence, not assertions; outstanding decisions and non-goals surfaced; the owner can cycle
 back to any earlier step.
 
-See [references/verification.md](references/verification.md) for the method and domain examples.
+Read [references/verification.md](references/verification.md) when fixing the DoD or auditing the matrix at step 9.
 
 ---
 
@@ -125,7 +125,7 @@ For domains not covered by a pack, derive the three lenses using the pattern in 
 
 ### Model Per Task (most important cost control)
 
-Always match the capability tier to the work. Full routing guide: [references/model-routing.md](references/model-routing.md).
+Always match the capability tier to the work. Read [references/model-routing.md](references/model-routing.md) when assigning a tier to a work unit or agent.
 
 | Tier | Use for |
 |------|---------|
@@ -179,7 +179,7 @@ not against the goal." One artifact (the **enumerated reference → Acceptance M
 | [hooks/check-acceptance-matrix.sh](hooks/check-acceptance-matrix.sh) | hook | **blocks** "declare done"/`gh pr create` while any in-scope row lacks built + evidence + independent verify |
 | `Satisfies-reqs` in the plan | field | every in-scope `req-id` is owned by a work unit |
 
-Full map: [references/agents-overview.md](references/agents-overview.md) · install the hook: [hooks/README.md](hooks/README.md).
+Read [references/agents-overview.md](references/agents-overview.md) when wiring the agents into a run, and [hooks/README.md](hooks/README.md) when installing or debugging the hook.
 
 ## Templates
 

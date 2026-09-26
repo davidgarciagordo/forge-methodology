@@ -108,7 +108,8 @@ fi
 # blank) count as "not satisfied".
 report="$(
   for f in "${matrices[@]}"; do
-    awk -v FILE="$f" '
+    shown="${f#"$repo_root"/}"   # show repo-relative paths; files outside the repo stay as given
+    awk -v FILE="$shown" '
       function trim(s){ gsub(/^[ \t]+|[ \t]+$/, "", s); return s }
       function empty(s){
         s=tolower(trim(s))

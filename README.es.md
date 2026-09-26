@@ -10,10 +10,10 @@ Solo este plugin:
 
 ```bash
 /plugin marketplace add davidgarciagordo/forge-methodology
-/plugin install forge-methodology
+/plugin install forge-methodology@forge-methodology
 ```
 
-O toda la suite (este + design-review, token-economy, working-methods, automations) desde [un único catálogo](https://github.com/davidgarciagordo/claude-plugins):
+O toda la suite (este + design-review, token-economy, working-methods, automations, swarm) desde [un único catálogo](https://github.com/davidgarciagordo/claude-plugins):
 
 ```bash
 /plugin marketplace add davidgarciagordo/claude-plugins
@@ -45,7 +45,7 @@ O toda la suite (este + design-review, token-economy, working-methods, automatio
 4. Construye R3 y corre `/forge-verify-matrix` (o el agente `independent-verifier`) para rellenar evidencia + un `verified-by` independiente en R2 y R3.
 5. `gh pr create` de nuevo → `forge: Acceptance Matrix COMPLETE — all in-scope rows built + evidenced + independently verified.`
 
-> **Qué garantiza el hook y qué no.** Es un guardarraíl `PreToolUse` sobre el `gh pr create` del propio agente (más los marcadores opt-in `[forge-done]` / `FORGE_DONE=1`). Impide que el *agente* declare hecho antes de tiempo; **no** es branch protection de servidor — un humano que pushea y mergea desde la web lo esquiva. Para un gate de servidor, corre el mismo script en CI ([hooks/README.md](hooks/README.md) muestra la invocación).
+> **Qué garantiza el hook y qué no.** Es un guardarraíl `PreToolUse` sobre el `gh pr create` del propio agente (más los marcadores opt-in `[forge-done]` / `FORGE_DONE=1`). Impide que el *agente* declare hecho antes de tiempo; **no** es branch protection de servidor — un humano que pushea y mergea desde la web lo esquiva. Para un gate de servidor, corre el mismo script en CI ([hooks/README.md](hooks/README.md) muestra la invocación). **Además es fail-open por defecto**: si no encuentra ninguna Matriz de Aceptación, imprime un aviso y **no** bloquea — puede que el repo simplemente no use Forge para esa PR. Pon `FORGE_REQUIRE_MATRIX=1` si quieres que una matriz ausente también bloquee.
 
 ## 🧩 Qué trae la caja
 
@@ -58,7 +58,7 @@ O toda la suite (este + design-review, token-economy, working-methods, automatio
 | [`completeness-critic`](agents/completeness-critic.md) | agente (tier profundo) | 4ª lente del grill: caza lo que **falta** vs la referencia (ausencia = bloqueante) | subagente — pasos 3 y 9 |
 | [`independent-verifier`](agents/independent-verifier.md) | agente (tier profundo) | Auditoría de la matriz fila a fila: evidencia real por fila, `verified-by ≠ executor` | subagente — paso 9 |
 | [`visual-fidelity-checker`](agents/visual-fidelity-checker.md) | agente (tier ejecución) | Side-by-side de cada superficie UI construida vs la pantalla equivalente de la referencia | subagente — filas UI |
-| [`/forge-verify-matrix`](commands/forge-verify-matrix.md) | comando | Ejecución manual del gate de completitud + los dos agentes de verify | `/forge-verify-matrix` |
+| [`/forge-verify-matrix`](skills/forge-verify-matrix/SKILL.md) | skill (invocación manual) | Ejecución manual del gate de completitud + los dos agentes de verify | `/forge-verify-matrix` |
 | [`check-acceptance-matrix.sh`](hooks/check-acceptance-matrix.sh) | hook (`PreToolUse` sobre Bash) | Bloquea `gh pr create` / `[forge-done]` mientras cualquier fila in-scope esté sin trazar | automático al instalar |
 | [templates/](templates/) | 4 plantillas | [spec-and-dod](templates/spec-and-dod.md) (la matriz), [work-unit-plan](templates/work-unit-plan.md) (`Satisfies-reqs`), [state-capsule](templates/state-capsule.md), [phase-gate-checklist](templates/phase-gate-checklist.md) | copia a tu repo |
 | [references/](references/) | 7 docs + 8 domain packs | [the-loop](references/the-loop.md), [grill](references/grill.md), [planning](references/planning.md), [execution-modes](references/execution-modes.md), [model-routing](references/model-routing.md), [verification](references/verification.md), [agents-overview](references/agents-overview.md) | los carga la skill |
@@ -103,12 +103,12 @@ Coste honesto: una pasada completa gasta **4+ pasadas de tier de razonamiento pr
 
 ## ❓ ¿`/forge-run`?
 
-`/forge-run <tarea>` — el runner totalmente codificado con gates de fase machine-checked — **no está en este plugin**; viene en el plugin aparte [`working-methods`](https://github.com/davidgarciagordo/claude-code-setup-optimizer) (mismo catálogo). En standalone, este plugin te da la skill de la metodología (se dispara con "forja esto"), las dos skills de grill, los 4 agentes, el comando `/forge-verify-matrix` y el hook de la Matriz de Aceptación.
+`/forge-run <tarea>` — el runner totalmente codificado con gates de fase machine-checked — **no está en este plugin**; viene en el plugin aparte [`working-methods`](https://github.com/davidgarciagordo/claude-code-setup-optimizer) (mismo catálogo). En standalone, este plugin te da la skill de la metodología (se dispara con "forja esto"), las dos skills de grill, los 4 agentes, la skill de invocación manual `/forge-verify-matrix` y el hook de la Matriz de Aceptación.
 
 ## 🔀 Alternativas
 
 - **git clone como skill** (método más antiguo, previo a los plugins): `git clone https://github.com/davidgarciagordo/forge-methodology ~/.claude/skills/forge-methodology`.
-- **Como regla de proyecto** — si quieres Forge como regla de CLAUDE.md en vez de skill invocada, copia `SKILL.md` a tu directorio de reglas: `cp SKILL.md ~/.claude/rules/forge-methodology.md`.
+- **Como regla de usuario** — si quieres Forge como regla estilo CLAUDE.md en vez de skill invocada, copia `SKILL.md` a tu directorio de reglas de usuario: `cp SKILL.md ~/.claude/rules/forge-methodology.md` (o a `.claude/rules/` para un solo proyecto).
 
 ## ⚖️ Licencia
 

@@ -14,3 +14,6 @@ user gate (recommended answer + alternatives + add-your-own + dispute) → infor
 
 Install either with your skill manager (e.g. `npx skills add davidgarciagordo/forge-methodology`) or copy
 the folder into your skills directory. They are self-contained and work with any AI assistant.
+
+`forge-verify-matrix/` is not a grill skill: it is the manual run of the Acceptance Matrix gate
+(`/forge-verify-matrix`), user-invoked only (`disable-model-invocation: true`).

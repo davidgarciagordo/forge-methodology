@@ -1,5 +1,15 @@
 # Verification — Defining and Proving Done
 
+**Contents**
+
+- [GREEN ≠ COMPLETE (the first-class axiom)](#green--complete-the-first-class-axiom)
+- [The Definition of Done](#the-definition-of-done)
+- [Definition of Done by Domain](#definition-of-done-by-domain)
+- [Evidence Before Asserting](#evidence-before-asserting)
+- [Baseline Comparison — Regression vs. Pre-existing](#baseline-comparison--regression-vs-pre-existing)
+- [The Stale-Check Principle](#the-stale-check-principle)
+- [Continuous Per-Unit Verification](#continuous-per-unit-verification)
+
 Verification in Forge has one hard rule: **fix the definition of done before execution begins**, then hold to it.
 
 ---

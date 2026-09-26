@@ -22,9 +22,9 @@
   "skills": [
     "./",
     "./skills/grill-me",
-    "./skills/grill-with-docs"
+    "./skills/grill-with-docs",
+    "./skills/forge-verify-matrix"
   ],
-  "commands": "./commands",
   "agents": [
     "./agents/completeness-critic.md",
     "./agents/independent-verifier.md",

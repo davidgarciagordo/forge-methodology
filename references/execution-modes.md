@@ -1,5 +1,14 @@
 # Execution Modes — How to Work Optimally
 
+**Contents**
+
+- [The Five Execution Principles](#the-five-execution-principles)
+- [Isolated Workspaces — One Workspace per Parallel Unit](#isolated-workspaces--one-workspace-per-parallel-unit)
+- [Selecting the Next Work Unit](#selecting-the-next-work-unit)
+- [Capacity and Quota Scheduling](#capacity-and-quota-scheduling)
+- [Serialization Points](#serialization-points)
+- [When Doubts Arise During Execution](#when-doubts-arise-during-execution)
+
 Once the plan is locked, execution is about choosing the right working mode for each part of the work.
 
 ---
@@ -10,7 +19,7 @@ Once the plan is locked, execution is about choosing the right working mode for 
 
 Work units with no shared outputs and no mutual dependencies run simultaneously.
 
-Before parallelizing, verify the units are truly disjoint: no shared artifacts both write to, no hidden dependency through a third unit. A race condition happens when two parallel workers both write to the same artifact. The plan prevents this at design time (see [planning.md](./planning.md)).
+Before parallelizing, verify the units are truly disjoint: no shared artifacts both write to, no hidden dependency through a third unit. A race condition happens when two parallel workers both write to the same artifact. The plan prevents this at design time (`references/planning.md`, cross-cutting units).
 
 ### 2. Automate Before Spending Effort
 
@@ -28,7 +37,7 @@ If a task is repetitive, mechanical, or high-volume — **automate it with a too
 
 ### 3. Right Capability Per Work Unit
 
-Match the capability tier to the work. See [model-routing.md](./model-routing.md) for full tier definitions.
+Match the capability tier to the work. Full tier definitions live in `references/model-routing.md`.
 
 | Work type | Recommended tier |
 |-----------|-----------------|
@@ -44,7 +53,7 @@ The orchestrator (the agent or person coordinating parallel work) follows the sa
 Work must survive any session boundary, quota limit, or interruption:
 
 - **Persist work per phase/milestone** — not just at the end of the entire task.
-- Keep a **resume capsule** (see [planning.md](./planning.md)) per active workstream, updated at each checkpoint.
+- Keep a **resume capsule** (template: [`../templates/state-capsule.md`](../templates/state-capsule.md)) per active workstream, updated at each checkpoint.
 - When a limit or interruption hits, the next session resumes from the last checkpoint — it does not restart from the beginning.
 
 ### 5. Shared Working Memory — one context pack, not N re-discoveries
@@ -64,7 +73,7 @@ Disjoint ownership prevents *logical* collisions; an isolated workspace prevents
 
 - **In version control:** one **branch per work unit**, each checked out in its own **worktree** (e.g. `git worktree`, a `jj` workspace, or a separate clone) → units build and test simultaneously without touching each other's tree. **One session = one worktree = one branch.** Convergence happens by merge/PR, never by editing a shared checkout.
 - **Generic equivalent (any domain):** a separate sandbox, copy, or environment per unit — a duplicated model tab, a draft doc per section. Parallel writers get separate surfaces; convergence is an explicit, reviewed step.
-- **Unavoidable shared file** (lock file, shared index, global config) → assign it to a single integrator, or serialize the touches (cross-cutting units, [planning.md](./planning.md)).
+- **Unavoidable shared file** (lock file, shared index, global config) → assign it to a single integrator, or serialize the touches (cross-cutting units in `references/planning.md`).
 - **Ownership claim:** when several agents/people share a repo, each **declares the unit it owns before starting** (a claim file or tracked assignment) so the ownership graph is visible, not assumed — collisions become impossible by construction, not by carefulness.
 
 ---

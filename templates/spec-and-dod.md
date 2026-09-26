@@ -3,6 +3,16 @@
      the pristine template is never mistaken for an incomplete live matrix. -->
 # Spec + Definition of Done — `[work name]`
 
+**Contents**
+
+- [1. Value question — required](#1-value-question--required)
+- [2. Reference Standard — required](#2-reference-standard--required)
+- [Acceptance Matrix](#acceptance-matrix)
+- [4. Non-goals — required](#4-non-goals--required)
+- [5. Constraints & trade-offs](#5-constraints--trade-offs)
+- [6. Definition of Done (pointer)](#6-definition-of-done-pointer)
+- [How this template is enforced (not advisory)](#how-this-template-is-enforced-not-advisory)
+
 > The spec is the single source of truth. **The Definition of Done lives canonically here, in the spec**
 > — not in the plan, not in someone's head, not deferred to the final sign-off. A phase is done only when
 > the Acceptance Matrix below is 100% satisfied for the in-scope rows.

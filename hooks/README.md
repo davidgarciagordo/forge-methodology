@@ -6,7 +6,8 @@ into **machine-checked** ("you cannot open a PR while the matrix is incomplete")
 ## `check-acceptance-matrix.sh`
 
 A `PreToolUse` hook on `Bash`. When Claude Code is about to run a **"declare done"** command
-(`gh pr create`, or any command containing `forge-done` / `FORGE_DONE`), the hook:
+(`gh pr create`, or a command containing the opt-in marker `[forge-done]` — brackets included — or
+`FORGE_DONE=1`), the hook:
 
 1. Finds the Acceptance Matrix (see discovery order below).
 2. Parses every `in-scope = yes` row.
@@ -53,11 +54,15 @@ gates zero rows is itself blocking.
 
 ### Cell semantics
 
-- A row is **gated** only when `in-scope?` is `yes`/`true`/`✓`.
-- `built?` must be `yes`/`true`/`✓`/`done`.
-- `evidence` and `verified-by` are "empty" when blank or one of: `—`, `-`, `TODO`, `WIP`, `pending`,
-  `TBD`, `n/a`.
-- `verified-by` literally equal to `executor`/`self`/`same` (a placeholder) fails the independence check.
+- "Yes" cells (case-insensitive) are any of: `yes`, `y`, `true`, `✓`, `x`, `done`.
+- A row is **gated** only when `in-scope?` is a "yes" cell; `built?` must also be a "yes" cell.
+- `evidence` and `verified-by` are "empty" when blank or one of: `—`, `–`, `-`, `TODO`, `WIP`, `pending`,
+  `TBD`, `n/a`, `na`.
+- `verified-by` literally equal to `executor`/`ejecutor`/`self`/`same` (a placeholder) fails the
+  independence check.
+- Offending files are printed relative to the repo root.
+
+The behaviour above is pinned by `tests/hook.test.sh` (run by CI).
 
 ## Install
 

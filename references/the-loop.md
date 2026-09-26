@@ -1,5 +1,19 @@
 # The Loop — Forge's 9-Step Cycle
 
+**Contents**
+
+- [Step 1 — Align Intent + Brainstorm](#step-1--align-intent--brainstorm)
+- [Step 2 — Reference Decomposition](#step-2--reference-decomposition)
+- [Step 3 — Draft + Grill ×3](#step-3--draft--grill-3)
+- [Step 4 — Owner Checkpoint #1](#step-4--owner-checkpoint-1)
+- [Step 5 — Versioned Spec](#step-5--versioned-spec)
+- [Step 6 — Re-Grill ×2 (the spec)](#step-6--re-grill-2-the-spec)
+- [Step 7 — Owner Checkpoint #2](#step-7--owner-checkpoint-2)
+- [Step 8 — Global Plan + Execution Proposal](#step-8--global-plan--execution-proposal)
+- [Step 9 — Execute → Verify → Sign-off](#step-9--execute--verify--sign-off)
+- [The Adapt Principle](#the-adapt-principle)
+- [Domain Packs](#domain-packs)
+
 The core of Forge. Domain-agnostic: software, security, design, marketing, finance, research, operations.
 The owner decides at exactly **two checkpoints** (steps 4 and 7), both as ONE multi-select batch with
 recommendations pre-marked — everything else runs without interrupting them.
@@ -34,7 +48,7 @@ as a flat list.** The cure for "Done against ourselves, not against the goal."
   principles. Greenfield is a deliberate, reviewable choice — not a default to skip this step.
 
 Run with the **`reference-decomposer`** agent; confirm nothing is missing with **`completeness-critic`**.
-Output goes straight into the spec template ([`../templates/spec-and-dod.md`](../templates/spec-and-dod.md)).
+When writing the spec, put this output straight into the template [`../templates/spec-and-dod.md`](../templates/spec-and-dod.md).
 
 ---
 
@@ -51,7 +65,7 @@ spec). Then attack it — grilling the draft (cheap to change) before the spec (
   system, data, constraints) must check it — not ask about what it can verify.
 - Deep-reasoning tier; lenses are read-only.
 
-See [grill.md](./grill.md) for the full method, the lens table by domain, and the findings format.
+The full method, the lens table by domain and the findings format live in `references/grill.md` (SKILL.md points there when grilling).
 
 ---
 
@@ -75,8 +89,8 @@ Integrate draft + grill verdicts + owner decisions into the formal spec — the 
 - Specific enough that a third party could verify the outcome against it.
 - **The Definition of Done lives canonically here, as the Acceptance Matrix**: every in-scope `req-id`
   from step 2 is a row (`req-id | source | in-scope? | built? | evidence | verified-by ≠ executor`), plus
-  an explicit **Non-goals** section listing everything cut from scope. Use
-  [`../templates/spec-and-dod.md`](../templates/spec-and-dod.md). The DoD is fixed in the spec — never
+  an explicit **Non-goals** section listing everything cut from scope. When
+  starting the spec, copy [`../templates/spec-and-dod.md`](../templates/spec-and-dod.md). The DoD is fixed in the spec — never
   deferred to the plan or the final sign-off.
 
 ---
@@ -119,7 +133,7 @@ decided everything else at the checkpoints.
 
 **Grill the plan** (deep-reasoning tier) before locking it. Once locked, execution is mechanical.
 
-See [planning.md](./planning.md) and [execution-modes.md](./execution-modes.md).
+Plan structure and execution modes live in `references/planning.md` and `references/execution-modes.md` (SKILL.md points there at step 8).
 
 ---
 
@@ -151,7 +165,7 @@ See [planning.md](./planning.md) and [execution-modes.md](./execution-modes.md).
 - The `hooks/check-acceptance-matrix.sh` hook **blocks** "declare done" / opening a PR while any in-scope
   row is untraced — completeness is enforced, not trusted.
 
-See [verification.md](./verification.md) for the full method and domain examples.
+The full verification method and domain examples live in `references/verification.md` (SKILL.md points there at step 9).
 
 ### Owner sign-off
 
@@ -184,6 +198,6 @@ Adapt may merge, reorder, or fast-path any other step. Never these two.
 ## Domain Packs
 
 Each domain instantiates the loop with its own grill lenses, definition of done, and verification steps.
-See [domain-packs/](./domain-packs/) for software (backend, frontend, multi-agent), security, design,
+Packs live in `references/domain-packs/` (SKILL.md's domain table picks the one to read) for software (backend, frontend, multi-agent), security, design,
 marketing, finance, and brainstorming. For any other domain, derive the three lenses from the pattern in
-[grill.md](./grill.md) (system view · human reality · technical depth) and fix the DoD before starting.
+`references/grill.md` (system view · human reality · technical depth) and fix the DoD before starting.
