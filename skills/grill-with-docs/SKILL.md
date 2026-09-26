@@ -5,7 +5,7 @@ description: Grills a plan against the project's existing domain model, sharpens
 
 <what-to-do>
 
-Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one-by-one. For each question, provide your recommended answer.
+Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving the dependencies between decisions. For each question, provide your recommended answer.
 
 **If a question can be answered by exploring the codebase or the docs, explore them instead — never ask me what you can verify yourself.**
 

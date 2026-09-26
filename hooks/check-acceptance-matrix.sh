@@ -182,6 +182,7 @@ if [ -n "$violations" ]; then
     echo "If a blocking row belongs to an OLD spec unrelated to this PR: point the hook at the active spec"
     echo "(FORGE_ACCEPTANCE_MATRIX=path/to/active-spec.md) or archive the old one by re-adding the"
     echo "'<!-- forge:template' marker at its top (the scan skips template-marked files)."
+    echo "Both escapes change what the gate checks: confirm with the owner that the spec is stale before using either."
   } >&2
   exit 2
 fi

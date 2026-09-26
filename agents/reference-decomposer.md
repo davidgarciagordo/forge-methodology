@@ -1,6 +1,6 @@
 ---
 name: reference-decomposer
-description: Turns a named external reference (competitor product, published spec, regulation, RFC, prior system, screenshot set) into a flat, enumerated list of in-scope capabilities with stable req-ids that becomes the Acceptance Matrix. Use at the start of a Forge spec (between Align Intent and Write Spec), or whenever a spec claims "parity with X" / "like Y" without enumerating what X or Y actually does. The cure for "Done against ourselves, not against the goal".
+description: Turns a named external reference (competitor product, published spec, regulation, RFC, prior system, screenshot set) into a flat, enumerated list of in-scope capabilities with stable req-ids that becomes the Acceptance Matrix. Use at Forge loop step 2 (Reference Decomposition), right after Align Intent and before the draft, or whenever a spec claims "parity with X" / "like Y" without enumerating what X or Y actually does. The cure for "Done against ourselves, not against the goal".
 tools: Read, Grep, Glob, WebSearch, WebFetch, Bash
 model: sonnet
 ---
@@ -34,7 +34,7 @@ any spec or plan is written.
    hides items).
 
 ## Output format
-Produce exactly this, ready to paste into the spec's §2 and §3 (the spec template ships with this plugin at `${CLAUDE_PLUGIN_ROOT}/templates/spec-and-dod.md`):
+Produce exactly this, ready to paste into the spec's §2 Reference Standard and its Acceptance Matrix section (the spec template ships with this plugin at `${CLAUDE_PLUGIN_ROOT}/templates/spec-and-dod.md`):
 
 ```
 Reference: <name + version/URL/section>

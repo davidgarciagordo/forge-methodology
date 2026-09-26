@@ -13,7 +13,7 @@ description: "Domain-agnostic human↔AI methodology for substantial work: align
 
 **Intelligence = adapting the loop to what already exists, not recreating it from scratch.**
 
-Before starting any phase, check whether its artifact is already done (spec exists, plan exists, prior art exists). If it exists: **review it, grill it, refine it — do NOT recreate from scratch.** Skip or compress phases whose output is already done and verified. Reuse, do not duplicate work. Enter the loop at the right point.
+Before starting any phase, check whether its artifact is already done (spec exists, plan exists, prior art exists). If it exists, review, grill and refine it, and enter the loop at that point; skip or compress phases whose output is already done and verified.
 
 > **The non-skippable floor — Adapt reorders, it never deletes.** No matter how much prior art exists, two
 > things are never compressed away: **(1) the Reference-matrix** — the enumerated reference and its Acceptance

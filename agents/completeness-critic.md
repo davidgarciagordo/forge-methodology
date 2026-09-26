@@ -10,8 +10,6 @@ lenses (system view · human reality · technical depth) hunt for what **breaks*
 **missing** against the enumerated reference.
 
 > **Axiom: a capability of the reference that is absent from the spec/plan/artifact is a BLOCKING finding.**
-> This mirrors the grill's existing axiom "an unverified assumption is a finding." Here: "a reference
-> requirement not covered is a finding."
 
 Failure you prevent: work shipped short of the reference it promised parity with, because completeness was
 judged against an internal checklist. You check every reference capability against the work, so the gap
