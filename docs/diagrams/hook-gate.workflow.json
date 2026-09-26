@@ -1,0 +1,175 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "The acceptance-matrix hook — one Bash call",
+    "output": "hook-gate.html",
+    "animation": "none",
+    "visual_preset": "classic",
+    "quality_profile": "standard"
+  },
+  "lanes": [
+    {
+      "id": "trigger",
+      "label": "Every Bash call"
+    },
+    {
+      "id": "find",
+      "label": "Find the matrix"
+    },
+    {
+      "id": "gate",
+      "label": "Gate in-scope rows"
+    },
+    {
+      "id": "exception",
+      "label": "Blocked (exit 2)",
+      "variant": "exception"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "A",
+      "lane": "trigger",
+      "col": 0,
+      "type": "backend",
+      "label": "Agent runs Bash",
+      "sublabel": "PreToolUse hook fires",
+      "width": 200
+    },
+    {
+      "id": "B",
+      "lane": "trigger",
+      "col": 1,
+      "type": "security",
+      "label": "Declares done?",
+      "sublabel": "gh pr create · [forge-done]",
+      "width": 200
+    },
+    {
+      "id": "C",
+      "lane": "trigger",
+      "col": 2,
+      "type": "external",
+      "label": "Allow (exit 0)",
+      "sublabel": "not a done command",
+      "width": 200
+    },
+    {
+      "id": "D",
+      "lane": "find",
+      "col": 1,
+      "type": "backend",
+      "label": "Locate the matrix",
+      "sublabel": "env → .forge/spec.md → *.md",
+      "width": 200
+    },
+    {
+      "id": "E",
+      "lane": "find",
+      "col": 2,
+      "type": "security",
+      "label": "Live matrix found?",
+      "sublabel": "template-marked files skipped",
+      "width": 200
+    },
+    {
+      "id": "F",
+      "lane": "find",
+      "col": 3,
+      "type": "external",
+      "label": "Allow + notice (exit 0)",
+      "sublabel": "FORGE_REQUIRE_MATRIX=1 blocks",
+      "width": 200
+    },
+    {
+      "id": "G",
+      "lane": "gate",
+      "col": 2,
+      "type": "backend",
+      "label": "Parse in-scope rows",
+      "sublabel": "built · evidence · verified-by",
+      "width": 200
+    },
+    {
+      "id": "H",
+      "lane": "gate",
+      "col": 3,
+      "type": "security",
+      "label": "Every row traced?",
+      "sublabel": "verified-by ≠ executor",
+      "width": 200
+    },
+    {
+      "id": "I",
+      "lane": "gate",
+      "col": 4,
+      "type": "external",
+      "label": "Allow (exit 0)",
+      "sublabel": "matrix COMPLETE",
+      "width": 200
+    },
+    {
+      "id": "J",
+      "lane": "exception",
+      "col": 3,
+      "type": "security",
+      "label": "Block (exit 2)",
+      "sublabel": "offending req-ids on stderr",
+      "width": 200
+    }
+  ],
+  "edges": [
+    {
+      "from": "A",
+      "to": "B",
+      "role": "main"
+    },
+    {
+      "from": "B",
+      "to": "D",
+      "role": "main"
+    },
+    {
+      "from": "B",
+      "to": "C",
+      "role": "branch",
+      "label": "no",
+      "variant": "dashed"
+    },
+    {
+      "from": "D",
+      "to": "E",
+      "role": "main"
+    },
+    {
+      "from": "E",
+      "to": "G",
+      "role": "main"
+    },
+    {
+      "from": "E",
+      "to": "F",
+      "role": "branch",
+      "label": "none",
+      "variant": "dashed"
+    },
+    {
+      "from": "G",
+      "to": "H",
+      "role": "main"
+    },
+    {
+      "from": "H",
+      "to": "I",
+      "role": "main",
+      "label": "yes"
+    },
+    {
+      "from": "H",
+      "to": "J",
+      "role": "branch",
+      "variant": "security"
+    }
+  ]
+}

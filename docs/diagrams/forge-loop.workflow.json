@@ -9,38 +9,213 @@
     "quality_profile": "standard"
   },
   "lanes": [
-    { "id": "top", "label": "Design & Grill (1-6)" },
-    { "id": "bottom", "label": "Plan, Execute & Verify (7-9)" },
-    { "id": "exception", "label": "Blocked → Retry Loop", "variant": "exception" }
+    {
+      "id": "r1",
+      "label": "Design & grill (1-4)"
+    },
+    {
+      "id": "r2",
+      "label": "Spec, lock, plan (5-8)"
+    },
+    {
+      "id": "r3",
+      "label": "Execute & verify (9)"
+    },
+    {
+      "id": "exception",
+      "label": "Blocked → retry",
+      "variant": "exception"
+    }
   ],
   "nodes": [
-    { "id": "A", "lane": "top", "col": 0, "type": "backend", "label": "1. Align intent + brainstorm", "width": 190 },
-    { "id": "B", "lane": "top", "col": 1, "type": "backend", "label": "2. Reference Decomposition → req-ids", "width": 260 },
-    { "id": "C", "lane": "top", "col": 2, "type": "backend", "label": "3. Draft + grill ×3 + completeness lens", "width": 280 },
-    { "id": "D", "lane": "top", "col": 3, "type": "security", "label": "4. Owner checkpoint #1", "sublabel": "(ONE multi-select batch)", "width": 196 },
-    { "id": "E", "lane": "top", "col": 4, "type": "backend", "label": "5. Versioned spec + Acceptance Matrix", "width": 268 },
-    { "id": "F", "lane": "top", "col": 5, "type": "backend", "label": "6. Re-grill ×2", "width": 190 },
-    { "id": "G", "lane": "bottom", "col": 0, "type": "security", "label": "7. Owner checkpoint #2", "sublabel": "(spec locked)", "width": 190 },
-    { "id": "H", "lane": "bottom", "col": 1, "type": "backend", "label": "8. Global plan + execution proposal", "width": 252 },
-    { "id": "I", "lane": "bottom", "col": 2, "type": "backend", "label": "9. Execute (multi-agent, isolated worktrees)", "width": 316 },
-    { "id": "J", "lane": "bottom", "col": 3, "type": "backend", "label": "independent-verifier audits the matrix row by row", "width": 350 },
-    { "id": "K", "lane": "bottom", "col": 4, "type": "security", "label": "gh pr create", "width": 190 },
-    { "id": "M", "lane": "bottom", "col": 5, "type": "external", "label": "PR opens", "width": 190 },
-    { "id": "L", "lane": "exception", "col": 4, "type": "security", "label": "hook BLOCKS (exit 2)", "width": 190 }
+    {
+      "id": "A",
+      "lane": "r1",
+      "col": 0,
+      "type": "backend",
+      "label": "1. Align intent",
+      "sublabel": "value question + brainstorm",
+      "width": 200
+    },
+    {
+      "id": "B",
+      "lane": "r1",
+      "col": 1,
+      "type": "backend",
+      "label": "2. Decompose reference",
+      "sublabel": "capabilities → req-ids",
+      "width": 200
+    },
+    {
+      "id": "C",
+      "lane": "r1",
+      "col": 2,
+      "type": "backend",
+      "label": "3. Draft + grill ×3",
+      "sublabel": "+ completeness lens",
+      "width": 200
+    },
+    {
+      "id": "D",
+      "lane": "r1",
+      "col": 3,
+      "type": "security",
+      "label": "4. Owner checkpoint #1",
+      "sublabel": "ONE multi-select batch",
+      "width": 200
+    },
+    {
+      "id": "E",
+      "lane": "r2",
+      "col": 3,
+      "type": "backend",
+      "label": "5. Versioned spec",
+      "sublabel": "req-ids → Acceptance Matrix",
+      "width": 200
+    },
+    {
+      "id": "F",
+      "lane": "r2",
+      "col": 2,
+      "type": "backend",
+      "label": "6. Re-grill ×2",
+      "sublabel": "fixes hold? new seams?",
+      "width": 200
+    },
+    {
+      "id": "G",
+      "lane": "r2",
+      "col": 1,
+      "type": "security",
+      "label": "7. Owner checkpoint #2",
+      "sublabel": "spec locked",
+      "width": 200
+    },
+    {
+      "id": "H",
+      "lane": "r2",
+      "col": 0,
+      "type": "backend",
+      "label": "8. Global plan",
+      "sublabel": "all units + execution proposal",
+      "width": 200
+    },
+    {
+      "id": "I",
+      "lane": "r3",
+      "col": 0,
+      "type": "backend",
+      "label": "9. Execute",
+      "sublabel": "multi-agent, isolated worktrees",
+      "width": 200
+    },
+    {
+      "id": "J",
+      "lane": "r3",
+      "col": 1,
+      "type": "backend",
+      "label": "Verify the matrix",
+      "sublabel": "independent-verifier, row by row",
+      "width": 200
+    },
+    {
+      "id": "K",
+      "lane": "r3",
+      "col": 2,
+      "type": "security",
+      "label": "gh pr create",
+      "sublabel": "the hook reads the matrix",
+      "width": 200
+    },
+    {
+      "id": "M",
+      "lane": "r3",
+      "col": 3,
+      "type": "external",
+      "label": "PR opens",
+      "sublabel": "owner signs off",
+      "width": 200
+    },
+    {
+      "id": "L",
+      "lane": "exception",
+      "col": 2,
+      "type": "security",
+      "label": "Hook blocks (exit 2)",
+      "sublabel": "untraced in-scope rows",
+      "width": 200
+    }
   ],
   "edges": [
-    { "from": "A", "to": "B", "role": "main" },
-    { "from": "B", "to": "C", "role": "main" },
-    { "from": "C", "to": "D", "role": "main" },
-    { "from": "D", "to": "E", "role": "main" },
-    { "from": "E", "to": "F", "role": "main" },
-    { "from": "F", "to": "G", "role": "main" },
-    { "from": "G", "to": "H", "role": "main" },
-    { "from": "H", "to": "I", "role": "main" },
-    { "from": "I", "to": "J", "role": "main" },
-    { "from": "J", "to": "K", "role": "main" },
-    { "from": "K", "to": "M", "role": "main", "label": "matrix COMPLETE" },
-    { "from": "K", "to": "L", "role": "branch", "variant": "security", "label": "matrix incomplete" },
-    { "from": "L", "to": "I", "role": "return", "variant": "dashed" }
+    {
+      "from": "A",
+      "to": "B",
+      "role": "main"
+    },
+    {
+      "from": "B",
+      "to": "C",
+      "role": "main"
+    },
+    {
+      "from": "C",
+      "to": "D",
+      "role": "main"
+    },
+    {
+      "from": "D",
+      "to": "E",
+      "role": "main"
+    },
+    {
+      "from": "E",
+      "to": "F",
+      "role": "main"
+    },
+    {
+      "from": "F",
+      "to": "G",
+      "role": "main"
+    },
+    {
+      "from": "G",
+      "to": "H",
+      "role": "main"
+    },
+    {
+      "from": "H",
+      "to": "I",
+      "role": "main"
+    },
+    {
+      "from": "I",
+      "to": "J",
+      "role": "main"
+    },
+    {
+      "from": "J",
+      "to": "K",
+      "role": "main"
+    },
+    {
+      "from": "K",
+      "to": "M",
+      "role": "main",
+      "label": "matrix COMPLETE"
+    },
+    {
+      "from": "K",
+      "to": "L",
+      "role": "branch",
+      "label": "matrix incomplete",
+      "variant": "security"
+    },
+    {
+      "from": "L",
+      "to": "I",
+      "role": "return",
+      "label": "build + fill evidence",
+      "variant": "dashed"
+    }
   ]
 }

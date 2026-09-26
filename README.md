@@ -47,6 +47,10 @@ Or the whole suite (this + design-review, token-economy, working-methods, automa
 
 > **What the hook does and does not guarantee.** It is a `PreToolUse` guardrail on the agent's own `gh pr create` (plus opt-in `[forge-done]` / `FORGE_DONE=1` markers). It stops the *agent* from declaring done early; it is **not** server-side branch protection — a human pushing and merging from the web UI bypasses it. For a server-side gate, run the same script in CI ([hooks/README.md](hooks/README.md) shows the invocation). **It is also fail-open by default**: if it finds no Acceptance Matrix at all, it prints a notice and does **not** block — the repo may simply not be using Forge for that PR. Set `FORGE_REQUIRE_MATRIX=1` if you want a missing matrix to be a blocking condition too.
 
+[![The acceptance-matrix hook — one Bash call](docs/diagrams/hook-gate.png)](docs/diagrams/hook-gate.html)
+
+*Interactive version: docs/diagrams/hook-gate.html (open locally)*
+
 ## 🧩 What's in the box
 
 | Component | Type | What it does | Invocation |

@@ -1,0 +1,175 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "El hook de la matriz — una llamada Bash",
+    "output": "hook-gate.es.html",
+    "animation": "none",
+    "visual_preset": "classic",
+    "quality_profile": "standard"
+  },
+  "lanes": [
+    {
+      "id": "trigger",
+      "label": "Cada llamada Bash"
+    },
+    {
+      "id": "find",
+      "label": "Buscar la matriz"
+    },
+    {
+      "id": "gate",
+      "label": "Gate de filas in-scope"
+    },
+    {
+      "id": "exception",
+      "label": "Bloqueo (exit 2)",
+      "variant": "exception"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "A",
+      "lane": "trigger",
+      "col": 0,
+      "type": "backend",
+      "label": "El agente corre Bash",
+      "sublabel": "salta el hook PreToolUse",
+      "width": 200
+    },
+    {
+      "id": "B",
+      "lane": "trigger",
+      "col": 1,
+      "type": "security",
+      "label": "¿Declara hecho?",
+      "sublabel": "gh pr create · [forge-done]",
+      "width": 200
+    },
+    {
+      "id": "C",
+      "lane": "trigger",
+      "col": 2,
+      "type": "external",
+      "label": "Permite (exit 0)",
+      "sublabel": "no es un comando de cierre",
+      "width": 200
+    },
+    {
+      "id": "D",
+      "lane": "find",
+      "col": 1,
+      "type": "backend",
+      "label": "Localiza la matriz",
+      "sublabel": "env → .forge/spec.md → *.md",
+      "width": 200
+    },
+    {
+      "id": "E",
+      "lane": "find",
+      "col": 2,
+      "type": "security",
+      "label": "¿Matriz viva?",
+      "sublabel": "se saltan las plantillas",
+      "width": 200
+    },
+    {
+      "id": "F",
+      "lane": "find",
+      "col": 3,
+      "type": "external",
+      "label": "Permite + aviso (exit 0)",
+      "sublabel": "FORGE_REQUIRE_MATRIX=1 bloquea",
+      "width": 200
+    },
+    {
+      "id": "G",
+      "lane": "gate",
+      "col": 2,
+      "type": "backend",
+      "label": "Parsea filas in-scope",
+      "sublabel": "built · evidence · verified-by",
+      "width": 200
+    },
+    {
+      "id": "H",
+      "lane": "gate",
+      "col": 3,
+      "type": "security",
+      "label": "¿Todas trazadas?",
+      "sublabel": "verified-by ≠ ejecutor",
+      "width": 200
+    },
+    {
+      "id": "I",
+      "lane": "gate",
+      "col": 4,
+      "type": "external",
+      "label": "Permite (exit 0)",
+      "sublabel": "matriz COMPLETA",
+      "width": 200
+    },
+    {
+      "id": "J",
+      "lane": "exception",
+      "col": 3,
+      "type": "security",
+      "label": "Bloquea (exit 2)",
+      "sublabel": "req-ids culpables en stderr",
+      "width": 200
+    }
+  ],
+  "edges": [
+    {
+      "from": "A",
+      "to": "B",
+      "role": "main"
+    },
+    {
+      "from": "B",
+      "to": "D",
+      "role": "main"
+    },
+    {
+      "from": "B",
+      "to": "C",
+      "role": "branch",
+      "label": "no",
+      "variant": "dashed"
+    },
+    {
+      "from": "D",
+      "to": "E",
+      "role": "main"
+    },
+    {
+      "from": "E",
+      "to": "G",
+      "role": "main"
+    },
+    {
+      "from": "E",
+      "to": "F",
+      "role": "branch",
+      "label": "ninguna",
+      "variant": "dashed"
+    },
+    {
+      "from": "G",
+      "to": "H",
+      "role": "main"
+    },
+    {
+      "from": "H",
+      "to": "I",
+      "role": "main",
+      "label": "sí"
+    },
+    {
+      "from": "H",
+      "to": "J",
+      "role": "branch",
+      "variant": "security"
+    }
+  ]
+}

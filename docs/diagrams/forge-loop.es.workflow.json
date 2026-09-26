@@ -9,38 +9,213 @@
     "quality_profile": "standard"
   },
   "lanes": [
-    { "id": "top", "label": "Diseño y Grill (1-6)" },
-    { "id": "bottom", "label": "Planificar, Ejecutar y Verificar (7-9)" },
-    { "id": "exception", "label": "Bloqueado → Reintento", "variant": "exception" }
+    {
+      "id": "r1",
+      "label": "Diseño y grill (1-4)"
+    },
+    {
+      "id": "r2",
+      "label": "Spec, cierre, plan (5-8)"
+    },
+    {
+      "id": "r3",
+      "label": "Ejecutar y verificar (9)"
+    },
+    {
+      "id": "exception",
+      "label": "Bloqueo → reintento",
+      "variant": "exception"
+    }
   ],
   "nodes": [
-    { "id": "A", "lane": "top", "col": 0, "type": "backend", "label": "1. Alinear intención + brainstorm", "width": 224 },
-    { "id": "B", "lane": "top", "col": 1, "type": "backend", "label": "2. Descomposición de la referencia → req-ids", "width": 300 },
-    { "id": "C", "lane": "top", "col": 2, "type": "backend", "label": "3. Borrador + grill ×3 + lente de completitud", "width": 300 },
-    { "id": "D", "lane": "top", "col": 3, "type": "security", "label": "4. Checkpoint del responsable #1", "sublabel": "(UN lote multi-select)", "width": 260 },
-    { "id": "E", "lane": "top", "col": 4, "type": "backend", "label": "5. Spec versionado + Matriz de Aceptación", "width": 300 },
-    { "id": "F", "lane": "top", "col": 5, "type": "backend", "label": "6. Re-grill ×2", "width": 190 },
-    { "id": "G", "lane": "bottom", "col": 0, "type": "security", "label": "7. Checkpoint del responsable #2", "sublabel": "(spec cerrado)", "width": 260 },
-    { "id": "H", "lane": "bottom", "col": 1, "type": "backend", "label": "8. Plan global + propuesta de ejecución", "width": 280 },
-    { "id": "I", "lane": "bottom", "col": 2, "type": "backend", "label": "9. Ejecutar (multiagente, worktrees aislados)", "width": 316 },
-    { "id": "J", "lane": "bottom", "col": 3, "type": "backend", "label": "independent-verifier audita la matriz fila a fila", "width": 350 },
-    { "id": "K", "lane": "bottom", "col": 4, "type": "security", "label": "gh pr create", "width": 190 },
-    { "id": "M", "lane": "bottom", "col": 5, "type": "external", "label": "se abre el PR", "width": 190 },
-    { "id": "L", "lane": "exception", "col": 4, "type": "security", "label": "hook BLOQUEA (exit 2)", "width": 200 }
+    {
+      "id": "A",
+      "lane": "r1",
+      "col": 0,
+      "type": "backend",
+      "label": "1. Alinear intención",
+      "sublabel": "pregunta de valor + brainstorm",
+      "width": 200
+    },
+    {
+      "id": "B",
+      "lane": "r1",
+      "col": 1,
+      "type": "backend",
+      "label": "2. Descomponer referencia",
+      "sublabel": "capacidades → req-ids",
+      "width": 200
+    },
+    {
+      "id": "C",
+      "lane": "r1",
+      "col": 2,
+      "type": "backend",
+      "label": "3. Borrador + grill ×3",
+      "sublabel": "+ lente de completitud",
+      "width": 200
+    },
+    {
+      "id": "D",
+      "lane": "r1",
+      "col": 3,
+      "type": "security",
+      "label": "4. Checkpoint del owner #1",
+      "sublabel": "UN lote multi-select",
+      "width": 200
+    },
+    {
+      "id": "E",
+      "lane": "r2",
+      "col": 3,
+      "type": "backend",
+      "label": "5. Spec versionado",
+      "sublabel": "req-ids → Matriz de Aceptación",
+      "width": 200
+    },
+    {
+      "id": "F",
+      "lane": "r2",
+      "col": 2,
+      "type": "backend",
+      "label": "6. Re-grill ×2",
+      "sublabel": "¿fixes firmes? ¿costuras?",
+      "width": 200
+    },
+    {
+      "id": "G",
+      "lane": "r2",
+      "col": 1,
+      "type": "security",
+      "label": "7. Checkpoint del owner #2",
+      "sublabel": "spec cerrado",
+      "width": 200
+    },
+    {
+      "id": "H",
+      "lane": "r2",
+      "col": 0,
+      "type": "backend",
+      "label": "8. Plan global",
+      "sublabel": "todas las unidades + propuesta",
+      "width": 200
+    },
+    {
+      "id": "I",
+      "lane": "r3",
+      "col": 0,
+      "type": "backend",
+      "label": "9. Ejecutar",
+      "sublabel": "multiagente, worktrees aislados",
+      "width": 200
+    },
+    {
+      "id": "J",
+      "lane": "r3",
+      "col": 1,
+      "type": "backend",
+      "label": "Verificar la matriz",
+      "sublabel": "independent-verifier, fila a fila",
+      "width": 200
+    },
+    {
+      "id": "K",
+      "lane": "r3",
+      "col": 2,
+      "type": "security",
+      "label": "gh pr create",
+      "sublabel": "el hook lee la matriz",
+      "width": 200
+    },
+    {
+      "id": "M",
+      "lane": "r3",
+      "col": 3,
+      "type": "external",
+      "label": "Se abre la PR",
+      "sublabel": "el owner firma",
+      "width": 200
+    },
+    {
+      "id": "L",
+      "lane": "exception",
+      "col": 2,
+      "type": "security",
+      "label": "El hook bloquea (exit 2)",
+      "sublabel": "filas in-scope sin trazar",
+      "width": 200
+    }
   ],
   "edges": [
-    { "from": "A", "to": "B", "role": "main" },
-    { "from": "B", "to": "C", "role": "main" },
-    { "from": "C", "to": "D", "role": "main" },
-    { "from": "D", "to": "E", "role": "main" },
-    { "from": "E", "to": "F", "role": "main" },
-    { "from": "F", "to": "G", "role": "main" },
-    { "from": "G", "to": "H", "role": "main" },
-    { "from": "H", "to": "I", "role": "main" },
-    { "from": "I", "to": "J", "role": "main" },
-    { "from": "J", "to": "K", "role": "main" },
-    { "from": "K", "to": "M", "role": "main", "label": "matriz COMPLETA" },
-    { "from": "K", "to": "L", "role": "branch", "variant": "security", "label": "matriz incompleta" },
-    { "from": "L", "to": "I", "role": "return", "variant": "dashed" }
+    {
+      "from": "A",
+      "to": "B",
+      "role": "main"
+    },
+    {
+      "from": "B",
+      "to": "C",
+      "role": "main"
+    },
+    {
+      "from": "C",
+      "to": "D",
+      "role": "main"
+    },
+    {
+      "from": "D",
+      "to": "E",
+      "role": "main"
+    },
+    {
+      "from": "E",
+      "to": "F",
+      "role": "main"
+    },
+    {
+      "from": "F",
+      "to": "G",
+      "role": "main"
+    },
+    {
+      "from": "G",
+      "to": "H",
+      "role": "main"
+    },
+    {
+      "from": "H",
+      "to": "I",
+      "role": "main"
+    },
+    {
+      "from": "I",
+      "to": "J",
+      "role": "main"
+    },
+    {
+      "from": "J",
+      "to": "K",
+      "role": "main"
+    },
+    {
+      "from": "K",
+      "to": "M",
+      "role": "main",
+      "label": "matriz COMPLETA"
+    },
+    {
+      "from": "K",
+      "to": "L",
+      "role": "branch",
+      "label": "matriz incompleta",
+      "variant": "security"
+    },
+    {
+      "from": "L",
+      "to": "I",
+      "role": "return",
+      "label": "construir + rellenar evidencia",
+      "variant": "dashed"
+    }
   ]
 }

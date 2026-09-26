@@ -47,6 +47,10 @@ O toda la suite (este + design-review, token-economy, working-methods, automatio
 
 > **Qué garantiza el hook y qué no.** Es un guardarraíl `PreToolUse` sobre el `gh pr create` del propio agente (más los marcadores opt-in `[forge-done]` / `FORGE_DONE=1`). Impide que el *agente* declare hecho antes de tiempo; **no** es branch protection de servidor — un humano que pushea y mergea desde la web lo esquiva. Para un gate de servidor, corre el mismo script en CI ([hooks/README.md](hooks/README.md) muestra la invocación). **Además es fail-open por defecto**: si no encuentra ninguna Matriz de Aceptación, imprime un aviso y **no** bloquea — puede que el repo simplemente no use Forge para esa PR. Pon `FORGE_REQUIRE_MATRIX=1` si quieres que una matriz ausente también bloquee.
 
+[![El hook de la matriz — una llamada Bash](docs/diagrams/hook-gate.es.png)](docs/diagrams/hook-gate.es.html)
+
+*Versión interactiva: docs/diagrams/hook-gate.es.html (ábrelo en local)*
+
 ## 🧩 Qué trae la caja
 
 | Componente | Tipo | Qué hace | Invocación |
